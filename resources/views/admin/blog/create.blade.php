@@ -40,7 +40,7 @@
             </div>
 
             <!-- Editor -->
-            <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm">
                 <div class="mb-6">
                     <label class="block text-sm font-bold text-gray-700 mb-2">Título del Artículo *</label>
                     <input type="text" name="title" id="post-title" value="{{ old('title') }}" required class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-3.5" placeholder="Título impactante...">

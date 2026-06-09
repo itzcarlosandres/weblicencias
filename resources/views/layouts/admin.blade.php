@@ -238,5 +238,6 @@
         });
     </script>
     @livewireScripts
+    @yield('scripts')
 </body>
 </html>

@@ -26,25 +26,13 @@
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">{{ $post->excerpt }}</p>
             @endif
             
-            <div class="flex items-center justify-center gap-4 mt-10">
-                @if($post->author && $post->author->avatar)
-                    <img src="{{ $post->author->avatar_url }}" alt="{{ $post->author->name }}" class="w-12 h-12 rounded-full border-2 border-white/20">
-                @else
-                    <div class="w-12 h-12 rounded-full bg-blue-600 border-2 border-white/20 text-white flex items-center justify-center font-bold">
-                        {{ substr($post->author->name ?? 'A', 0, 1) }}
-                    </div>
-                @endif
-                <div class="text-left">
-                    <div class="font-bold text-white">{{ $post->author->name ?? 'Equipo TodoKeys' }}</div>
-                    <div class="text-sm text-gray-400">Autor</div>
-                </div>
-            </div>
+
         </div>
     </div>
 
     <!-- Content -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <article class="prose prose-lg prose-blue max-w-none prose-headings:font-extrabold prose-headings:tracking-tight prose-a:text-blue-600 prose-img:rounded-2xl prose-img:shadow-lg">
+        <article class="prose prose-base prose-blue max-w-none prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:my-4 prose-ul:my-4 prose-li:my-1 prose-a:text-blue-600 prose-img:rounded-2xl prose-img:shadow-lg">
             {!! $post->content !!}
         </article>
 

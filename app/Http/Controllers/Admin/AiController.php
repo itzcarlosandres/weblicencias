@@ -121,7 +121,7 @@ Ejemplo de salida:
 Requisitos estrictos:
 - Devuelve la respuesta en formato JSON exacto sin markdown.
 - El JSON debe tener exactamente 4 claves: 'content', 'excerpt', 'meta_title' y 'meta_description'.
-- 'content': El contenido completo del artículo del blog (mínimo 400 palabras) usando etiquetas HTML. Usa <h2> y <h3> para estructurar. Usa <ul> y <ol>. Usa <strong>. NO uses la etiqueta <h1>. Escribe en un tono experto pero fácil de entender.
+- 'content': El contenido completo del artículo del blog (mínimo 600 palabras). ESTRICTAMENTE DEBE INCLUIR ETIQUETAS HTML REALES. Usa <p> para todos los párrafos. Usa <h2> y <h3> para estructurar. Usa <ul> y <li> para listas. Usa <strong> para negritas y palabras clave importantes. NO devuelvas texto plano. Es OBLIGATORIO que el contenido sea código HTML válido listo para insertarse en un <div>.
 - 'excerpt': Un resumen corto del artículo, muy persuasivo para invitar a leer (máximo 150 caracteres).
 - 'meta_title': Título SEO máximo de 60 caracteres.
 - 'meta_description': Descripción SEO máximo de 160 caracteres.
