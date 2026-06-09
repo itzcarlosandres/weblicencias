@@ -52,7 +52,7 @@
         <div class="mt-16 bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 sm:p-12 text-center border border-blue-200">
             <h3 class="text-2xl font-extrabold text-gray-900 mb-4">¿Necesitas una licencia para tu equipo?</h3>
             <p class="text-gray-600 mb-8 max-w-2xl mx-auto">En TodoKeys ofrecemos licencias 100% originales, con entrega inmediata y garantía de por vida. Optimiza tu PC hoy mismo.</p>
-            <a href="{{ route('shop') }}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full transition-all shadow-lg hover:-translate-y-1">
+            <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full transition-all shadow-lg hover:-translate-y-1">
                 Ver Catálogo de Software <i class="fa-solid fa-arrow-right"></i>
             </a>
         </div>
