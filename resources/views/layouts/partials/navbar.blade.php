@@ -124,8 +124,10 @@
                 <!-- User Account -->
                 @auth
                 <div x-data="{ open: false }" class="relative hidden sm:block">
-                    <button @click="open = !open" class="flex flex-col items-center justify-center gap-1 text-gray-300 hover:text-blue-500 transition-colors group">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    <button @click="open = !open" class="flex flex-col items-center justify-center gap-1.5 text-gray-300 hover:text-blue-500 transition-colors group">
+                        <div class="w-7 h-7 rounded-full overflow-hidden border border-white/20 bg-gray-800 shrink-0">
+                            <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                        </div>
                         <span class="text-[10px] font-bold tracking-wider uppercase group-hover:text-blue-500 transition-colors">Mi Cuenta</span>
                     </button>
                     <!-- Dropdown Content -->
@@ -137,6 +139,10 @@
                         <a href="{{ route('customer.dashboard') }}" class="flex items-center gap-3 px-5 py-3 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors">
                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                             Panel de Control
+                        </a>
+                        <a href="{{ route('customer.profile') }}" class="flex items-center gap-3 px-5 py-3 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                            Mi Perfil
                         </a>
                         <a href="{{ route('customer.orders') }}" class="flex items-center gap-3 px-5 py-3 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors">
                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
@@ -273,6 +279,10 @@
                     <a href="{{ route('customer.dashboard') }}" class="flex items-center gap-4 px-3 py-3.5 text-[15px] font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
                         <div class="w-9 h-9 rounded-lg bg-gray-800 text-gray-400 flex items-center justify-center text-lg"><i class="fa-duotone fa-user"></i></div>
                         Panel de Control
+                    </a>
+                    <a href="{{ route('customer.profile') }}" class="flex items-center gap-4 px-3 py-3.5 text-[15px] font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+                        <div class="w-9 h-9 rounded-lg bg-gray-800 text-gray-400 flex items-center justify-center text-lg"><i class="fa-solid fa-user-gear"></i></div>
+                        Mi Perfil
                     </a>
                     <a href="{{ route('customer.orders') }}" class="flex items-center gap-4 px-3 py-3.5 text-[15px] font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
                         <div class="w-9 h-9 rounded-lg bg-gray-800 text-gray-400 flex items-center justify-center text-lg"><i class="fa-duotone fa-box-open"></i></div>

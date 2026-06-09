@@ -78,6 +78,8 @@ Route::post('/waitlist', [WaitlistController::class, 'store'])->name('waitlist.s
 Route::prefix('mi-cuenta')->name('customer.')->middleware('auth')->group(function () {
     Route::post('/productos/{product}/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
     Route::get('/', [CustomerController::class, 'dashboard'])->name('dashboard');
+    Route::get('/perfil', [CustomerController::class, 'profile'])->name('profile');
+    Route::post('/perfil', [CustomerController::class, 'profileUpdate'])->name('profile.update');
     Route::get('/pedidos', [CustomerController::class, 'orders'])->name('orders');
     Route::get('/pedidos/{order}', [CustomerController::class, 'ordersShow'])->name('orders.show');
     Route::get('/licencias', [CustomerController::class, 'licenses'])->name('licenses');

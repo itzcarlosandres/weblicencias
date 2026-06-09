@@ -156,4 +156,61 @@ class CustomerController extends Controller
 
         return view('pages.customer.wishlist', compact('wishlists'));
     }
+
+    public function profile()
+    {
+        $user = auth()->user();
+        return view('pages.customer.profile', compact('user'));
+    }
+
+    public function profileUpdate(Request $request)
+    {
+        $user = auth()->user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:50',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'current_password' => 'nullable|string|required_with:new_password',
+            'new_password' => 'nullable|string|min:8|confirmed',
+        ], [
+            'name.required' => 'El nombre es obligatorio.',
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.unique' => 'Este correo electrónico ya está registrado.',
+            'avatar.max' => 'La imagen de perfil no debe superar los 2MB.',
+            'new_password.min' => 'La nueva contraseña debe tener al menos 8 caracteres.',
+            'new_password.confirmed' => 'La confirmación de la contraseña no coincide.',
+            'current_password.required_with' => 'Debes ingresar tu contraseña actual si deseas cambiarla.',
+        ]);
+
+        // Guardar avatar
+        if ($request->hasFile('avatar')) {
+            // Eliminar avatar anterior si existía y no es una URL externa
+            if ($user->avatar && !filter_var($user->avatar, FILTER_VALIDATE_URL)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar);
+            }
+            
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $path;
+        }
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->phone = $validated['phone'] ?? null;
+
+        // Cambiar contraseña
+        if ($request->filled('new_password')) {
+            // Si el usuario tiene una contraseña establecida, validar la actual
+            if ($user->password && !\Illuminate\Support\Facades\Hash::check($request->current_password, $user->password)) {
+                return back()->withErrors(['current_password' => 'La contraseña actual no es correcta.']);
+            }
+            
+            $user->password = \Illuminate\Support\Facades\Hash::make($request->new_password);
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Perfil actualizado correctamente.');
+    }
 }

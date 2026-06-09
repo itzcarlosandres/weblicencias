@@ -9,18 +9,22 @@
         <aside class="w-full lg:w-64 shrink-0 lg:sticky lg:top-36 h-max">
             <div class="bg-white rounded-2xl border border-gray-100 p-6">
                 <div class="flex items-center gap-3 mb-6 pb-6 border-b border-gray-100 ">
-                    <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-                        <span class="text-lg font-bold text-primary-600 ">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                    <div class="w-12 h-12 rounded-full overflow-hidden border border-gray-100 bg-gray-50 shrink-0">
+                        <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
                     </div>
-                    <div>
-                        <div class="font-semibold text-text-primary ">{{ auth()->user()->name }}</div>
-                        <div class="text-xs text-text-muted">{{ auth()->user()->email }}</div>
+                    <div class="min-w-0">
+                        <div class="font-semibold text-text-primary truncate">{{ auth()->user()->name }}</div>
+                        <div class="text-xs text-text-muted truncate">{{ auth()->user()->email }}</div>
                     </div>
                 </div>
                 <nav class="space-y-1">
                     <a href="{{ route('customer.dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm rounded-xl {{ request()->routeIs('customer.dashboard') ? 'bg-primary-50 text-primary-600' : 'text-text-secondary hover:bg-gray-50 ' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                         Dashboard
+                    </a>
+                    <a href="{{ route('customer.profile') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm rounded-xl {{ request()->routeIs('customer.profile') ? 'bg-primary-50 text-primary-600' : 'text-text-secondary hover:bg-gray-50 ' }}">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        Mi Perfil
                     </a>
                     <a href="{{ route('customer.orders') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm rounded-xl {{ request()->routeIs('customer.orders*') ? 'bg-primary-50 text-primary-600' : 'text-text-secondary hover:bg-gray-50 ' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
