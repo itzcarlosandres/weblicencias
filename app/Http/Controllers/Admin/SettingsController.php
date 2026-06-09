@@ -74,6 +74,14 @@ class SettingsController extends Controller
             // Referrals
             'referral_welcome_points' => 'nullable|integer|min:0',
             'referral_reward_points' => 'nullable|integer|min:0',
+
+            // SMTP / Mail settings
+            'mail_host' => 'nullable|string|max:255',
+            'mail_port' => 'nullable|integer|min:1|max:65535',
+            'mail_username' => 'nullable|string|max:255',
+            'mail_password' => 'nullable|string|max:255',
+            'mail_encryption' => 'nullable|string|max:20',
+            'mail_from_address' => 'nullable|string|max:255',
         ]);
 
         // Handle logo upload
@@ -107,6 +115,14 @@ class SettingsController extends Controller
         foreach ($generalFields as $field) {
             if ($request->has($field) || array_key_exists($field, $validated)) {
                 Setting::set($field, $request->input($field, ''), 'general');
+            }
+        }
+
+        // Save Email/SMTP settings
+        $emailFields = ['mail_host', 'mail_port', 'mail_username', 'mail_password', 'mail_encryption', 'mail_from_address'];
+        foreach ($emailFields as $field) {
+            if ($request->exists($field)) {
+                Setting::set($field, $request->input($field, ''), 'emails');
             }
         }
 

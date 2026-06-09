@@ -481,6 +481,7 @@
                                 <p class="text-[12px] text-gray-400 mt-0.5">Configura cómo los clientes ganan y canjean puntos</p>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="hidden" name="points_enabled" value="0">
                                 <input type="checkbox" name="points_enabled" value="1" {{ ($settings['points_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="peer sr-only">
                                 <div class="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:ring-2 peer-focus:ring-primary-400/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-500"></div>
                             </label>
