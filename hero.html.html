@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Sections - Licencias Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            900: '#134e4a',
+                            950: '#042f2e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #14b8a6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .blob-bg {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        /* Smooth scrolling for navigation between sections */
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation to jump between designs -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14">
+                <span class="font-semibold text-sm tracking-widest uppercase text-gray-500">Variaciones Hero</span>
+                <div class="flex space-x-4 overflow-x-auto hide-scrollbar">
+                    <a href="#design-1" class="text-xs font-medium text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md transition-colors">1. Dark Minimal</a>
+                    <a href="#design-2" class="text-xs font-medium text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md transition-colors">2. Light Elegance</a>
+                    <a href="#design-3" class="text-xs font-medium text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md transition-colors">3. Tech Focus</a>
+                    <a href="#design-4" class="text-xs font-medium text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md transition-colors">4. Grid Premium</a>
+                    <a href="#design-5" class="text-xs font-medium text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md transition-colors">5. Split Clean</a>
+                    <a href="#design-6" class="text-xs font-medium text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md transition-colors">6. Split Dark Neon</a>
+                    <a href="#design-7" class="text-xs font-medium text-gray-600 hover:text-brand-600 px-3 py-2 rounded-md transition-colors">7. Split Dark Matte</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-14">
+
+        <!-- ========================================== -->
+        <!-- DESIGN 1: Dark Minimal Premium -->
+        <!-- ========================================== -->
+        <section id="design-1" class="relative min-h-screen flex items-center bg-gray-950 overflow-hidden py-20">
+            <!-- Background effects -->
+            <div class="absolute inset-0 bg-grid-pattern opacity-20"></div>
+            <div class="blob-bg w-96 h-96 bg-brand-600 rounded-full top-0 left-1/4 mix-blend-screen"></div>
+            <div class="blob-bg w-96 h-96 bg-blue-600 rounded-full bottom-0 right-1/4 mix-blend-screen"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-brand-500 text-sm font-medium mb-6">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        Licencias 100% Originales
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6">
+                        Potencia tu flujo con <span class="gradient-text">Software Premium</span>
+                    </h1>
+                    <p class="text-lg text-gray-400 mb-10 font-light">
+                        Claves de activación al instante para Windows, Office, GitHub Pro y más herramientas esenciales para profesionales.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button class="px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white rounded-xl font-medium transition-all shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2">
+                            Ver Catálogo <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                        <button class="px-8 py-4 bg-white/5 hover:bg-white/10 text-white rounded-xl font-medium border border-white/10 transition-all">
+                            Garantía de Activación
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Floating Product Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    <!-- Product 1 -->
+                    <div class="glass-panel p-6 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="monitor" class="text-white w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-white font-semibold text-lg mb-1">Windows 11 Pro</h3>
+                        <p class="text-gray-400 text-sm mb-4">Licencia OEM de por vida.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-brand-400 font-bold">$19.99 <span class="line-through text-gray-600 text-sm font-normal">$199.99</span></span>
+                            <button class="text-white bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Product 2 -->
+                    <div class="glass-panel p-6 rounded-2xl hover:-translate-y-2 transition-transform duration-300 border-brand-500/30 relative">
+                        <div class="absolute -top-3 -right-3 bg-brand-500 text-white text-xs font-bold px-2 py-1 rounded-md transform rotate-12">Más Vendido</div>
+                        <div class="w-12 h-12 bg-brand-500/20 rounded-xl flex items-center justify-center mb-4 text-brand-400">
+                            <i data-lucide="git-merge" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-white font-semibold text-lg mb-1">GitHub Copilot</h3>
+                        <p class="text-gray-400 text-sm mb-4">Suscripción anual pro.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-brand-400 font-bold">$49.99 <span class="line-through text-gray-600 text-sm font-normal">$100.00</span></span>
+                            <button class="text-white bg-brand-600 hover:bg-brand-500 p-2 rounded-lg transition-colors">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Product 3 -->
+                    <div class="glass-panel p-6 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="layout-grid" class="text-white w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-white font-semibold text-lg mb-1">Office 2021 Pro Plus</h3>
+                        <p class="text-gray-400 text-sm mb-4">Clave global vinculable.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-brand-400 font-bold">$29.99 <span class="line-through text-gray-600 text-sm font-normal">$249.99</span></span>
+                            <button class="text-white bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- DESIGN 2: Light Elegance -->
+        <!-- ========================================== -->
+        <section id="design-2" class="relative min-h-screen flex items-center bg-white overflow-hidden py-20 border-t border-gray-100">
+            <div class="absolute top-0 right-0 -mt-20 -mr-20 w-[40rem] h-[40rem] bg-brand-50 rounded-full blur-3xl opacity-50 z-0"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col lg:flex-row items-center gap-16">
+                <!-- Text Content -->
+                <div class="lg:w-1/2">
+                    <h2 class="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 mb-6 leading-tight">
+                        Software original,<br>
+                        <span class="text-brand-600 font-serif italic">fracción del precio.</span>
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-8 font-light max-w-lg">
+                        Accede a herramientas premium para desarrolladores y creativos de forma legal, segura y con soporte 24/7.
+                    </p>
+                    
+                    <div class="flex items-center gap-6 mb-10">
+                        <div class="flex -space-x-4">
+                            <!-- Dummy Avatars -->
+                            <img class="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://placehold.co/100x100/e2e8f0/64748b?text=U1" alt="User">
+                            <img class="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://placehold.co/100x100/cbd5e1/475569?text=U2" alt="User">
+                            <img class="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://placehold.co/100x100/94a3b8/334155?text=U3" alt="User">
+                            <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-50 flex items-center justify-center text-xs font-bold text-gray-600">+5k</div>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            <div class="flex text-yellow-400 mb-1">
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            </div>
+                            <span>Clientes satisfechos</span>
+                        </div>
+                    </div>
+
+                    <button class="px-8 py-4 bg-gray-900 hover:bg-gray-800 text-white rounded-full font-medium transition-all shadow-xl shadow-gray-900/10 flex items-center gap-2">
+                        Explorar Licencias
+                    </button>
+                </div>
+
+                <!-- Featured Products Carousel/Stack -->
+                <div class="lg:w-1/2 relative h-[500px] w-full flex items-center justify-center">
+                    <!-- Background decorative card -->
+                    <div class="absolute w-72 h-96 bg-gray-50 rounded-3xl border border-gray-100 shadow-sm rotate-6 translate-x-8 opacity-60"></div>
+                    <!-- Middle decorative card -->
+                    <div class="absolute w-72 h-96 bg-white rounded-3xl border border-gray-100 shadow-md -rotate-3 -translate-x-4"></div>
+                    
+                    <!-- Main Product Card -->
+                    <div class="relative w-80 bg-white rounded-3xl border border-gray-100 shadow-2xl p-8 z-10 transition-transform hover:-translate-y-2 duration-300">
+                        <div class="w-16 h-16 bg-brand-50 text-brand-600 rounded-2xl flex items-center justify-center mb-6">
+                            <i data-lucide="code-2" class="w-8 h-8"></i>
+                        </div>
+                        <div class="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full mb-4 uppercase tracking-wider">Desarrollo</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">JetBrains All Products Pack</h3>
+                        <p class="text-gray-500 text-sm mb-6">Licencia anual completa. Actualizaciones incluidas.</p>
+                        
+                        <div class="pt-6 border-t border-gray-100 flex items-end justify-between">
+                            <div>
+                                <div class="text-sm text-gray-400 line-through mb-1">$289.00</div>
+                                <div class="text-3xl font-bold text-brand-600">$89.00</div>
+                            </div>
+                            <button class="w-12 h-12 bg-gray-900 text-white rounded-full flex items-center justify-center hover:bg-brand-600 transition-colors">
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- DESIGN 3: Tech Focus / Developer Centric -->
+        <!-- ========================================== -->
+        <section id="design-3" class="relative min-h-screen bg-[#0A0A0A] py-20 flex items-center border-t border-gray-800">
+            <div class="absolute inset-0 opacity-10">
+                <!-- Abstract tech lines pattern -->
+                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="lines" width="100" height="100" patternUnits="userSpaceOnUse">
+                            <path d="M0 100 L100 0" stroke="white" stroke-width="0.5" fill="none"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#lines)"/>
+                </svg>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <div class="lg:col-span-5">
+                        <div class="font-mono text-brand-400 text-sm mb-4 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                            system.status = "ONLINE"
+                        </div>
+                        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight font-sans">
+                            Keys de activación para <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-blue-500">creadores de código.</span>
+                        </h2>
+                        <p class="text-gray-400 mb-8 font-light">
+                            Entrega instantánea vía email. Licencias retail y por volumen para entornos de desarrollo y servidores.
+                        </p>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center gap-3 text-gray-300 text-sm">
+                                <i data-lucide="zap" class="w-5 h-5 text-brand-400"></i> Activación inmediata
+                            </div>
+                            <div class="flex items-center gap-3 text-gray-300 text-sm">
+                                <i data-lucide="lock" class="w-5 h-5 text-brand-400"></i> Pagos encriptados
+                            </div>
+                            <div class="flex items-center gap-3 text-gray-300 text-sm">
+                                <i data-lucide="life-buoy" class="w-5 h-5 text-brand-400"></i> Soporte técnico remoto
+                            </div>
+                        </div>
+
+                        <button class="w-full sm:w-auto px-8 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+                            Explorar Tienda
+                        </button>
+                    </div>
+
+                    <!-- Terminal-like product display -->
+                    <div class="lg:col-span-7">
+                        <div class="bg-[#111] rounded-xl border border-gray-800 overflow-hidden shadow-2xl">
+                            <!-- Terminal Header -->
+                            <div class="bg-[#1A1A1A] px-4 py-3 flex items-center gap-2 border-b border-gray-800">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                <div class="ml-4 text-xs font-mono text-gray-500">shop_catalog.json</div>
+                            </div>
+                            <!-- Terminal Body - Product List -->
+                            <div class="p-6 font-mono text-sm">
+                                <div class="text-gray-500 mb-4">> fetch products --category=dev</div>
+                                
+                                <div class="space-y-4">
+                                    <!-- List Item 1 -->
+                                    <div class="group flex items-center justify-between p-3 rounded bg-gray-800/30 hover:bg-gray-800 border border-transparent hover:border-gray-700 transition-colors cursor-pointer">
+                                        <div class="flex items-center gap-4">
+                                            <i data-lucide="server" class="text-blue-400 w-5 h-5"></i>
+                                            <div>
+                                                <div class="text-gray-200">Windows Server 2022 Datacenter</div>
+                                                <div class="text-gray-500 text-xs">Licencia Perpetua</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-brand-400">$45.00</div>
+                                            <div class="text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">Añadir [↵]</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- List Item 2 -->
+                                    <div class="group flex items-center justify-between p-3 rounded bg-gray-800/30 hover:bg-gray-800 border border-transparent hover:border-gray-700 transition-colors cursor-pointer">
+                                        <div class="flex items-center gap-4">
+                                            <i data-lucide="database" class="text-orange-400 w-5 h-5"></i>
+                                            <div>
+                                                <div class="text-gray-200">SQL Server 2019 Standard</div>
+                                                <div class="text-gray-500 text-xs">Clave de producto x64</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-brand-400">$60.00</div>
+                                            <div class="text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">Añadir [↵]</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- List Item 3 -->
+                                    <div class="group flex items-center justify-between p-3 rounded bg-gray-800/30 hover:bg-gray-800 border border-transparent hover:border-gray-700 transition-colors cursor-pointer">
+                                        <div class="flex items-center gap-4">
+                                            <i data-lucide="box" class="text-purple-400 w-5 h-5"></i>
+                                            <div>
+                                                <div class="text-gray-200">Visual Studio 2022 Enterprise</div>
+                                                <div class="text-gray-500 text-xs">Licencia Retail</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-brand-400">$35.00</div>
+                                            <div class="text-xs text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">Añadir [↵]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-gray-500 animate-pulse">_</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- DESIGN 4: Grid Premium / Corporate -->
+        <!-- ========================================== -->
+        <section id="design-4" class="relative min-h-screen bg-zinc-50 py-20 flex flex-col justify-center border-t border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-5xl font-bold text-zinc-900 mb-4 tracking-tight">Equipa tu negocio, sin romper el banco.</h2>
+                    <p class="text-zinc-600">Soluciones de software genuinas para empresas y particulares. Facturación disponible.</p>
+                </div>
+
+                <!-- Bento Grid Layout -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[250px]">
+                    
+                    <!-- Main Feature - Large -->
+                    <div class="md:col-span-2 md:row-span-2 bg-white rounded-3xl p-8 border border-zinc-200 shadow-sm flex flex-col justify-between group overflow-hidden relative hover:shadow-md transition-shadow">
+                        <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity group-hover:scale-110 duration-500 transform">
+                            <i data-lucide="windows" class="w-48 h-48"></i>
+                        </div>
+                        <div class="relative z-10">
+                            <span class="bg-zinc-100 text-zinc-800 text-xs font-semibold px-3 py-1 rounded-full uppercase">Combo Empresarial</span>
+                            <h3 class="text-3xl font-bold text-zinc-900 mt-4 mb-2">Windows 11 Pro + Office 2021</h3>
+                            <p class="text-zinc-500 max-w-xs">El paquete esencial para productividad. Activación permanente en un solo clic.</p>
+                        </div>
+                        <div class="relative z-10 flex justify-between items-end">
+                            <div>
+                                <span class="block text-sm text-zinc-400 line-through">$350.00</span>
+                                <span class="text-4xl font-bold text-zinc-900">$45.00</span>
+                            </div>
+                            <button class="bg-zinc-900 text-white px-6 py-3 rounded-xl hover:bg-zinc-800 transition-colors font-medium">Comprar</button>
+                        </div>
+                    </div>
+
+                    <!-- Small Item 1 -->
+                    <div class="bg-gradient-to-br from-brand-500 to-brand-700 rounded-3xl p-6 text-white flex flex-col justify-between hover:-translate-y-1 transition-transform shadow-sm">
+                        <div>
+                            <i data-lucide="shield" class="w-8 h-8 mb-4 opacity-80"></i>
+                            <h4 class="font-bold text-lg mb-1">Antivirus Security</h4>
+                            <p class="text-brand-100 text-sm">1 Año / 3 Dispositivos</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold">$15.99</span>
+                            <button class="bg-white/20 hover:bg-white/30 p-2 rounded-lg transition-colors"><i data-lucide="plus" class="w-5 h-5"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Small Item 2 -->
+                    <div class="bg-white rounded-3xl p-6 border border-zinc-200 flex flex-col justify-between hover:-translate-y-1 transition-transform shadow-sm">
+                        <div>
+                            <i data-lucide="pen-tool" class="w-8 h-8 mb-4 text-pink-500"></i>
+                            <h4 class="font-bold text-zinc-900 text-lg mb-1">Suite Creativa</h4>
+                            <p class="text-zinc-500 text-sm">Suscripción Anual</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-zinc-900">$99.99</span>
+                            <button class="bg-zinc-100 hover:bg-zinc-200 text-zinc-900 p-2 rounded-lg transition-colors"><i data-lucide="plus" class="w-5 h-5"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Wide Item -->
+                    <div class="md:col-span-2 bg-zinc-900 rounded-3xl p-6 border border-zinc-800 flex items-center justify-between group overflow-hidden relative hover:shadow-lg transition-shadow">
+                        <div class="relative z-10">
+                            <h4 class="font-bold text-white text-xl mb-1">Cuentas Streaming Premium</h4>
+                            <p class="text-zinc-400 text-sm">Planes de 3, 6 y 12 meses sin caídas.</p>
+                            <div class="mt-4 flex gap-2">
+                                <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Netflix</span>
+                                <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Spotify</span>
+                                <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Disney+</span>
+                            </div>
+                        </div>
+                        <div class="relative z-10 text-right">
+                            <span class="block text-sm text-zinc-500 mb-1">Desde</span>
+                            <span class="text-3xl font-bold text-white mb-2 block">$4.99<span class="text-lg font-normal text-zinc-500">/mes</span></span>
+                            <button class="text-brand-400 hover:text-brand-300 text-sm font-medium flex items-center justify-end w-full gap-1">Ver planes <i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="mt-12 text-center flex justify-center gap-8 text-zinc-400 grayscale opacity-60">
+                    <!-- Fake payment methods -->
+                    <i data-lucide="credit-card" class="w-8 h-8"></i>
+                    <i data-lucide="bitcoin" class="w-8 h-8"></i>
+                    <i data-lucide="smartphone" class="w-8 h-8"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- DESIGN 5: Split Clean / E-commerce Classic -->
+        <!-- ========================================== -->
+        <section id="design-5" class="relative min-h-screen bg-white py-20 flex items-center border-t border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    
+                    <!-- Featured Product Focus -->
+                    <div class="w-full lg:w-5/12 flex flex-col">
+                        <div class="mb-4 inline-flex items-center gap-2 text-sm text-brand-600 font-semibold tracking-wide uppercase">
+                            <span class="w-2 h-2 rounded-full bg-brand-500"></span> Oferta de la Semana
+                        </div>
+                        <h2 class="text-4xl sm:text-5xl font-bold text-slate-900 mb-6 leading-tight">
+                            Windows 10 Pro <br><span class="font-light text-slate-500">Clave de Producto</span>
+                        </h2>
+                        
+                        <div class="flex items-end gap-4 mb-6">
+                            <span class="text-5xl font-bold text-slate-900">$12.50</span>
+                            <span class="text-xl text-slate-400 line-through mb-1">$149.99</span>
+                            <span class="bg-red-100 text-red-600 text-sm font-bold px-2 py-1 rounded-md mb-1">-92%</span>
+                        </div>
+                        
+                        <p class="text-slate-600 mb-8 leading-relaxed">
+                            Actualiza la seguridad y productividad de tu PC. Licencia válida para 1 PC de forma permanente. Activación en línea instantánea.
+                        </p>
+                        
+                        <div class="flex gap-4 mb-8">
+                            <button class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-semibold py-4 rounded-xl shadow-lg shadow-brand-500/30 transition-all text-lg">
+                                Comprar Ahora
+                            </button>
+                            <button class="w-14 h-14 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl flex items-center justify-center transition-colors">
+                                <i data-lucide="heart" class="w-6 h-6"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 text-sm text-slate-500 border-t border-slate-100 pt-6">
+                            <div class="flex items-center gap-1"><i data-lucide="clock" class="w-4 h-4"></i> Envío en 1 min</div>
+                            <div class="w-1 h-1 rounded-full bg-slate-300"></div>
+                            <div class="flex items-center gap-1"><i data-lucide="shield-check" class="w-4 h-4"></i> Pago Seguro</div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Side with floating tags -->
+                    <div class="w-full lg:w-7/12 relative flex justify-center">
+                        <div class="relative w-full max-w-lg aspect-square bg-slate-50 rounded-full border border-slate-100 flex items-center justify-center">
+                            
+                            <!-- Central Icon/Image replacement -->
+                            <div class="w-48 h-48 bg-white shadow-2xl rounded-3xl flex items-center justify-center relative z-10 border border-slate-100">
+                                <i data-lucide="monitor" class="w-20 h-20 text-brand-500"></i>
+                                <div class="absolute -bottom-4 -right-4 w-12 h-12 bg-green-500 rounded-full border-4 border-white flex items-center justify-center shadow-lg">
+                                    <i data-lucide="check" class="w-6 h-6 text-white"></i>
+                                </div>
+                            </div>
+
+                            <!-- Floating Elements -->
+                            <div class="absolute top-10 left-10 bg-white p-3 rounded-xl shadow-lg border border-slate-100 animate-[bounce_3s_infinite]">
+                                <i data-lucide="key" class="w-6 h-6 text-yellow-500"></i>
+                            </div>
+                            <div class="absolute bottom-20 right-10 bg-white px-4 py-2 rounded-full shadow-lg border border-slate-100 font-semibold text-slate-700 animate-[bounce_4s_infinite_reverse]">
+                                ⭐ 4.9/5
+                            </div>
+                            <div class="absolute top-1/2 -left-4 bg-white p-2 rounded-lg shadow-lg border border-slate-100">
+                                <i data-lucide="mail" class="w-5 h-5 text-blue-500"></i>
+                            </div>
+                            
+                            <!-- Background decoration rings -->
+                            <div class="absolute inset-4 rounded-full border border-brand-100 border-dashed"></div>
+                            <div class="absolute inset-12 rounded-full border border-brand-50"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- DESIGN 6: Split Clean Dark (Neon Accent) -->
+        <!-- ========================================== -->
+        <section id="design-6" class="relative min-h-screen bg-black py-20 flex items-center border-t border-gray-900 overflow-hidden">
+            <!-- Neon background glows -->
+            <div class="absolute top-1/2 right-0 -translate-y-1/2 w-[30rem] h-[30rem] bg-brand-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    
+                    <!-- Text Side -->
+                    <div class="w-full lg:w-5/12 flex flex-col">
+                        <div class="mb-4 inline-flex items-center gap-2 text-sm text-brand-400 font-semibold tracking-wide uppercase">
+                            <span class="w-2 h-2 rounded-full bg-brand-400 shadow-[0_0_10px_rgba(45,212,191,0.8)]"></span> Top Ventas
+                        </div>
+                        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight">
+                            Office 2021 Pro <br><span class="font-light text-gray-500">Activación Global</span>
+                        </h2>
+                        
+                        <div class="flex items-end gap-4 mb-6">
+                            <span class="text-5xl font-bold text-white">$29.99</span>
+                            <span class="text-xl text-gray-600 line-through mb-1">$249.99</span>
+                            <span class="bg-brand-500/10 text-brand-400 border border-brand-500/20 text-sm font-bold px-2 py-1 rounded-md mb-1">-88%</span>
+                        </div>
+                        
+                        <p class="text-gray-400 mb-8 leading-relaxed">
+                            Potencia tu trabajo con la suite de Microsoft más completa. Licencia original, vinculable a tu cuenta y con soporte de por vida.
+                        </p>
+                        
+                        <div class="flex gap-4 mb-8">
+                            <button class="flex-1 bg-brand-600 hover:bg-brand-500 text-white font-semibold py-4 rounded-xl shadow-[0_0_20px_rgba(13,148,136,0.4)] transition-all text-lg">
+                                Adquirir Licencia
+                            </button>
+                            <button class="w-14 h-14 bg-gray-900 hover:bg-gray-800 border border-gray-800 text-gray-400 hover:text-white rounded-xl flex items-center justify-center transition-all">
+                                <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 text-sm text-gray-500 border-t border-gray-900 pt-6">
+                            <div class="flex items-center gap-1"><i data-lucide="zap" class="w-4 h-4 text-brand-400"></i> Entrega al instante</div>
+                            <div class="w-1 h-1 rounded-full bg-gray-800"></div>
+                            <div class="flex items-center gap-1"><i data-lucide="shield" class="w-4 h-4 text-brand-400"></i> Garantía 30 días</div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Side -->
+                    <div class="w-full lg:w-7/12 relative flex justify-center">
+                        <div class="relative w-full max-w-lg aspect-square flex items-center justify-center">
+                            
+                            <!-- Dark Glassmorphism Card -->
+                            <div class="w-64 h-64 bg-gray-900/50 backdrop-blur-xl shadow-2xl rounded-3xl flex items-center justify-center relative z-10 border border-gray-700/50">
+                                <i data-lucide="layout-grid" class="w-24 h-24 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"></i>
+                                <div class="absolute -bottom-4 -right-4 w-12 h-12 bg-black rounded-full border border-gray-800 flex items-center justify-center shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                                    <i data-lucide="check" class="w-5 h-5 text-brand-400"></i>
+                                </div>
+                            </div>
+
+                            <!-- Floating Elements Dark -->
+                            <div class="absolute top-10 right-20 bg-gray-900 p-3 rounded-xl border border-gray-800 animate-[bounce_3s_infinite]">
+                                <i data-lucide="cloud-download" class="w-6 h-6 text-brand-400"></i>
+                            </div>
+                            <div class="absolute bottom-16 left-10 bg-gray-900 px-4 py-2 rounded-full border border-gray-800 font-semibold text-gray-300 animate-[bounce_4s_infinite_reverse]">
+                                ✨ Licencia Retail
+                            </div>
+                            
+                            <!-- Background decoration rings -->
+                            <div class="absolute inset-4 rounded-full border border-gray-800 border-dashed"></div>
+                            <div class="absolute inset-12 rounded-full border border-gray-900"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- DESIGN 7: Split Clean Dark (Matte Premium) -->
+        <!-- ========================================== -->
+        <section id="design-7" class="relative min-h-screen bg-zinc-950 py-20 flex items-center border-t border-zinc-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <!-- Reversed Layout (Visual Left, Text Right) for variety -->
+                <div class="flex flex-col-reverse lg:flex-row gap-16 items-center">
+                    
+                    <!-- Visual Side (Matte & Gold/Amber) -->
+                    <div class="w-full lg:w-1/2 relative flex justify-center">
+                        <!-- A stack of premium cards -->
+                        <div class="relative w-80 h-96">
+                            <div class="absolute inset-0 bg-zinc-900 rounded-2xl rotate-6 border border-zinc-800 transition-transform hover:rotate-12 duration-500"></div>
+                            <div class="absolute inset-0 bg-zinc-800 rounded-2xl -rotate-3 border border-zinc-700 transition-transform hover:-rotate-6 duration-500"></div>
+                            <div class="absolute inset-0 bg-zinc-950 rounded-2xl border border-amber-500/30 p-8 flex flex-col justify-between shadow-2xl relative z-10">
+                                <div>
+                                    <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mb-6">
+                                        <i data-lucide="terminal" class="text-amber-400 w-6 h-6"></i>
+                                    </div>
+                                    <h3 class="text-white font-bold text-xl mb-2">Windows 11 Pro</h3>
+                                    <p class="text-zinc-500 text-sm">Clave de activación OEM. <br>Válido para 1 dispositivo.</p>
+                                </div>
+                                <div>
+                                    <div class="text-zinc-600 text-sm line-through">$199.00</div>
+                                    <div class="text-3xl font-bold text-amber-400">$19.99</div>
+                                </div>
+                                <!-- Barcode decorative -->
+                                <div class="absolute bottom-8 right-8 flex gap-1 opacity-20">
+                                    <div class="w-1 h-8 bg-white"></div><div class="w-2 h-8 bg-white"></div><div class="w-1 h-8 bg-white"></div><div class="w-3 h-8 bg-white"></div><div class="w-1 h-8 bg-white"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Side -->
+                    <div class="w-full lg:w-1/2 flex flex-col">
+                        <div class="inline-flex items-center gap-2 mb-4">
+                            <span class="px-2 py-1 rounded bg-amber-500/10 text-amber-500 text-xs font-bold tracking-wider uppercase border border-amber-500/20">Edición Limitada</span>
+                        </div>
+                        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight">
+                            Actualiza tu sistema.<br>
+                            <span class="text-zinc-500">Mejora tu seguridad.</span>
+                        </h2>
+                        
+                        <p class="text-zinc-400 mb-8 text-lg font-light max-w-md">
+                            Obtén la última versión de Windows con todas las características profesionales desbloqueadas. Diseñado para empresas y usuarios exigentes.
+                        </p>
+                        
+                        <ul class="space-y-4 mb-10 text-zinc-300">
+                            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 text-amber-500"></i> BitLocker activado</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 text-amber-500"></i> Escritorio Remoto (RDP)</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 text-amber-500"></i> Hyper-V integrado</li>
+                        </ul>
+                        
+                        <div class="flex gap-4">
+                            <button class="bg-white text-black hover:bg-zinc-200 font-semibold px-8 py-4 rounded-lg transition-colors flex items-center gap-2">
+                                Añadir al Carrito <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

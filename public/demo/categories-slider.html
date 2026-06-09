@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Premium: 5 Diseños Categorías - TodoKeys</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6B8FCC;
+            --primary-light: #A3C4F3;
+            --primary-dark: #4A6FA5;
+            --primary-50: #EEF3FB;
+            --primary-100: #DCE7F6;
+            --bg-light: #FAFBFC;
+            --bg-dark: #0A0E1A;
+            --surface-dark: #0F1525;
+        }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-feature-settings: "ss01", "cv11"; -webkit-font-smoothing: antialiased; }
+        .font-serif { font-family: 'Fraunces', Georgia, serif; font-feature-settings: "ss01"; letter-spacing: -0.02em; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+
+        /* Subtle grid pattern */
+        .grid-pattern { background-image: linear-gradient(rgba(107,143,204,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(107,143,204,0.04) 1px, transparent 1px); background-size: 40px 40px; }
+
+        /* Marquee */
+        @keyframes marquee-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .marquee-left { animation: marquee-left 40s linear infinite; }
+        .marquee-track:hover .marquee-left { animation-play-state: paused; }
+
+        /* Refined transitions */
+        .ease-refined { transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+        .ease-editorial { transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+
+        /* Underline animation */
+        .link-underline { position: relative; }
+        .link-underline::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 0; height: 1px; background: currentColor; transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .link-underline:hover::after { width: 100%; }
+
+        /* Smooth image zoom */
+        .img-zoom img { transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .img-zoom:hover img { transform: scale(1.05); }
+
+        /* Subtle border highlight */
+        .border-refined { border: 1px solid rgba(0,0,0,0.06); }
+        .border-refined-dark { border: 1px solid rgba(255,255,255,0.08); }
+
+        /* Number badge */
+        .num-badge { font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#EEF3FB', 100: '#DCE7F6', 200: '#B8CFE9', 300: '#A3C4F3', 400: '#6B8FCC', 500: '#5A7DBA', 600: '#4A6FA5', 700: '#3D5C8A', 800: '#2E456A', 900: '#1F2F4D' },
+                        ink: { 50: '#FAFBFC', 100: '#F4F5F7', 200: '#E6E8EC', 300: '#C9CDD4', 400: '#8B9099', 500: '#5C636E', 600: '#3A4049', 700: '#262B33', 800: '#15181F', 900: '#0A0C10' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-ink-50 dark:bg-ink-900 text-ink-700 dark:text-ink-200">
+
+<!-- Top nav -->
+<nav class="sticky top-0 z-50 bg-ink-50/90 dark:bg-ink-900/95 backdrop-blur-xl border-b border-ink-200/60 dark:border-ink-700/50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between flex-wrap gap-4">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-md bg-ink-900 dark:bg-white flex items-center justify-center text-white dark:text-ink-900 font-bold text-sm">T</div>
+            <div>
+                <div class="font-semibold text-ink-800 dark:text-white text-sm">TodoKeys</div>
+                <div class="text-[10px] text-ink-400 dark:text-ink-400 uppercase tracking-widest">Categorías — Premium Design Study</div>
+            </div>
+        </div>
+        <div class="flex flex-wrap gap-1 text-xs">
+            <a href="#d1" class="px-3 py-1.5 rounded-md text-ink-500 dark:text-ink-300 hover:text-ink-800 dark:hover:text-white hover:bg-ink-100 dark:hover:bg-ink-800 transition ease-refined">01 Editorial</a>
+            <a href="#d2" class="px-3 py-1.5 rounded-md text-ink-500 dark:text-ink-300 hover:text-ink-800 dark:hover:text-white hover:bg-ink-100 dark:hover:bg-ink-800 transition ease-refined">02 Index</a>
+            <a href="#d3" class="px-3 py-1.5 rounded-md text-ink-500 dark:text-ink-300 hover:text-ink-800 dark:hover:text-white hover:bg-ink-100 dark:hover:bg-ink-800 transition ease-refined">03 Showcase</a>
+            <a href="#d4" class="px-3 py-1.5 rounded-md text-ink-500 dark:text-ink-300 hover:text-ink-800 dark:hover:text-white hover:bg-ink-100 dark:hover:bg-ink-800 transition ease-refined">04 Spotlight</a>
+            <a href="#d5" class="px-3 py-1.5 rounded-md text-ink-500 dark:text-ink-300 hover:text-ink-800 dark:hover:text-white hover:bg-ink-100 dark:hover:bg-ink-800 transition ease-refined">05 Ticker</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Section divider -->
+<div class="border-t border-ink-200/60 dark:border-ink-700/50"></div>
+
+
+<!-- ================================================== -->
+<!-- DESIGN 1: EDITORIAL MAGAZINE STYLE                  -->
+<!-- ================================================== -->
+<section id="d1" class="py-24 lg:py-32 bg-ink-50 dark:bg-ink-900 scroll-mt-16 relative">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+        <!-- Header editorial -->
+        <div class="grid lg:grid-cols-12 gap-8 mb-16 lg:mb-20">
+            <div class="lg:col-span-7">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="h-px w-8 bg-ink-300 dark:bg-ink-600"></div>
+                    <span class="text-[10px] font-medium tracking-[0.2em] uppercase text-ink-500 dark:text-ink-400">Sección / 01 — Explorar</span>
+                </div>
+                <h2 class="font-serif text-5xl sm:text-6xl lg:text-7xl font-light text-ink-800 dark:text-white leading-[0.95] tracking-tight">
+                    Encuentra tu<br>
+                    <span class="italic text-primary-600 dark:text-primary-300">categoría</span>
+                </h2>
+            </div>
+            <div class="lg:col-span-4 lg:col-start-9 flex flex-col justify-end">
+                <p class="text-base text-ink-500 dark:text-ink-400 leading-relaxed mb-6">Una cuidada selección de licencias digitales, organizadas por categoría. Desliza para descubrir.</p>
+                <div class="flex items-center gap-2 text-xs text-ink-400 dark:text-ink-500">
+                    <span class="num-badge">10</span>
+                    <span class="h-px w-12 bg-ink-300 dark:bg-ink-700"></span>
+                    <span>categorías disponibles</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll strip -->
+        <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-2 -mx-6 px-6 lg:-mx-12 lg:px-12">
+            <!-- Card 01 -->
+            <a href="#" class="group shrink-0 w-[340px] sm:w-[380px] block">
+                <div class="relative aspect-[4/5] overflow-hidden rounded-sm border-refined dark:border-refined-dark bg-white dark:bg-ink-800">
+                    <div class="absolute inset-0 bg-gradient-to-br from-ink-100 to-ink-50 dark:from-ink-700 dark:to-ink-800 transition-transform duration-1000 ease-refined group-hover:scale-105"></div>
+                    <div class="absolute top-6 left-6 right-6 flex items-start justify-between">
+                        <span class="num-badge text-[10px] font-medium tracking-widest text-ink-400 dark:text-ink-500">01</span>
+                        <span class="text-[10px] font-medium tracking-widest uppercase text-ink-400 dark:text-ink-500">Software</span>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-9xl font-serif font-light text-ink-800 dark:text-white opacity-90 transition-all duration-1000 ease-refined group-hover:opacity-100 group-hover:scale-110">Software</div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-ink-800 dark:via-ink-800/80">
+                        <div class="flex items-end justify-between">
+                            <div>
+                                <div class="font-serif text-2xl text-ink-800 dark:text-white mb-1">Software</div>
+                                <div class="text-xs text-ink-500 dark:text-ink-400">Aplicaciones profesionales</div>
+                            </div>
+                            <div class="num-badge text-xs text-ink-400 dark:text-ink-500">02</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 02 -->
+            <a href="#" class="group shrink-0 w-[340px] sm:w-[380px] block">
+                <div class="relative aspect-[4/5] overflow-hidden rounded-sm border-refined dark:border-refined-dark bg-white dark:bg-ink-800">
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary-50 to-primary-100/40 dark:from-primary-900/20 dark:to-primary-800/10 transition-transform duration-1000 ease-refined group-hover:scale-105"></div>
+                    <div class="absolute top-6 left-6 right-6 flex items-start justify-between">
+                        <span class="num-badge text-[10px] font-medium tracking-widest text-primary-600/60 dark:text-primary-300/60">02</span>
+                        <span class="text-[10px] font-medium tracking-widest uppercase text-primary-600/60 dark:text-primary-300/60">Sistema</span>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-32 h-32 rounded-sm bg-white/80 dark:bg-ink-800/80 backdrop-blur-sm border border-primary-200/50 dark:border-primary-700/50 flex items-center justify-center text-7xl font-serif font-light text-primary-700 dark:text-primary-200 transition-all duration-1000 ease-refined group-hover:scale-110">W</div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-ink-800 dark:via-ink-800/80">
+                        <div class="flex items-end justify-between">
+                            <div>
+                                <div class="font-serif text-2xl text-ink-800 dark:text-white mb-1">Windows</div>
+                                <div class="text-xs text-ink-500 dark:text-ink-400">Sistemas operativos</div>
+                            </div>
+                            <div class="num-badge text-xs text-ink-400 dark:text-ink-500">02</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 03 -->
+            <a href="#" class="group shrink-0 w-[340px] sm:w-[380px] block">
+                <div class="relative aspect-[4/5] overflow-hidden rounded-sm border-refined dark:border-refined-dark bg-white dark:bg-ink-800">
+                    <div class="absolute inset-0 bg-gradient-to-br from-amber-50 to-orange-50/40 dark:from-amber-900/10 dark:to-orange-900/5 transition-transform duration-1000 ease-refined group-hover:scale-105"></div>
+                    <div class="absolute top-6 left-6 right-6 flex items-start justify-between">
+                        <span class="num-badge text-[10px] font-medium tracking-widest text-amber-700/60 dark:text-amber-300/60">03</span>
+                        <span class="text-[10px] font-medium tracking-widest uppercase text-amber-700/60 dark:text-amber-300/60">Productividad</span>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-32 h-32 rounded-sm bg-white/80 dark:bg-ink-800/80 backdrop-blur-sm border border-amber-200/50 dark:border-amber-700/50 flex items-center justify-center text-7xl font-serif font-light text-amber-700 dark:text-amber-200 transition-all duration-1000 ease-refined group-hover:scale-110">O</div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-ink-800 dark:via-ink-800/80">
+                        <div class="flex items-end justify-between">
+                            <div>
+                                <div class="font-serif text-2xl text-ink-800 dark:text-white mb-1">Office</div>
+                                <div class="text-xs text-ink-500 dark:text-ink-400">Suite de productividad</div>
+                            </div>
+                            <div class="num-badge text-xs text-ink-400 dark:text-ink-500">02</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 04 -->
+            <a href="#" class="group shrink-0 w-[340px] sm:w-[380px] block">
+                <div class="relative aspect-[4/5] overflow-hidden rounded-sm border-refined dark:border-refined-dark bg-white dark:bg-ink-800">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-50 to-teal-50/40 dark:from-emerald-900/10 dark:to-teal-900/5 transition-transform duration-1000 ease-refined group-hover:scale-105"></div>
+                    <div class="absolute top-6 left-6 right-6 flex items-start justify-between">
+                        <span class="num-badge text-[10px] font-medium tracking-widest text-emerald-700/60 dark:text-emerald-300/60">04</span>
+                        <span class="text-[10px] font-medium tracking-widest uppercase text-emerald-700/60 dark:text-emerald-300/60">Seguridad</span>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-32 h-32 rounded-sm bg-white/80 dark:bg-ink-800/80 backdrop-blur-sm border border-emerald-200/50 dark:border-emerald-700/50 flex items-center justify-center text-7xl font-serif font-light text-emerald-700 dark:text-emerald-200 transition-all duration-1000 ease-refined group-hover:scale-110">S</div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-ink-800 dark:via-ink-800/80">
+                        <div class="flex items-end justify-between">
+                            <div>
+                                <div class="font-serif text-2xl text-ink-800 dark:text-white mb-1">Antivirus</div>
+                                <div class="text-xs text-ink-500 dark:text-ink-400">Protección digital</div>
+                            </div>
+                            <div class="num-badge text-xs text-ink-400 dark:text-ink-500">03</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 05 -->
+            <a href="#" class="group shrink-0 w-[340px] sm:w-[380px] block">
+                <div class="relative aspect-[4/5] overflow-hidden rounded-sm border-refined dark:border-refined-dark bg-white dark:bg-ink-800">
+                    <div class="absolute inset-0 bg-gradient-to-br from-rose-50 to-pink-50/40 dark:from-rose-900/10 dark:to-pink-900/5 transition-transform duration-1000 ease-refined group-hover:scale-105"></div>
+                    <div class="absolute top-6 left-6 right-6 flex items-start justify-between">
+                        <span class="num-badge text-[10px] font-medium tracking-widest text-rose-700/60 dark:text-rose-300/60">05</span>
+                        <span class="text-[10px] font-medium tracking-widest uppercase text-rose-700/60 dark:text-rose-300/60">Regalo</span>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-32 h-32 rounded-sm bg-white/80 dark:bg-ink-800/80 backdrop-blur-sm border border-rose-200/50 dark:border-rose-700/50 flex items-center justify-center text-7xl font-serif font-light text-rose-700 dark:text-rose-200 transition-all duration-1000 ease-refined group-hover:scale-110">G</div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-ink-800 dark:via-ink-800/80">
+                        <div class="flex items-end justify-between">
+                            <div>
+                                <div class="font-serif text-2xl text-ink-800 dark:text-white mb-1">Gift Cards</div>
+                                <div class="text-xs text-ink-500 dark:text-ink-400">Tarjetas digitales</div>
+                            </div>
+                            <div class="num-badge text-xs text-ink-400 dark:text-ink-500">02</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 06 -->
+            <a href="#" class="group shrink-0 w-[340px] sm:w-[380px] block">
+                <div class="relative aspect-[4/5] overflow-hidden rounded-sm border-refined dark:border-refined-dark bg-white dark:bg-ink-800">
+                    <div class="absolute inset-0 bg-gradient-to-br from-violet-50 to-purple-50/40 dark:from-violet-900/10 dark:to-purple-900/5 transition-transform duration-1000 ease-refined group-hover:scale-105"></div>
+                    <div class="absolute top-6 left-6 right-6 flex items-start justify-between">
+                        <span class="num-badge text-[10px] font-medium tracking-widest text-violet-700/60 dark:text-violet-300/60">06</span>
+                        <span class="text-[10px] font-medium tracking-widest uppercase text-violet-700/60 dark:text-violet-300/60">Entretenimiento</span>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-32 h-32 rounded-sm bg-white/80 dark:bg-ink-800/80 backdrop-blur-sm border border-violet-200/50 dark:border-violet-700/50 flex items-center justify-center text-7xl font-serif font-light text-violet-700 dark:text-violet-200 transition-all duration-1000 ease-refined group-hover:scale-110">E</div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-ink-800 dark:via-ink-800/80">
+                        <div class="flex items-end justify-between">
+                            <div>
+                                <div class="font-serif text-2xl text-ink-800 dark:text-white mb-1">Streaming</div>
+                                <div class="text-xs text-ink-500 dark:text-ink-400">Plataformas digitales</div>
+                            </div>
+                            <div class="num-badge text-xs text-ink-400 dark:text-ink-500">02</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-8 flex items-center justify-between">
+            <p class="text-xs text-ink-400 dark:text-ink-500 tracking-wide">← Arrastra para explorar →</p>
+            <a href="#" class="group inline-flex items-center gap-2 text-xs font-medium text-ink-700 dark:text-white tracking-wide">
+                <span class="link-underline">Ver todas las categorías</span>
+                <svg class="w-3 h-3 transition-transform duration-500 ease-refined group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<div class="border-t border-ink-200/60 dark:border-ink-700/50"></div>
+
+
+<!-- ================================================== -->
+<!-- DESIGN 2: CAROUSEL INDEX (refined minimal)          -->
+<!-- ================================================== -->
+<section id="d2" class="py-24 lg:py-32 bg-white dark:bg-ink-800 scroll-mt-16">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+        <div x-data="{
+            active: 0,
+            total: 6,
+            perView: 4,
+            next() { this.active = Math.min(this.active + 1, this.total - this.perView); },
+            prev() { this.active = Math.max(this.active - 1, 0); },
+            go(i) { this.active = i; }
+        }">
+            <!-- Header -->
+            <div class="flex items-end justify-between mb-12 lg:mb-16">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="h-px w-8 bg-ink-300 dark:bg-ink-600"></div>
+                        <span class="text-[10px] font-medium tracking-[0.2em] uppercase text-ink-500 dark:text-ink-400">Sección / 02 — Catálogo</span>
+                    </div>
+                    <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-light text-ink-800 dark:text-white leading-tight tracking-tight">
+                        Categorías<br><span class="italic text-primary-600 dark:text-primary-300">curadas</span>
+                    </h2>
+                </div>
+                <div class="hidden sm:flex items-center gap-3">
+                    <button @click="prev()" :disabled="active === 0" :class="active === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-ink-100 dark:hover:bg-ink-700'" class="w-11 h-11 rounded-full border border-ink-200 dark:border-ink-600 flex items-center justify-center text-ink-600 dark:text-ink-300 transition ease-refined">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button @click="next()" :disabled="active >= total - perView" :class="active >= total - perView ? 'opacity-30 cursor-not-allowed' : 'hover:bg-ink-800 dark:hover:bg-white hover:text-white dark:hover:text-ink-800'" class="w-11 h-11 rounded-full border border-ink-800 dark:border-white flex items-center justify-center text-ink-800 dark:text-white transition ease-refined">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cards container -->
+            <div class="overflow-hidden -mx-3">
+                <div class="flex transition-transform duration-700 ease-editorial" :style="`transform: translateX(-${active * (100 / perView)}%)`">
+                    <template x-for="(cat, i) in [
+                        {n:'01',name:'Software',icon:'Software',desc:'Aplicaciones profesionales',count:2,accent:'ink'},
+                        {n:'02',name:'Windows',icon:'Windows',desc:'Sistemas operativos',count:2,accent:'primary'},
+                        {n:'03',name:'Office',icon:'Office',desc:'Suite de productividad',count:2,accent:'amber'},
+                        {n:'04',name:'Antivirus',icon:'Antivirus',desc:'Protección digital',count:3,accent:'emerald'},
+                        {n:'05',name:'Gift Cards',icon:'Gift Cards',desc:'Tarjetas digitales',count:2,accent:'rose'},
+                        {n:'06',name:'Streaming',icon:'Streaming',desc:'Plataformas digitales',count:2,accent:'violet'}
+                    ]" :key="i">
+                        <div class="w-1/4 shrink-0 px-3">
+                            <a href="#" class="group block h-full">
+                                <div class="relative aspect-[3/4] overflow-hidden rounded-sm border-refined dark:border-refined-dark bg-ink-50 dark:bg-ink-700 mb-4">
+                                    <div class="absolute inset-0 transition-transform duration-1000 ease-refined group-hover:scale-105" :class="{
+                                        'bg-gradient-to-br from-ink-100 to-ink-200/50 dark:from-ink-600 dark:to-ink-700/50': cat.accent === 'ink',
+                                        'bg-gradient-to-br from-primary-50 to-primary-100/30 dark:from-primary-900/20 dark:to-primary-800/10': cat.accent === 'primary',
+                                        'bg-gradient-to-br from-amber-50 to-amber-100/30 dark:from-amber-900/15 dark:to-amber-800/10': cat.accent === 'amber',
+                                        'bg-gradient-to-br from-emerald-50 to-emerald-100/30 dark:from-emerald-900/15 dark:to-emerald-800/10': cat.accent === 'emerald',
+                                        'bg-gradient-to-br from-rose-50 to-rose-100/30 dark:from-rose-900/15 dark:to-rose-800/10': cat.accent === 'rose',
+                                        'bg-gradient-to-br from-violet-50 to-violet-100/30 dark:from-violet-900/15 dark:to-violet-800/10': cat.accent === 'violet'
+                                    }"></div>
+                                    <div class="absolute top-5 left-5 text-[10px] font-medium tracking-widest num-badge text-ink-400 dark:text-ink-500" x-text="cat.n"></div>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="font-serif text-[8rem] font-light leading-none transition-all duration-1000 ease-refined group-hover:scale-110" :class="{
+                                            'text-ink-800 dark:text-white': cat.accent === 'ink',
+                                            'text-primary-700 dark:text-primary-200': cat.accent === 'primary',
+                                            'text-amber-700 dark:text-amber-200': cat.accent === 'amber',
+                                            'text-emerald-700 dark:text-emerald-200': cat.accent === 'emerald',
+                                            'text-rose-700 dark:text-rose-200': cat.accent === 'rose',
+                                            'text-violet-700 dark:text-violet-200': cat.accent === 'violet'
+                                        }" x-text="cat.icon.charAt(0)"></div>
+                                    </div>
+                                </div>
+                                <div class="px-1">
+                                    <div class="flex items-baseline justify-between mb-1">
+                                        <h3 class="font-serif text-xl text-ink-800 dark:text-white tracking-tight" x-text="cat.name"></h3>
+                                        <span class="num-badge text-[10px] text-ink-400 dark:text-ink-500" x-text="'(' + cat.count + ')'"></span>
+                                    </div>
+                                    <p class="text-xs text-ink-500 dark:text-ink-400 mb-3" x-text="cat.desc"></p>
+                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-medium text-ink-700 dark:text-ink-200 group-hover:text-primary-600 dark:group-hover:text-primary-300 transition ease-refined">
+                                        Explorar
+                                        <svg class="w-3 h-3 transition-transform duration-500 ease-refined group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Pagination refined -->
+            <div class="mt-10 flex items-center justify-between border-t border-ink-200/60 dark:border-ink-700/50 pt-6">
+                <div class="flex items-center gap-2 num-badge text-xs text-ink-400 dark:text-ink-500">
+                    <span class="text-ink-800 dark:text-white font-medium" x-text="String(active + 1).padStart(2,'0')"></span>
+                    <span>/</span>
+                    <span x-text="String(total).padStart(2,'0')"></span>
+                </div>
+                <div class="flex gap-1">
+                    <template x-for="i in Math.max(1, total - perView + 1)" :key="i">
+                        <button @click="go(i-1)" :class="active === (i-1) ? 'w-8 bg-ink-800 dark:bg-white' : 'w-1.5 bg-ink-200 dark:bg-ink-600 hover:bg-ink-400'" class="h-1.5 rounded-full transition-all duration-500 ease-refined"></button>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="border-t border-ink-200/60 dark:border-ink-700/50"></div>
+
+
+<!-- ================================================== -->
+<!-- DESIGN 3: SHOWCASE 3D (cinematic)                   -->
+<!-- ================================================== -->
+<section id="d3" class="py-24 lg:py-32 bg-ink-900 dark:bg-black scroll-mt-16 relative overflow-hidden">
+    <div class="absolute inset-0 grid-pattern opacity-30"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary-900/5 to-transparent"></div>
+    <div class="relative max-w-[1400px] mx-auto px-6 lg:px-12">
+        <div x-data="{
+            active: 2,
+            total: 6,
+            cats: [
+                {n:'01',name:'Software',subcat:'Productividad',count:2, accent:'from-zinc-200 to-zinc-400'},
+                {n:'02',name:'Windows',subcat:'Sistema',count:2, accent:'from-primary-300 to-primary-600'},
+                {n:'03',name:'Office',subcat:'Productividad',count:2, accent:'from-amber-300 to-amber-600'},
+                {n:'04',name:'Antivirus',subcat:'Seguridad',count:3, accent:'from-emerald-300 to-emerald-600'},
+                {n:'05',name:'Gift Cards',subcat:'Regalo',count:2, accent:'from-rose-300 to-rose-600'},
+                {n:'06',name:'Streaming',subcat:'Entretenimiento',count:2, accent:'from-violet-300 to-violet-600'}
+            ],
+            set(i) { this.active = i; },
+            getStyle(i) {
+                const offset = i - this.active;
+                const abs = Math.abs(offset);
+                if (abs > 2) return 'opacity:0; pointer-events:none; transform: translateX(0) scale(0.6);';
+                const x = offset * 180;
+                const z = -abs * 150;
+                const rotate = offset * -22;
+                const scale = 1 - abs * 0.15;
+                const opacity = abs > 2 ? 0 : 1 - abs * 0.25;
+                return `transform: translateX(${x}px) translateZ(${z}px) rotateY(${rotate}deg) scale(${scale}); opacity: ${opacity}; z-index: ${10 - abs};`;
+            }
+        }" class="text-center">
+            <!-- Header -->
+            <div class="mb-16 lg:mb-20">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <div class="h-px w-8 bg-ink-700"></div>
+                    <span class="text-[10px] font-medium tracking-[0.2em] uppercase text-ink-400">Sección / 03 — Showcase</span>
+                    <div class="h-px w-8 bg-ink-700"></div>
+                </div>
+                <h2 class="font-serif text-5xl sm:text-6xl lg:text-7xl font-light text-white leading-[0.95] tracking-tight">
+                    Vista <span class="italic text-primary-300">previa</span>
+                </h2>
+                <p class="text-sm text-ink-400 mt-4 tracking-wide">Cada categoría en detalle · Click para explorar</p>
+            </div>
+
+            <!-- 3D Stage -->
+            <div class="coverflow-stage relative h-[480px] flex items-center justify-center mb-10" style="transform-style: preserve-3d;">
+                <template x-for="(cat, i) in cats" :key="i">
+                    <div @click="set(i)" class="coverflow-card absolute w-72 h-[420px] cursor-pointer" :style="getStyle(i)">
+                        <div class="w-full h-full rounded-md overflow-hidden border border-white/10 backdrop-blur-sm bg-gradient-to-br" :class="cat.accent">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                            <div class="relative h-full flex flex-col justify-between p-7 text-white">
+                                <div class="flex items-start justify-between">
+                                    <span class="num-badge text-[10px] font-medium tracking-widest opacity-60" x-text="cat.n"></span>
+                                    <span class="text-[9px] font-medium tracking-[0.2em] uppercase opacity-70" x-text="cat.subcat"></span>
+                                </div>
+                                <div class="flex-1 flex items-center justify-center">
+                                    <div class="font-serif text-[10rem] font-light leading-none opacity-90" x-text="cat.name.charAt(0)"></div>
+                                </div>
+                                <div>
+                                    <h3 class="font-serif text-3xl font-light mb-1" x-text="cat.name"></h3>
+                                    <div class="flex items-center gap-2 text-[10px] tracking-wider opacity-70 num-badge">
+                                        <span x-text="cat.count + ' productos'"></span>
+                                        <span class="w-1 h-1 rounded-full bg-white/50"></span>
+                                        <span>Explorar</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Dots -->
+            <div class="flex justify-center items-center gap-8">
+                <button @click="set(Math.max(0, active-1))" :disabled="active === 0" :class="active === 0 ? 'opacity-20' : 'opacity-60 hover:opacity-100'" class="text-ink-400 hover:text-white transition ease-refined">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <div class="flex gap-2">
+                    <template x-for="i in total" :key="i">
+                        <button @click="set(i-1)" :class="active === (i-1) ? 'w-10 h-1 bg-white' : 'w-4 h-1 bg-white/20 hover:bg-white/40'" class="rounded-full transition-all duration-500 ease-refined"></button>
+                    </template>
+                </div>
+                <button @click="set(Math.min(total-1, active+1))" :disabled="active === total-1" :class="active === total-1 ? 'opacity-20' : 'opacity-60 hover:opacity-100'" class="text-ink-400 hover:text-white transition ease-refined">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="border-t border-ink-200/60 dark:border-ink-700/50"></div>
+
+
+<!-- ================================================== -->
+<!-- DESIGN 4: SPOTLIGHT (editorial hero)               -->
+<!-- ================================================== -->
+<section id="d4" class="py-24 lg:py-32 bg-ink-50 dark:bg-ink-900 scroll-mt-16">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+        <div x-data="{
+            active: 0,
+            total: 6,
+            timer: null,
+            cats: [
+                {n:'01',name:'Software',subcat:'Aplicaciones',count:2, desc:'Herramientas profesionales de las marcas líderes del sector. Diseñadas para potenciar tu productividad.', accent:'from-zinc-200 to-zinc-400', ink:'text-zinc-800 dark:text-white'},
+                {n:'02',name:'Windows',subcat:'Sistemas',count:2, desc:'Licencias originales de Microsoft Windows. Activación inmediata y soporte completo.', accent:'from-primary-300 to-primary-600', ink:'text-primary-50'},
+                {n:'03',name:'Office',subcat:'Productividad',count:2, desc:'La suite ofimática más completa del mercado. Word, Excel, PowerPoint y más.', accent:'from-amber-300 to-amber-600', ink:'text-amber-50'},
+                {n:'04',name:'Antivirus',subcat:'Seguridad',count:3, desc:'Protección avanzada para todos tus dispositivos. Las marcas más confiables.', accent:'from-emerald-300 to-emerald-600', ink:'text-emerald-50'},
+                {n:'05',name:'Gift Cards',subcat:'Regalo',count:2, desc:'Tarjetas digitales para las plataformas más populares. El regalo perfecto.', accent:'from-rose-300 to-rose-600', ink:'text-rose-50'},
+                {n:'06',name:'Streaming',subcat:'Entretenimiento',count:2, desc:'Suscripciones a las mejores plataformas de contenido. Disfruta sin límites.', accent:'from-violet-300 to-violet-600', ink:'text-violet-50'}
+            ],
+            start() { this.timer = setInterval(() => { this.active = (this.active + 1) % this.total; }, 5500); },
+            stop() { clearInterval(this.timer); },
+            set(i) { this.active = i; this.stop(); this.start(); }
+        }" x-init="start()" @mouseenter="stop()" @mouseleave="start()">
+            <!-- Header -->
+            <div class="grid lg:grid-cols-12 gap-6 mb-12">
+                <div class="lg:col-span-7">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="h-px w-8 bg-ink-300 dark:bg-ink-600"></div>
+                        <span class="text-[10px] font-medium tracking-[0.2em] uppercase text-ink-500 dark:text-ink-400">Sección / 04 — Destacado</span>
+                    </div>
+                    <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-light text-ink-800 dark:text-white leading-tight tracking-tight">
+                        Categoría <span class="italic text-primary-600 dark:text-primary-300">destacada</span>
+                    </h2>
+                </div>
+                <div class="lg:col-span-4 lg:col-start-9 flex items-end">
+                    <p class="text-sm text-ink-500 dark:text-ink-400 leading-relaxed">Una rotación curada de las categorías más relevantes, actualizada automáticamente.</p>
+                </div>
+            </div>
+
+            <!-- Main grid -->
+            <div class="grid lg:grid-cols-12 gap-4">
+                <!-- Hero card -->
+                <div class="lg:col-span-8 relative h-[500px] rounded-md overflow-hidden border-refined dark:border-refined-dark">
+                    <template x-for="(cat, i) in cats" :key="i">
+                        <div x-show="active === i" x-transition:enter="transition ease-out duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="absolute inset-0">
+                            <div class="absolute inset-0 bg-gradient-to-br" :class="cat.accent"></div>
+                            <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px); background-size: 24px 24px;"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10"></div>
+                            <div class="relative h-full flex flex-col justify-between p-10 lg:p-14" :class="cat.ink">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <div class="num-badge text-[10px] font-medium tracking-widest opacity-60 mb-2" x-text="cat.n + ' / 06'"></div>
+                                        <div class="text-[10px] font-medium tracking-[0.2em] uppercase opacity-80" x-text="cat.subcat"></div>
+                                    </div>
+                                    <div class="text-[10px] font-medium tracking-widest num-badge opacity-60" x-text="String(active+1).padStart(2,'0') + ' — ' + String(total).padStart(2,'0')"></div>
+                                </div>
+                                <div>
+                                    <h3 class="font-serif text-6xl sm:text-7xl lg:text-8xl font-light mb-4 leading-none tracking-tight" x-text="cat.name"></h3>
+                                    <p class="text-base lg:text-lg opacity-90 max-w-xl leading-relaxed mb-6" x-text="cat.desc"></p>
+                                    <div class="flex items-center gap-6">
+                                        <a href="#" class="group inline-flex items-center gap-3 px-6 py-3 bg-white/15 backdrop-blur-md border border-white/25 rounded-full text-sm font-medium hover:bg-white/25 transition ease-refined">
+                                            Explorar
+                                            <svg class="w-4 h-4 transition-transform duration-500 ease-refined group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                                        </a>
+                                        <span class="text-xs tracking-wide num-badge opacity-70" x-text="cat.count + ' productos disponibles'"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Side index list -->
+                <div class="lg:col-span-4 flex flex-col">
+                    <div class="text-[10px] font-medium tracking-[0.2em] uppercase text-ink-400 dark:text-ink-500 mb-4 px-1">Índice</div>
+                    <div class="flex-1 flex flex-col gap-2">
+                        <template x-for="(cat, i) in cats" :key="i">
+                            <button @click="set(i)" :class="active === i ? 'bg-ink-900 dark:bg-white text-white dark:text-ink-900' : 'bg-white dark:bg-ink-800 text-ink-700 dark:text-ink-200 hover:bg-ink-50 dark:hover:bg-ink-700'" class="group w-full text-left p-4 rounded-sm border border-ink-200/60 dark:border-ink-700/50 transition ease-refined">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <span class="num-badge text-[10px] tracking-widest opacity-50" x-text="cat.n"></span>
+                                        <div>
+                                            <div class="text-sm font-medium" x-text="cat.name"></div>
+                                            <div class="text-[10px] tracking-wider opacity-60 mt-0.5" x-text="cat.count + ' productos'"></div>
+                                        </div>
+                                    </div>
+                                    <svg class="w-3 h-3 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition ease-refined" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="mt-6 h-px bg-ink-200/60 dark:bg-ink-700/50 relative overflow-hidden">
+                <div class="absolute inset-y-0 left-0 bg-primary-500 transition-all duration-500 ease-refined" :style="`width: ${((active+1)/total)*100}%`"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="border-t border-ink-200/60 dark:border-ink-700/50"></div>
+
+
+<!-- ================================================== -->
+<!-- DESIGN 5: TICKER (refined marquee)                 -->
+<!-- ================================================== -->
+<section id="d5" class="py-24 lg:py-32 bg-white dark:bg-ink-800 scroll-mt-16 overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 mb-12">
+        <div class="grid lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="h-px w-8 bg-ink-300 dark:bg-ink-600"></div>
+                    <span class="text-[10px] font-medium tracking-[0.2em] uppercase text-ink-500 dark:text-ink-400">Sección / 05 — Ticker</span>
+                </div>
+                <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-light text-ink-800 dark:text-white leading-tight tracking-tight">
+                    Nuestras <span class="italic text-primary-600 dark:text-primary-300">categorías</span>
+                </h2>
+            </div>
+            <div class="lg:col-span-4 lg:col-start-9 flex items-end">
+                <p class="text-sm text-ink-500 dark:text-ink-400 leading-relaxed">Una vista continua de todas las categorías disponibles. Hover para pausar.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Marquee Row 1 -->
+    <div class="marquee-track mb-3">
+        <div class="flex gap-3 marquee-left w-max">
+            <template x-data="{items:[
+                {n:'01',name:'Software',count:2, accent:'bg-zinc-100 dark:bg-zinc-800', text:'text-zinc-700 dark:text-zinc-200', border:'border-zinc-200 dark:border-zinc-700'},
+                {n:'02',name:'Windows',count:2, accent:'bg-primary-50 dark:bg-primary-900/20', text:'text-primary-700 dark:text-primary-200', border:'border-primary-200 dark:border-primary-800/50'},
+                {n:'03',name:'Office',count:2, accent:'bg-amber-50 dark:bg-amber-900/20', text:'text-amber-700 dark:text-amber-200', border:'border-amber-200 dark:border-amber-800/50'},
+                {n:'04',name:'Antivirus',count:3, accent:'bg-emerald-50 dark:bg-emerald-900/20', text:'text-emerald-700 dark:text-emerald-200', border:'border-emerald-200 dark:border-emerald-800/50'}
+            ]}">
+                <template x-for="set in 2" :key="set">
+                    <template x-for="(cat, idx) in items" :key="set + '-' + idx">
+                        <a href="#" class="shrink-0 w-[360px] h-32 rounded-md border p-6 flex items-center gap-5 transition ease-refined hover:-translate-y-1" :class="[cat.accent, cat.border, cat.text]">
+                            <div class="num-badge text-3xl font-serif font-light opacity-40" x-text="cat.n"></div>
+                            <div class="flex-1">
+                                <div class="font-serif text-2xl font-light tracking-tight" x-text="cat.name"></div>
+                                <div class="flex items-center gap-2 text-[10px] tracking-widest uppercase opacity-60 mt-1">
+                                    <span x-text="cat.count + ' productos'"></span>
+                                    <span class="w-1 h-1 rounded-full bg-current opacity-50"></span>
+                                    <span>Explorar →</span>
+                                </div>
+                            </div>
+                        </a>
+                    </template>
+                </template>
+            </template>
+        </div>
+    </div>
+
+    <!-- Marquee Row 2 -->
+    <div class="marquee-track">
+        <div class="flex gap-3 w-max" style="animation: marquee-left 50s linear infinite reverse;">
+            <template x-data="{items:[
+                {n:'05',name:'Gift Cards',count:2, accent:'bg-rose-50 dark:bg-rose-900/20', text:'text-rose-700 dark:text-rose-200', border:'border-rose-200 dark:border-rose-800/50'},
+                {n:'06',name:'Streaming',count:2, accent:'bg-violet-50 dark:bg-violet-900/20', text:'text-violet-700 dark:text-violet-200', border:'border-violet-200 dark:border-violet-800/50'},
+                {n:'07',name:'Xbox',count:1, accent:'bg-green-50 dark:bg-green-900/20', text:'text-green-700 dark:text-green-200', border:'border-green-200 dark:border-green-800/50'},
+                {n:'08',name:'PlayStation',count:1, accent:'bg-indigo-50 dark:bg-indigo-900/20', text:'text-indigo-700 dark:text-indigo-200', border:'border-indigo-200 dark:border-indigo-800/50'}
+            ]}">
+                <template x-for="set in 2" :key="set">
+                    <template x-for="(cat, idx) in items" :key="set + '-' + idx">
+                        <a href="#" class="shrink-0 w-[360px] h-32 rounded-md border p-6 flex items-center gap-5 transition ease-refined hover:-translate-y-1" :class="[cat.accent, cat.border, cat.text]">
+                            <div class="num-badge text-3xl font-serif font-light opacity-40" x-text="cat.n"></div>
+                            <div class="flex-1">
+                                <div class="font-serif text-2xl font-light tracking-tight" x-text="cat.name"></div>
+                                <div class="flex items-center gap-2 text-[10px] tracking-widest uppercase opacity-60 mt-1">
+                                    <span x-text="cat.count + ' productos'"></span>
+                                    <span class="w-1 h-1 rounded-full bg-current opacity-50"></span>
+                                    <span>Explorar →</span>
+                                </div>
+                            </div>
+                        </a>
+                    </template>
+                </template>
+            </template>
+        </div>
+    </div>
+
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 mt-8 flex items-center justify-between text-xs text-ink-400 dark:text-ink-500">
+        <span>Movimiento continuo · pausa en hover</span>
+        <a href="#" class="link-underline text-ink-700 dark:text-ink-200 font-medium">Ver catálogo completo</a>
+    </div>
+</section>
+
+<div class="border-t border-ink-200/60 dark:border-ink-700/50"></div>
+
+<!-- Footer -->
+<footer class="py-12 bg-ink-50 dark:bg-ink-900">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 text-center">
+        <p class="text-sm text-ink-500 dark:text-ink-400 mb-2">Selecciona tu diseño favorito para integrarlo en <code class="px-2 py-0.5 bg-ink-100 dark:bg-ink-800 rounded font-mono text-xs">resources/views/pages/home.blade.php</code></p>
+        <p class="text-xs text-ink-400 dark:text-ink-500">Tipografía: <span class="font-serif italic">Fraunces</span> + <span class="font-medium">Inter</span> · Paleta refinada sobre base <code class="px-1.5 py-0.5 bg-ink-100 dark:bg-ink-800 rounded font-mono">#6B8FCC</code></p>
+    </div>
+</footer>
+
+</body>
+</html>
