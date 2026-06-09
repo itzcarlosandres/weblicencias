@@ -32,18 +32,14 @@
 
     <!-- Content -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <article class="prose prose-base prose-blue max-w-none prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:my-4 prose-ul:my-4 prose-li:my-1 prose-a:text-blue-600 prose-img:rounded-2xl prose-img:shadow-lg">
-            {!! $post->content !!}
-        </article>
-
         {{-- Widget: Productos Destacados --}}
         @if($featuredProducts->isNotEmpty())
-        <div class="mt-16 mb-4">
+        <div class="mb-16">
             <div class="flex items-center gap-3 mb-8">
                 <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gray-200"></div>
                 <div class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full shadow-lg shadow-blue-500/30">
                     <i class="fa-solid fa-bolt text-yellow-300 text-xs"></i>
-                    <span class="text-white font-bold text-sm tracking-wide">Productos Recomendados</span>
+                    <span class="text-yellow-300 font-extrabold text-sm tracking-wide">Productos Recomendados</span>
                     <i class="fa-solid fa-bolt text-yellow-300 text-xs"></i>
                 </div>
                 <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gray-200"></div>
@@ -56,6 +52,10 @@
             </div>
         </div>
         @endif
+
+        <article class="prose prose-base prose-blue max-w-none prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:my-4 prose-ul:my-4 prose-li:my-1 prose-a:text-blue-600 prose-img:rounded-2xl prose-img:shadow-lg">
+            {!! $post->content !!}
+        </article>
 
         <!-- CTA Box -->
         <div class="mt-10 bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 sm:p-12 text-center border border-blue-200">

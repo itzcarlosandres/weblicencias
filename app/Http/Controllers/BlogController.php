@@ -14,7 +14,12 @@ class BlogController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(12);
 
-        return view('pages.blog.index', compact('posts'));
+        $featuredProducts = \App\Models\Product::active()
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+
+        return view('pages.blog.index', compact('posts', 'featuredProducts'));
     }
 
     public function show($slug)
