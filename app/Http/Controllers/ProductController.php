@@ -129,10 +129,12 @@ class ProductController extends Controller
             ->limit(5)
             ->get(['id', 'name', 'slug', 'image', 'price', 'compare_price', 'discount'])
             ->map(function ($product) {
-                $product->image_url = $product->image ? asset('storage/' . $product->image) : asset('images/placeholder.jpg');
-                $product->formatted_price = number_format($product->discounted_price, 2);
-                $product->formatted_compare = $product->compare_price ? number_format($product->compare_price, 2) : null;
                 $product->url = route('products.show', $product->slug);
+                $product->image_url = $product->image ? asset('storage/' . $product->image) : asset('img/no-image.png');
+                $product->formatted_price = str_replace('$', '', $product->formatted_discounted_price);
+                if ($product->has_discount) {
+                    $product->formatted_compare = str_replace('$', '', $product->formatted_compare_price);
+                }
                 return $product;
             });
 

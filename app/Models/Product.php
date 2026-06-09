@@ -116,6 +116,21 @@ class Product extends Model
         return $this->is_top_deal && $this->discount < 15 ? 15 : $this->discount;
     }
 
+    public function getFormattedPriceAttribute(): string
+    {
+        return \App\Services\CurrencyService::format($this->price);
+    }
+
+    public function getFormattedDiscountedPriceAttribute(): string
+    {
+        return \App\Services\CurrencyService::format($this->discounted_price);
+    }
+
+    public function getFormattedComparePriceAttribute(): string
+    {
+        return \App\Services\CurrencyService::format($this->compare_price);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

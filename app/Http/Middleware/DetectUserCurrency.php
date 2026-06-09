@@ -24,11 +24,33 @@ class DetectUserCurrency
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Check for manual override first
+        if ($request->has('currency')) {
+            $currency = strtoupper($request->get('currency'));
+            if (in_array($currency, ['USD', 'COP'])) {
+                session(['currency' => $currency]);
+                
+                // Remove currency parameter from URL
+                $url = $request->url();
+                $query = $request->except('currency');
+                if (!empty($query)) {
+                    $url .= '?' . http_build_query($query);
+                }
+                
+                return redirect($url);
+            }
+        }
+
         // Check if currency is already set in session
         if (!session()->has('currency')) {
             try {
                 $ip = $request->ip();
-                $country = $this->currencyService->detectUserCountry($ip);
+                // We'll use the ipapi.co directly inside CurrencyService
+                $country = 'US';
+                if ($ip !== '127.0.0.1' && $ip !== '::1') {
+                    $response = \Illuminate\Support\Facades\Http::timeout(3)->get("https://ipapi.co/{$ip}/country/");
+                    $country = $response->successful() ? $response->body() : 'US';
+                }
                 
                 if ($country === 'CO') {
                     session(['currency' => 'COP']);

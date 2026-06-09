@@ -30,7 +30,7 @@
 
                     <!-- Points Redemption -->
                     @if($pointsEnabled && $userPoints >= 100)
-                    <div class="mb-6 p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-[16px] border border-amber-100" x-data="{ usePoints: false, pointsToUse: 0, discount: 0, newTotal: '{{ number_format($total, 2) }}' }">
+                    <div class="mb-6 p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-[16px] border border-amber-100" x-data="{ usePoints: false, pointsToUse: 0, discount: 0, newTotal: '{{ currency_format($total) }}' }">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" x-model="usePoints" @change="if(usePoints){pointsToUse={{ $maxRedeemable }}}else{pointsToUse=0;discount=0;newTotal='{{ number_format($total, 2) }}'}" class="peer sr-only">
+                                <input type="checkbox" x-model="usePoints" @change="if(usePoints){pointsToUse={{ $maxRedeemable }}}else{pointsToUse=0;discount=0;newTotal='{{ currency_format($total) }}'}" class="peer sr-only">
                                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
                             </label>
                         </div>
