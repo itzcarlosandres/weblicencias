@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <form id="main-settings-form" action="{{ route('admin.settings.update') }}" method="POST">
+    <form id="main-settings-form" action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <input type="hidden" name="active_tab" :value="activeTab">
 
@@ -206,11 +206,7 @@
             </div>
         </div>
 
-    </form><!-- End main form before branding -->
-
         <div x-show="activeTab === 'branding'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
-        <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
-        @csrf
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Logo -->
                 <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6">
@@ -309,11 +305,6 @@
                 Guardar Logo & Favicon
             </button>
         </div>
-        </form><!-- End branding form -->
-
-    <form id="main-settings-form-2" action="{{ route('admin.settings.update') }}" method="POST">
-    @csrf
-    <input type="hidden" name="active_tab" :value="activeTab">
 
         <!-- SEO Tab -->
         <div x-show="activeTab === 'seo'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">

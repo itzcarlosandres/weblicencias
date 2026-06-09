@@ -19,7 +19,7 @@ class SettingsController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'site_name' => 'required|string|max:255',
+            'site_name' => 'sometimes|required|string|max:255',
             'site_tagline' => 'nullable|string|max:255',
             'site_description' => 'nullable|string|max:500',
             'contact_email' => 'nullable|email|max:255',
