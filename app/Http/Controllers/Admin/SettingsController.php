@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Storage;
 
 class SettingsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $settings = Setting::pluck('value', 'key')->toArray();
+        $activeTab = $request->query('active_tab', session('active_tab', 'general'));
 
-        return view('admin.settings.index', compact('settings'));
+        return view('admin.settings.index', compact('settings', 'activeTab'));
     }
 
     public function update(Request $request)
@@ -195,6 +196,18 @@ class SettingsController extends Controller
             }
         }
 
-        return back()->with('success', 'Configuración actualizada correctamente')->with('active_tab', $request->input('active_tab', 'general'));
+        $activeTab = $request->input('active_tab', 'general');
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Configuración actualizada correctamente',
+                'redirect' => route('admin.settings.index') . '?active_tab=' . $activeTab,
+            ]);
+        }
+
+        return redirect()->route('admin.settings.index')
+            ->with('success', 'Configuración actualizada correctamente')
+            ->with('active_tab', $activeTab);
     }
 }

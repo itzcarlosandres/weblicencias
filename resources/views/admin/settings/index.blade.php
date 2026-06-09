@@ -4,7 +4,7 @@
 @section('header', 'Configuración')
 
 @section('content')
-<div x-data="{ activeTab: '{{ session('active_tab', 'general') }}' }">
+<div x-data="{ activeTab: '{{ $activeTab }}' }">
     <!-- Tabs -->
     <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 mb-6 overflow-hidden">
         <div class="flex border-b border-gray-100 dark:border-gray-800/60 overflow-x-auto">
@@ -53,7 +53,7 @@
 
     <form id="main-settings-form" action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
-    <input type="hidden" name="active_tab" :value="activeTab">
+    <input type="hidden" name="active_tab" id="active_tab_input" value="{{ session('active_tab', 'general') }}">
 
         @if ($errors->any())
             <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm">
@@ -757,4 +757,68 @@
         </div>
     </form>
 </div>
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Sync the active tab hidden input with Alpine.js tab state
+    const form = document.getElementById('main-settings-form');
+    const activeTabInput = document.getElementById('active_tab_input');
+    const tabButtons = document.querySelectorAll('[\@click^="activeTab"]');
+
+    // Update hidden input when tab changes
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const match = this.getAttribute('@click').match(/activeTab = '([^']+)'/);
+            if (match && activeTabInput) {
+                activeTabInput.value = match[1];
+            }
+        });
+    });
+
+    // Force POST submission via fetch to prevent GET fallback
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Guardando...';
+            }
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    alert('Error al guardar: ' + (data.message || 'Error desconocido'));
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Guardar Configuración';
+                    }
+                }
+            })
+            .catch(err => {
+                console.error('Error saving settings:', err);
+                // Fallback: submit normally
+                form.removeEventListener('submit', arguments.callee);
+                form.submit();
+            });
+        });
+    }
+});
+</script>
+@endsection
+
 @endsection
