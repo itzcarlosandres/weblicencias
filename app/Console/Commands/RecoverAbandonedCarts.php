@@ -2,42 +2,58 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Attributes\Description;
-use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use App\Models\AbandonedCart;
-use App\Mail\AbandonedCartMail;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Carbon;
+use App\Mail\AbandonedCartMail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
-#[Signature('cart:recover')]
-#[Description('Sends email to users who abandoned their carts for more than 24 hours')]
 class RecoverAbandonedCarts extends Command
 {
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'app:recover-carts';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Sends email reminders to users with abandoned carts older than 2 hours.';
+
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        // Encontrar carritos inactivos por más de 24 horas a los que no se les haya enviado correo
-        $cutoffTime = Carbon::now()->subHours(24);
-        
-        $abandonedCarts = AbandonedCart::where('last_active_at', '<', $cutoffTime)
+        // Encontrar carritos que llevan más de 2 horas inactivos y aún no se ha enviado el correo
+        $threshold = Carbon::now()->subHours(2);
+
+        $abandonedCarts = AbandonedCart::where('last_active_at', '<=', $threshold)
             ->where('email_sent', false)
             ->with('user')
             ->get();
 
         $count = 0;
+
         foreach ($abandonedCarts as $cart) {
-            // Asegurarse de que el carrito no esté vacío
-            if (!empty($cart->cart_data) && $cart->user) {
-                Mail::to($cart->user->email)->queue(new AbandonedCartMail($cart));
-                
-                $cart->update(['email_sent' => true]);
-                $count++;
+            if ($cart->user && $cart->user->email) {
+                try {
+                    Mail::to($cart->user->email)->send(new AbandonedCartMail($cart));
+                    $cart->update(['email_sent' => true]);
+                    $count++;
+                    $this->info("Mail sent to: {$cart->user->email}");
+                } catch (\Exception $e) {
+                    Log::error("Failed to send abandoned cart email to {$cart->user->email}: " . $e->getMessage());
+                    $this->error("Failed to send to: {$cart->user->email}");
+                }
             }
         }
 
-        $this->info("Se enviaron correos a {$count} carritos abandonados.");
+        $this->info("Abandoned cart recovery process finished. Sent: $count emails.");
     }
 }

@@ -1,45 +1,72 @@
 @extends('layouts.app')
 
-@section('title', 'Blog | TodoKeys')
+@section('title', 'Blog y Tutoriales | TodoKeys')
+@section('meta_description', 'Descubre las mejores guías, tutoriales y noticias sobre software y licencias digitales.')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    <nav class="flex items-center gap-2 text-sm text-text-muted mb-8">
-        <a href="{{ route('home') }}" class="hover:text-primary-500">Inicio</a>
-        <span>/</span>
-        <span class="text-text-primary dark:text-text-dark">Blog</span>
-    </nav>
+<div class="bg-gray-50 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">Blog y Tutoriales</h1>
+            <p class="text-lg text-gray-500">Aprende a sacar el máximo provecho de tu software con nuestras guías expertas.</p>
+        </div>
 
-    <h1 class="text-3xl font-bold text-text-primary dark:text-text-dark mb-8">Blog</h1>
+        @if($posts->isEmpty())
+            <div class="text-center py-20">
+                <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-400">
+                    <i class="fa-solid fa-newspaper text-4xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Próximamente</h3>
+                <p class="text-gray-500">Estamos preparando contenido increíble para ti.</p>
+            </div>
+        @else
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($posts as $post)
+                    <article class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                        <a href="{{ route('blog.show', $post->slug) }}" class="block relative overflow-hidden aspect-video bg-gray-100">
+                            @if($post->image)
+                                <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                    <i class="fa-solid fa-image text-4xl"></i>
+                                </div>
+                            @endif
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                                <span class="text-white font-bold flex items-center gap-2">Leer artículo <i class="fa-solid fa-arrow-right"></i></span>
+                            </div>
+                        </a>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <div class="flex items-center gap-4 text-xs font-semibold text-gray-500 mb-4 uppercase tracking-wider">
+                                <span><i class="fa-regular fa-calendar mr-1.5"></i> {{ $post->published_at->format('d M, Y') }}</span>
+                                <span><i class="fa-regular fa-eye mr-1.5"></i> {{ $post->views_count }}</span>
+                            </div>
+                            <h2 class="text-xl font-extrabold text-gray-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors">
+                                <a href="{{ route('blog.show', $post->slug) }}">{{ $post->title }}</a>
+                            </h2>
+                            <p class="text-gray-600 line-clamp-3 mb-6 flex-1">
+                                {{ $post->excerpt ?? Str::limit(strip_tags($post->content), 120) }}
+                            </p>
+                            <div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100">
+                                @if($post->author && $post->author->avatar)
+                                    <img src="{{ $post->author->avatar_url }}" alt="{{ $post->author->name }}" class="w-8 h-8 rounded-full">
+                                @else
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">
+                                        {{ substr($post->author->name ?? 'A', 0, 1) }}
+                                    </div>
+                                @endif
+                                <span class="text-sm font-semibold text-gray-900">{{ $post->author->name ?? 'Equipo TodoKeys' }}</span>
+                            </div>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
 
-    @if($posts->count())
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach($posts as $post)
-        <article class="card group">
-            <div class="aspect-video bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-800/30 dark:to-primary-700/30 flex items-center justify-center">
-                <svg class="w-12 h-12 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                </svg>
-            </div>
-            <div class="p-6">
-                <div class="text-xs text-text-muted mb-2">{{ $post->published_at->format('d M Y') }}</div>
-                <h2 class="font-semibold text-text-primary dark:text-text-dark mb-2 line-clamp-2">
-                    <a href="{{ route('blog.show', $post->slug) }}" class="hover:text-primary-500 transition-colors">{{ $post->title }}</a>
-                </h2>
-                <p class="text-sm text-text-secondary line-clamp-2 mb-4">{{ $post->excerpt }}</p>
-                <a href="{{ route('blog.show', $post->slug) }}" class="text-sm font-medium text-primary-500 hover:text-primary-600">Leer más →</a>
-            </div>
-        </article>
-        @endforeach
+            @if($posts->hasPages())
+                <div class="mt-16 flex justify-center">
+                    {{ $posts->links() }}
+                </div>
+            @endif
+        @endif
     </div>
-    <div class="mt-10">
-        {{ $posts->links() }}
-    </div>
-    @else
-    <div class="text-center py-20">
-        <h3 class="text-lg font-semibold text-text-primary dark:text-text-dark mb-2">No hay artículos</h3>
-        <p class="text-text-secondary">Próximamente publicaremos contenido</p>
-    </div>
-    @endif
 </div>
 @endsection

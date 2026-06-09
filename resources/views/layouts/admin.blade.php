@@ -108,7 +108,7 @@
                 </div>
 
                 <div class="mb-6">
-                    <div class="px-3 mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-600">Marketing</div>
+                    <div class="px-3 mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-600">Marketing & SEO</div>
                     <a href="{{ route('admin.referrals.index') }}" class="sidebar-item flex items-center gap-3 px-3 py-2.5 text-[13px] font-medium rounded-lg {{ request()->routeIs('admin.referrals.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 active' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
                         <i class="fa-solid fa-users-viewfinder w-5 text-center"></i>
                         <span>Referidos</span>
@@ -116,6 +116,10 @@
                     <a href="{{ route('admin.marketing.create') }}" class="sidebar-item flex items-center gap-3 px-3 py-2.5 text-[13px] font-medium rounded-lg {{ request()->routeIs('admin.marketing.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 active' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
                         <i class="fa-solid fa-bullhorn w-5 text-center"></i>
                         <span>Email Marketing</span>
+                    </a>
+                    <a href="{{ route('admin.blog.index') }}" class="sidebar-item flex items-center gap-3 px-3 py-2.5 text-[13px] font-medium rounded-lg {{ request()->routeIs('admin.blog.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 active' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                        <i class="fa-solid fa-newspaper w-5 text-center"></i>
+                        <span>Blog y Tutoriales</span>
                     </a>
                 </div>
 

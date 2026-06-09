@@ -2,22 +2,22 @@
 
 namespace App\Mail;
 
+use App\Models\AbandonedCart;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-
-use App\Models\AbandonedCart;
+use App\Models\Setting;
 
 class AbandonedCartMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $cart;
-    public $user;
+    public $appName;
+    public $primaryColor;
 
     /**
      * Create a new message instance.
@@ -25,7 +25,8 @@ class AbandonedCartMail extends Mailable
     public function __construct(AbandonedCart $cart)
     {
         $this->cart = $cart;
-        $this->user = $cart->user;
+        $this->appName = Setting::get('meta_title', config('app.name', 'TodoKeys'));
+        $this->primaryColor = Setting::get('primary_color', '#3b82f6');
     }
 
     /**
@@ -34,7 +35,7 @@ class AbandonedCartMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Olvidaste algo en tu carrito 🛒',
+            subject: 'Olvidaste algo en tu carrito... 👀',
         );
     }
 
@@ -44,14 +45,14 @@ class AbandonedCartMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.abandoned_cart',
+            view: 'emails.abandoned-cart',
         );
     }
 
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, Attachment>
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {

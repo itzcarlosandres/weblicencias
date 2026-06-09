@@ -99,4 +99,84 @@ Ejemplo de salida:
             ], 500);
         }
     }
+
+    public function generateBlogSeo(Request $request)
+    {
+        $request->validate([
+            'blog_title' => 'required|string|max:255',
+        ]);
+
+        $apiKey = Setting::get('gemini_api_key');
+
+        if (!$apiKey) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Por favor configura tu API Key de Gemini en Configuración -> Inteligencia Artificial primero.'
+            ], 400);
+        }
+
+        $blogTitle = $request->blog_title;
+
+        $prompt = "Actúa como un experto en SEO y Copywriting para un blog de tecnología y licencias de software. Escribe un artículo completo, profesional y optimizado para el título: '{$blogTitle}'.
+Requisitos estrictos:
+- Devuelve la respuesta en formato JSON exacto sin markdown.
+- El JSON debe tener exactamente 4 claves: 'content', 'excerpt', 'meta_title' y 'meta_description'.
+- 'content': El contenido completo del artículo del blog (mínimo 400 palabras) usando etiquetas HTML. Usa <h2> y <h3> para estructurar. Usa <ul> y <ol>. Usa <strong>. NO uses la etiqueta <h1>. Escribe en un tono experto pero fácil de entender.
+- 'excerpt': Un resumen corto del artículo, muy persuasivo para invitar a leer (máximo 150 caracteres).
+- 'meta_title': Título SEO máximo de 60 caracteres.
+- 'meta_description': Descripción SEO máximo de 160 caracteres.
+Ejemplo de salida:
+{
+  \"content\": \"<p>Si alguna vez te has preguntado...</p><h2>Primer paso</h2><p>...</p>\",
+  \"excerpt\": \"Descubre los mejores consejos para dominar esto hoy mismo.\",
+  \"meta_title\": \"{$blogTitle} | Guía Definitiva\",
+  \"meta_description\": \"Aprende todo lo necesario sobre {$blogTitle} con nuestra guía paso a paso. Optimiza tu equipo ahora.\"
+}";
+
+        try {
+            $response = Http::withoutVerifying()->timeout(90)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={$apiKey}", [
+                'contents' => [
+                    [
+                        'parts' => [
+                            ['text' => $prompt]
+                        ]
+                    ]
+                ],
+                'generationConfig' => [
+                    'temperature' => 0.7,
+                    'responseMimeType' => 'application/json',
+                ]
+            ]);
+
+            if ($response->successful()) {
+                $result = $response->json();
+                
+                if (isset($result['candidates'][0]['content']['parts'][0]['text'])) {
+                    $text = $result['candidates'][0]['content']['parts'][0]['text'];
+                    $text = str_replace(['```json', '```'], '', $text);
+                    $text = trim($text);
+
+                    $data = json_decode($text, true);
+
+                    if ($data && isset($data['content'])) {
+                        return response()->json([
+                            'success' => true,
+                            'data' => $data
+                        ]);
+                    }
+                }
+            }
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al procesar la IA. Intenta de nuevo.'
+            ], 500);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error de conexión con Gemini: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

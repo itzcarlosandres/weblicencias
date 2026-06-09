@@ -166,6 +166,10 @@
                 <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                 Top Ofertas
             </a>
+            <a href="{{ route('blog.index') }}" class="flex items-center gap-2 text-[13px] font-bold text-gray-300 hover:text-white transition-colors h-full border-b-[3px] border-transparent hover:border-blue-500 shrink-0 ml-4">
+                <i class="fa-solid fa-newspaper opacity-80 text-[16px]"></i>
+                Blog
+            </a>
         </div>
     </div>
 
@@ -223,6 +227,15 @@
                     {{ $category->name }}
                 </a>
                 @endforeach
+
+                <div class="my-6 border-t border-white/5 mx-3"></div>
+
+                <a href="{{ route('blog.index') }}" class="flex items-center gap-4 px-3 py-3.5 text-[15px] font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+                    <div class="w-9 h-9 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-newspaper"></i>
+                    </div>
+                    Blog y Tutoriales
+                </a>
 
                 <div class="my-6 border-t border-white/5 mx-3"></div>
 

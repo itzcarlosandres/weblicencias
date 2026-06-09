@@ -61,7 +61,13 @@ Route::middleware('auth')->group(function () {
 
 // Wompi Webhook (outside auth middleware)
 Route::post('/webhook/wompi', [\App\Http\Controllers\WompiController::class, 'webhook'])->name('wompi.webhook');
+// Socialite Routes
+Route::get('/auth/google', [\App\Http\Controllers\SocialAuthController::class, 'redirect'])->name('auth.google');
+Route::get('/auth/google/callback', [\App\Http\Controllers\SocialAuthController::class, 'callback']);
 
+// Blog
+Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 // Auth routes
 require __DIR__ . '/auth.php';
 
@@ -163,10 +169,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/configuracion', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
     Route::put('/configuracion', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
 
+    // Blog
+    Route::resource('blog', \App\Http\Controllers\Admin\AdminBlogController::class);
+
     // Marketing
     Route::get('/marketing', [\App\Http\Controllers\Admin\AdminMarketingController::class, 'create'])->name('marketing.create');
     Route::post('/marketing/send', [\App\Http\Controllers\Admin\AdminMarketingController::class, 'send'])->name('marketing.send');
 
     // IA / Gemini
     Route::post('/ai/generate-product', [\App\Http\Controllers\Admin\AiController::class, 'generateProductSeo'])->name('ai.generate-product');
+    Route::post('/ai/generate-blog', [\App\Http\Controllers\Admin\AiController::class, 'generateBlogSeo'])->name('ai.generate-blog');
 });
