@@ -228,5 +228,59 @@
             }));
         });
     </script>
+
+    <script>
+        function addCardToCart(event, productId, btn) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            if (btn.disabled) return;
+            
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[10px]"></i>';
+            btn.disabled = true;
+            
+            fetch('{{ route("cart.add") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ product_id: productId, quantity: 1 })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    if (typeof Livewire !== 'undefined') {
+                        Livewire.dispatch('cartUpdated');
+                    }
+                    window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: data.count } }));
+                    
+                    btn.innerHTML = '<i class="fa-solid fa-check text-[10px] text-emerald-500"></i>';
+                    btn.classList.add('bg-emerald-50', 'border-emerald-200');
+                    btn.classList.remove('bg-gray-50', 'border-gray-200/80');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalContent;
+                        btn.classList.remove('bg-emerald-50', 'border-emerald-200');
+                        btn.classList.add('bg-gray-50', 'border-gray-200/80');
+                        btn.disabled = false;
+                    }, 2000);
+                } else {
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                    alert(data.message || 'Error al agregar el producto');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                alert('Hubo un problema al agregar el producto al carrito.');
+            });
+        }
+    </script>
 </body>
 </html>

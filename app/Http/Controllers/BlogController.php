@@ -33,6 +33,12 @@ class BlogController extends Controller
             ->take(3)
             ->get();
 
-        return view('pages.blog.show', compact('post', 'relatedPosts'));
+        // Productos aleatorios para el widget
+        $featuredProducts = \App\Models\Product::active()
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+
+        return view('pages.blog.show', compact('post', 'relatedPosts', 'featuredProducts'));
     }
 }

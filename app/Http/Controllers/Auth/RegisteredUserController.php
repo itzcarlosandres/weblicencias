@@ -64,6 +64,7 @@ class RegisteredUserController extends Controller
                     );
                 }
             }
+        }
 
         try {
             \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\WelcomeEmail($user));

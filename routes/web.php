@@ -167,7 +167,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 
     // Settings
     Route::get('/configuracion', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
-    Route::put('/configuracion', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
+    Route::post('/configuracion', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
 
     // Blog
     Route::resource('blog', \App\Http\Controllers\Admin\AdminBlogController::class);

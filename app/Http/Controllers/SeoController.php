@@ -12,8 +12,9 @@ class SeoController extends Controller
     {
         $products = Product::active()->get();
         $categories = Category::active()->get();
+        $blogs = \App\Models\Blog::where('is_published', true)->get();
 
-        return response()->view('seo.sitemap', compact('products', 'categories'))
+        return response()->view('seo.sitemap', compact('products', 'categories', 'blogs'))
                          ->header('Content-Type', 'text/xml');
     }
 

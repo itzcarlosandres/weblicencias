@@ -113,20 +113,20 @@ class SettingsController extends Controller
         // Save SEO settings
         $seoFields = ['meta_title', 'meta_description', 'meta_keywords', 'footer_text'];
         foreach ($seoFields as $field) {
-            if ($request->has($field) || array_key_exists($field, $validated)) {
+            if ($request->exists($field)) {
                 Setting::set($field, $request->input($field, ''), 'seo');
             }
         }
 
         // Save appearance settings
-        if (isset($validated['primary_color'])) {
+        if ($request->exists('primary_color')) {
             Setting::set('primary_color', $validated['primary_color'], 'appearance');
         }
 
         // Save hero settings
         $heroFields = ['hero_badge', 'hero_title', 'hero_subtitle', 'hero_description', 'hero_feature_1', 'hero_feature_2', 'hero_feature_3'];
         foreach ($heroFields as $field) {
-            if ($request->has($field) || array_key_exists($field, $validated)) {
+            if ($request->exists($field)) {
                 Setting::set($field, $request->input($field, ''), 'appearance');
             }
         }
@@ -134,7 +134,7 @@ class SettingsController extends Controller
         // Save points settings
         $pointsFields = ['points_enabled', 'points_per_dollar', 'points_redemption_rate', 'points_discount_per_redemption', 'points_min_redeem', 'points_expiry_days'];
         foreach ($pointsFields as $field) {
-            if ($request->has($field) || array_key_exists($field, $validated)) {
+            if ($request->exists($field)) {
                 Setting::set($field, $request->input($field, ''), 'points');
             }
         }
@@ -142,7 +142,7 @@ class SettingsController extends Controller
         // Save payment settings
         $paymentFields = ['payment_paypal_enabled', 'payment_mercadopago_enabled', 'payment_wompi_enabled', 'wompi_public_key', 'wompi_private_key', 'wompi_events_secret', 'wompi_sandbox_mode'];
         foreach ($paymentFields as $field) {
-            if ($request->has($field)) {
+            if ($request->exists($field)) {
                 Setting::set($field, $request->input($field), 'payment');
             }
         }
@@ -150,15 +150,15 @@ class SettingsController extends Controller
         // Save AI settings
         $aiFields = ['gemini_api_key'];
         foreach ($aiFields as $field) {
-            if ($request->has($field)) {
-                Setting::set($field, $request->input($field), 'ai');
+            if ($request->exists($field)) {
+                Setting::set($field, $request->input($field, ''), 'ai');
             }
         }
 
         // Save announcement settings
         $announcementFields = ['announcement_enabled', 'announcement_mode', 'announcement_text', 'announcement_link', 'announcement_color'];
         foreach ($announcementFields as $field) {
-            if ($request->has($field) || array_key_exists($field, $validated)) {
+            if ($request->exists($field)) {
                 Setting::set($field, $request->input($field, ''), 'appearance');
             }
         }
@@ -166,7 +166,7 @@ class SettingsController extends Controller
         // Save popup settings
         $popupFields = ['exit_intent_enabled', 'exit_intent_title', 'exit_intent_text', 'exit_intent_coupon', 'exit_intent_timer'];
         foreach ($popupFields as $field) {
-            if ($request->has($field) || array_key_exists($field, $validated)) {
+            if ($request->exists($field)) {
                 Setting::set($field, $request->input($field, ''), 'appearance');
             }
         }
@@ -174,11 +174,11 @@ class SettingsController extends Controller
         // Save referrals settings
         $referralFields = ['referral_welcome_points', 'referral_reward_points'];
         foreach ($referralFields as $field) {
-            if ($request->has($field) || array_key_exists($field, $validated)) {
+            if ($request->exists($field)) {
                 Setting::set($field, $request->input($field, ''), 'points');
             }
         }
 
-        return back()->with('success', 'Configuración actualizada correctamente');
+        return back()->with('success', 'Configuración actualizada correctamente')->with('active_tab', $request->input('active_tab', 'general'));
     }
 }

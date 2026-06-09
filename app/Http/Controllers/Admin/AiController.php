@@ -25,6 +25,8 @@ class AiController extends Controller
         }
 
         $productName = $request->product_name;
+        
+        set_time_limit(120);
 
         // Prompt estructurado para forzar salida JSON limpia
         $prompt = "Actúa como un experto en SEO y Copywriting para una tienda online de licencias y software. Genera el contenido para un producto llamado '{$productName}'. 
@@ -42,7 +44,7 @@ Ejemplo de salida:
 }";
 
         try {
-            $response = Http::withoutVerifying()->timeout(60)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={$apiKey}", [
+            $response = Http::withoutVerifying()->timeout(60)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
                 'contents' => [
                     [
                         'parts' => [
@@ -52,7 +54,6 @@ Ejemplo de salida:
                 ],
                 'generationConfig' => [
                     'temperature' => 0.7,
-                    'responseMimeType' => 'application/json',
                 ]
             ]);
 
@@ -102,6 +103,8 @@ Ejemplo de salida:
 
     public function generateBlogSeo(Request $request)
     {
+        set_time_limit(120); // Permitir hasta 2 minutos para la respuesta de la IA
+
         $request->validate([
             'blog_title' => 'required|string|max:255',
         ]);
@@ -134,7 +137,7 @@ Ejemplo de salida:
 }";
 
         try {
-            $response = Http::withoutVerifying()->timeout(90)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={$apiKey}", [
+            $response = Http::withoutVerifying()->timeout(90)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
                 'contents' => [
                     [
                         'parts' => [
@@ -144,7 +147,6 @@ Ejemplo de salida:
                 ],
                 'generationConfig' => [
                     'temperature' => 0.7,
-                    'responseMimeType' => 'application/json',
                 ]
             ]);
 
@@ -153,18 +155,46 @@ Ejemplo de salida:
                 
                 if (isset($result['candidates'][0]['content']['parts'][0]['text'])) {
                     $text = $result['candidates'][0]['content']['parts'][0]['text'];
-                    $text = str_replace(['```json', '```'], '', $text);
+                    
+                    // Clean markdown code blocks if present
+                    $text = preg_replace('/^```json\s*/i', '', $text);
+                    $text = preg_replace('/\s*```$/i', '', $text);
                     $text = trim($text);
+                    
+                    // Extract JSON from curly braces
+                    $start = strpos($text, '{');
+                    $end = strrpos($text, '}');
+                    
+                    if ($start !== false && $end !== false) {
+                        $jsonString = substr($text, $start, $end - $start + 1);
+                        $data = json_decode($jsonString, true);
 
-                    $data = json_decode($text, true);
-
-                    if ($data && isset($data['content'])) {
-                        return response()->json([
-                            'success' => true,
-                            'data' => $data
+                        if ($data && isset($data['content'])) {
+                            return response()->json([
+                                'success' => true,
+                                'data' => $data
+                            ]);
+                        } else {
+                            \Illuminate\Support\Facades\Log::error('AI Blog Parsing Error:', [
+                                'json_error' => json_last_error_msg(),
+                                'text_snippet' => substr($text, 0, 500),
+                            ]);
+                        }
+                    } else {
+                        \Illuminate\Support\Facades\Log::error('AI Blog No JSON Found:', [
+                            'text' => substr($text, 0, 500)
                         ]);
                     }
+                } else {
+                    \Illuminate\Support\Facades\Log::error('AI Blog No Content:', [
+                        'response' => $result
+                    ]);
                 }
+            } else {
+                \Illuminate\Support\Facades\Log::error('AI Blog Request Failed:', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
             }
             
             return response()->json([

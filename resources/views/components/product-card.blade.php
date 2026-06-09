@@ -19,6 +19,17 @@
             $badgeIcon = $product->badge->icon;
             $badgeText = $product->badge->name;
         }
+
+        // Calculate discount dynamically if compare_price is set and higher than price
+        $hasDiscount = $product->compare_price && $product->compare_price > $product->discounted_price;
+        $discountPercentage = 0;
+        if ($hasDiscount) {
+            if ($product->discount > 0) {
+                $discountPercentage = round($product->discount);
+            } else {
+                $discountPercentage = round((($product->compare_price - $product->discounted_price) / $product->compare_price) * 100);
+            }
+        }
     @endphp
 
     @if($badge)
@@ -46,14 +57,25 @@
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span> Global
         </div>
         
-        <div class="mt-auto">
-            @if($product->has_discount)
-            <div class="flex items-center gap-1.5 mb-0.5">
-                <span class="bg-red-50 text-red-600 text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md border border-red-100">-{{ $product->discount }}%</span>
-                <span class="text-[11px] sm:text-xs text-gray-400 line-through font-medium">{{ currency_format($product->compare_price) }}</span>
+        <div class="mt-auto flex items-end justify-between gap-2">
+            <div>
+                @if($hasDiscount && $discountPercentage > 0)
+                <div class="flex items-center gap-1.5 mb-1">
+                    <span class="bg-red-50 text-red-600 text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md border border-red-100">-{{ $discountPercentage }}%</span>
+                </div>
+                @endif
+                <div class="flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-base sm:text-lg font-black text-gray-900 tracking-tight">{{ currency_format($product->discounted_price) }}</span>
+                    @if($hasDiscount)
+                    <span class="text-[11px] sm:text-xs text-gray-400 line-through font-medium">{{ currency_format($product->compare_price) }}</span>
+                    @endif
+                </div>
             </div>
-            @endif
-            <div class="text-base sm:text-lg font-black text-gray-900 tracking-tight">{{ currency_format($product->discounted_price) }}</div>
+
+            {{-- Cart Button --}}
+            <button onclick="addCardToCart(event, {{ $product->id }}, this)" class="w-8 h-8 rounded-full bg-gray-50 border border-gray-200/80 text-gray-500 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-all flex items-center justify-center shadow-sm relative z-20 shrink-0 group/btn" title="Añadir al carrito">
+                <i class="fa-solid fa-cart-shopping text-xs transition-transform group-hover/btn:scale-110"></i>
+            </button>
         </div>
     </div>
 </a>

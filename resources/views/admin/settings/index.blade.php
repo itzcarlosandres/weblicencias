@@ -4,7 +4,7 @@
 @section('header', 'Configuración')
 
 @section('content')
-<div x-data="{ activeTab: 'general' }">
+<div x-data="{ activeTab: '{{ session('active_tab', 'general') }}' }">
     <!-- Tabs -->
     <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 mb-6 overflow-hidden">
         <div class="flex border-b border-gray-100 dark:border-gray-800/60 overflow-x-auto">
@@ -51,9 +51,19 @@
         </div>
     </div>
 
-    <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+    <form id="main-settings-form" action="{{ route('admin.settings.update') }}" method="POST">
+    @csrf
+    <input type="hidden" name="active_tab" :value="activeTab">
+
+        @if ($errors->any())
+            <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <!-- General Tab -->
         <div x-show="activeTab === 'general'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
@@ -196,8 +206,11 @@
             </div>
         </div>
 
-        <!-- Branding Tab -->
+    </form><!-- End main form before branding -->
+
         <div x-show="activeTab === 'branding'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
+        <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
+        @csrf
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Logo -->
                 <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6">
@@ -290,6 +303,17 @@
                 </div>
             </div>
         </div>
+        <div class="mt-4 flex justify-end">
+            <button type="submit" class="px-5 py-2 bg-primary-500 hover:bg-primary-600 text-white text-[13px] font-medium rounded-xl transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Guardar Logo & Favicon
+            </button>
+        </div>
+        </form><!-- End branding form -->
+
+    <form id="main-settings-form-2" action="{{ route('admin.settings.update') }}" method="POST">
+    @csrf
+    <input type="hidden" name="active_tab" :value="activeTab">
 
         <!-- SEO Tab -->
         <div x-show="activeTab === 'seo'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
@@ -589,11 +613,33 @@
                     <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white mb-2">Google Gemini API</h3>
                     <p class="text-[12px] text-gray-400 mb-5">Configura tu clave de API para generar descripciones de productos y SEO automáticamente. <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-primary-500 hover:underline">Obtener clave gratuita aquí</a>.</p>
                     
-                    <div class="space-y-4">
+                    <div class="space-y-4" x-data="{ showKey: false, apiKey: '{{ $settings['gemini_api_key'] ?? '' }}' }">
                         <div>
                             <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">API Key de Gemini</label>
-                            <input type="password" name="gemini_api_key" value="{{ $settings['gemini_api_key'] ?? '' }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all" placeholder="AIzaSyA...">
-                            <p class="text-[11px] text-gray-400 mt-1.5">Mantenla segura. Se usará internamente para conectarse al modelo de lenguaje.</p>
+                            <div class="flex gap-2">
+                                <div class="relative flex-1">
+                                    <input :type="showKey ? 'text' : 'password'" 
+                                           name="gemini_api_key" 
+                                           x-model="apiKey"
+                                           class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all pr-10" 
+                                           placeholder="AIzaSyA...">
+                                    <button type="button" @click="showKey = !showKey" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                        <svg x-show="!showKey" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <svg x-show="showKey" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                                    </button>
+                                </div>
+                                <button type="button" @click="apiKey = ''" class="px-3 py-2.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-[12px] font-medium rounded-xl hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors whitespace-nowrap">
+                                    🗑 Eliminar key
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span x-show="apiKey.length > 0" class="inline-flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    API Key configurada
+                                </span>
+                                <span x-show="apiKey.length === 0" class="text-[11px] text-gray-400">Sin API Key — la IA no funcionará</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400 mt-1">Mantenla segura. Se usará internamente para conectarse al modelo de lenguaje.</p>
                         </div>
                     </div>
                 </div>
