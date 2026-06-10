@@ -17,9 +17,9 @@
     @endif
     
     <!-- PWA -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="theme-color" content="#3b82f6">
-    <link rel="apple-touch-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.ico') }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
