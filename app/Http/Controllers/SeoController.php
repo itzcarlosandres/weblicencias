@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\BlogPost;
 use Illuminate\Http\Request;
 
 class SeoController extends Controller
@@ -12,7 +13,7 @@ class SeoController extends Controller
     {
         $products = Product::active()->get();
         $categories = Category::active()->get();
-        $blogs = \App\Models\Blog::where('is_published', true)->get();
+        $blogs = BlogPost::published()->get();
 
         return response()->view('seo.sitemap', compact('products', 'categories', 'blogs'))
                          ->header('Content-Type', 'text/xml');
