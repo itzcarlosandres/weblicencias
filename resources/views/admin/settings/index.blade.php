@@ -8,43 +8,43 @@
     <!-- Tabs -->
     <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 mb-6 overflow-hidden">
         <div class="flex border-b border-gray-100 dark:border-gray-800/60 overflow-x-auto">
-            <button @click="activeTab = 'general'" :class="activeTab === 'general' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
+            <button data-tab="general" @click="activeTab = 'general'" :class="activeTab === 'general' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 General
             </button>
-            <button @click="activeTab = 'branding'" :class="activeTab === 'branding' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
+            <button data-tab="branding" @click="activeTab = 'branding'" :class="activeTab === 'branding' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
                 Logo & Favicon
             </button>
-            <button @click="activeTab = 'seo'" :class="activeTab === 'seo' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
+            <button data-tab="seo" @click="activeTab = 'seo'" :class="activeTab === 'seo' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 SEO
             </button>
-            <button @click="activeTab = 'emails'" :class="activeTab === 'emails' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
+            <button data-tab="emails" @click="activeTab = 'emails'" :class="activeTab === 'emails' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 Emails
             </button>
-            <button @click="activeTab = 'payment'" :class="activeTab === 'payment' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
+            <button data-tab="payment" @click="activeTab = 'payment'" :class="activeTab === 'payment' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                 Pagos
             </button>
-            <button @click="activeTab = 'points'" :class="activeTab === 'points' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
+            <button data-tab="points" @click="activeTab = 'points'" :class="activeTab === 'points' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Puntos & Recompensas
             </button>
-            <button @click="activeTab = 'ai'" :class="activeTab === 'ai' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
+            <button data-tab="ai" @click="activeTab = 'ai'" :class="activeTab === 'ai' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-wand-magic-sparkles w-4"></i>
                 Inteligencia Artificial
             </button>
-            <button @click="activeTab = 'announcements'" :class="activeTab === 'announcements' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
+            <button data-tab="announcements" @click="activeTab = 'announcements'" :class="activeTab === 'announcements' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-bullhorn w-4"></i>
                 Anuncios
             </button>
-            <button @click="activeTab = 'popups'" :class="activeTab === 'popups' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
+            <button data-tab="popups" @click="activeTab = 'popups'" :class="activeTab === 'popups' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-message w-4"></i>
                 Popups (Exit-Intent)
             </button>
-            <button @click="activeTab = 'referrals'" :class="activeTab === 'referrals' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
+            <button data-tab="referrals" @click="activeTab = 'referrals'" :class="activeTab === 'referrals' ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-users w-4"></i>
                 Referidos
             </button>
@@ -761,17 +761,16 @@
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Sync the active tab hidden input with Alpine.js tab state
     const form = document.getElementById('main-settings-form');
     const activeTabInput = document.getElementById('active_tab_input');
-    const tabButtons = document.querySelectorAll('[\@click^="activeTab"]');
 
-    // Update hidden input when tab changes
-    tabButtons.forEach(btn => {
+    // Update hidden input when a tab button is clicked (uses data-tab attribute)
+    const tabButtons = document.querySelectorAll('[data-tab]');
+    tabButtons.forEach(function(btn) {
         btn.addEventListener('click', function() {
-            const match = this.getAttribute('@click').match(/activeTab = '([^']+)'/);
-            if (match && activeTabInput) {
-                activeTabInput.value = match[1];
+            const tab = this.getAttribute('data-tab');
+            if (tab && activeTabInput) {
+                activeTabInput.value = tab;
             }
         });
     });
@@ -781,11 +780,11 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const submitBtn = form.querySelector('button[type="submit"]');
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Guardando...';
-            }
+            const submitBtns = form.querySelectorAll('button[type="submit"]');
+            submitBtns.forEach(function(btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<svg class="w-4 h-4 animate-spin inline mr-1" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Guardando...';
+            });
 
             const formData = new FormData(form);
 
@@ -797,22 +796,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Accept': 'application/json',
                 }
             })
-            .then(response => response.json())
-            .then(data => {
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+                return response.json();
+            })
+            .then(function(data) {
                 if (data.success) {
                     window.location.href = data.redirect;
                 } else {
                     alert('Error al guardar: ' + (data.message || 'Error desconocido'));
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Guardar Configuración';
-                    }
+                    submitBtns.forEach(function(btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Guardar Configuración';
+                    });
                 }
             })
-            .catch(err => {
-                console.error('Error saving settings:', err);
-                // Fallback: submit normally
-                form.removeEventListener('submit', arguments.callee);
+            .catch(function(err) {
+                console.error('Error saving settings, falling back to normal submit:', err);
+                // Fallback: enviar el form normalmente
                 form.submit();
             });
         });
