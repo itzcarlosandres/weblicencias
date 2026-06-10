@@ -95,8 +95,13 @@ class SettingsController extends Controller
         ];
 
         foreach ($fields as $field) {
+            $value = $request->input($field);
+            // Skip empty exchange_rate_cop to preserve auto-converted value
+            if ($field === 'exchange_rate_cop' && (empty($value) || $value === '')) {
+                continue;
+            }
             if ($request->has($field)) {
-                Setting::set($field, $request->input($field), $this->groupFor($field));
+                Setting::set($field, $value, $this->groupFor($field));
             }
         }
 
