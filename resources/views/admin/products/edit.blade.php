@@ -172,17 +172,46 @@
                         </div>
                     </div>
                     <script>
-                    function editSelectPlatform(btn) {
-                        document.querySelectorAll('.edit-platform-chip').forEach(c => {
-                            c.classList.remove('bg-primary-500','border-primary-500','text-white','shadow-sm','shadow-primary-500/20');
-                            c.classList.add('bg-gray-50','border-gray-200','text-gray-600');
-                        });
-                        btn.classList.add('bg-primary-500','border-primary-500','text-white','shadow-sm','shadow-primary-500/20');
-                        btn.classList.remove('bg-gray-50','border-gray-200','text-gray-600');
-                        document.getElementById('edit_platform_value').value = btn.dataset.platform;
-                        const custom = document.getElementById('edit_platform_custom');
-                        if(custom) custom.value = '';
-                    }
+                    (function() {
+                        // Parse current platforms as array
+                        var currentRaw = document.getElementById('edit_platform_value').value || '';
+                        var selected = currentRaw.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+
+                        function renderChips() {
+                            document.querySelectorAll('.edit-platform-chip').forEach(function(btn) {
+                                var val = btn.dataset.platform;
+                                var isOn = selected.includes(val);
+                                btn.classList.toggle('bg-primary-500', isOn);
+                                btn.classList.toggle('border-primary-500', isOn);
+                                btn.classList.toggle('text-white', isOn);
+                                btn.classList.toggle('shadow-sm', isOn);
+                                btn.classList.toggle('shadow-primary-500/20', isOn);
+                                btn.classList.toggle('bg-gray-50', !isOn);
+                                btn.classList.toggle('border-gray-200', !isOn);
+                                btn.classList.toggle('text-gray-600', !isOn);
+                            });
+                            document.getElementById('edit_platform_value').value = selected.join(', ');
+                        }
+
+                        function editSelectPlatform(btn) {
+                            var val = btn.dataset.platform;
+                            if (selected.includes(val)) {
+                                selected = selected.filter(function(v){ return v !== val; });
+                            } else {
+                                selected.push(val);
+                            }
+                            // Clear custom input when using chips
+                            var custom = document.getElementById('edit_platform_custom');
+                            if(custom) custom.value = '';
+                            renderChips();
+                        }
+
+                        // Expose globally
+                        window.editSelectPlatform = editSelectPlatform;
+
+                        // Init on load
+                        renderChips();
+                    })();
                     </script>
                     <div>
                         <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Método de activación</label>

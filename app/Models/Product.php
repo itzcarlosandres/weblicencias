@@ -101,19 +101,33 @@ class Product extends Model
         }
 
         if ($discount > 0) {
-            return $this->price - ($this->price * $discount / 100);
+            return round($this->price - ($this->price * $discount / 100), 2);
         }
-        return $this->price;
+
+        // Si no hay % de descuento pero compare_price > price, el precio de venta ES el price
+        return (float) $this->price;
     }
 
     public function getHasDiscountAttribute(): bool
     {
-        return ($this->discount > 0 || $this->is_top_deal) && $this->compare_price > $this->price;
+        // Hay descuento si:
+        // 1. Tiene un % de descuento configurado, O
+        // 2. El compare_price (precio tachado) es mayor que el price (precio de venta)
+        $hasPercentDiscount = ($this->discount > 0 || $this->is_top_deal);
+        $hasComparePrice    = ($this->compare_price && $this->compare_price > $this->price);
+        return $hasPercentDiscount || $hasComparePrice;
     }
 
     public function getEffectiveDiscountAttribute(): float
     {
-        return $this->is_top_deal && $this->discount < 15 ? 15 : $this->discount;
+        if ($this->discount > 0 || $this->is_top_deal) {
+            return $this->is_top_deal && $this->discount < 15 ? 15 : (float) $this->discount;
+        }
+        // Calcular % desde compare_price si aplica
+        if ($this->compare_price > $this->price) {
+            return round((($this->compare_price - $this->price) / $this->compare_price) * 100);
+        }
+        return 0;
     }
 
     public function getFormattedPriceAttribute(): string
