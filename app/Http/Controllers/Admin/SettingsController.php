@@ -26,6 +26,26 @@ class SettingsController extends Controller
     {
         $activeTab = $request->input('tab', 'general');
 
+        // Auto-convert COP exchange rate when currency changes to COP
+        if ($request->input('currency') === 'COP' && $request->has('currency')) {
+            $currentRate = Setting::get('exchange_rate_cop');
+            if (empty($currentRate) || $currentRate < 100) {
+                // Try to get real rate from API
+                try {
+                    $response = file_get_contents('https://api.exchangerate-api.com/v4/latest/USD');
+                    if ($response) {
+                        $data = json_decode($response, true);
+                        if (isset($data['rates']['COP']) && $data['rates']['COP'] > 0) {
+                            Setting::set('exchange_rate_cop', $data['rates']['COP'], 'general');
+                        }
+                    }
+                } catch (\Exception $e) {
+                    // Use fallback rate
+                    Setting::set('exchange_rate_cop', 4000, 'general');
+                }
+            }
+        }
+
         // Logo upload
         if ($request->hasFile('logo')) {
             $old = Setting::get('logo');

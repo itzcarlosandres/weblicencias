@@ -126,6 +126,7 @@
                         <div>
                             <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tasa USD → COP</label>
                             <input type="number" step="0.01" name="exchange_rate_cop" value="{{ $settings['exchange_rate_cop'] ?? '' }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400" placeholder="Ej: 4000">
+                            <p class="text-[10px] text-gray-400 mt-1">Si seleccionas COP, se obtiene automáticamente al guardar</p>
                         </div>
                     </div>
                 </div>
@@ -293,9 +294,9 @@
         @endif
 
         @if($activeTab === 'payment')
-        <div class="max-w-3xl space-y-4">
+        <div class="max-w-4xl space-y-4">
             <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6 space-y-4">
-                @foreach(['paypal' => 'PayPal', 'mercadopago' => 'Mercado Pago', 'wompi' => 'Wompi Colombia'] as $key => $label)
+                @foreach(['paypal' => 'PayPal', 'mercadopago' => 'Mercado Pago'] as $key => $label)
                 <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-800">
                     <div class="text-[13px] font-semibold text-gray-900 dark:text-white">{{ $label }}</div>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -305,6 +306,42 @@
                     </label>
                 </div>
                 @endforeach
+
+                <div class="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
+                    <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50">
+                        <div>
+                            <div class="text-[13px] font-semibold text-gray-900 dark:text-white">Wompi Colombia</div>
+                            <div class="text-[11px] text-gray-400">PSE, Nequi, Tarjetas, Efectivo</div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="hidden" name="payment_wompi_enabled" value="0">
+                            <input type="checkbox" name="payment_wompi_enabled" value="1" {{ ($settings['payment_wompi_enabled'] ?? '0') == '1' ? 'checked' : '' }} class="peer sr-only" onchange="document.getElementById('wompi-creds').style.display = this.checked ? 'block' : 'none'">
+                            <div class="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:ring-2 peer-focus:ring-primary-400/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-500"></div>
+                        </label>
+                    </div>
+                    <div id="wompi-creds" class="p-4 bg-white dark:bg-[#111827] border-t border-gray-200 dark:border-gray-800 space-y-4 {{ ($settings['payment_wompi_enabled'] ?? '0') == '1' ? '' : 'hidden' }}">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[12px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Llave Pública (Public Key)</label>
+                                <input type="text" name="wompi_public_key" value="{{ $settings['wompi_public_key'] ?? '' }}" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white" placeholder="pub_test_...">
+                            </div>
+                            <div>
+                                <label class="block text-[12px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Llave Privada (Private Key)</label>
+                                <input type="password" name="wompi_private_key" value="{{ $settings['wompi_private_key'] ?? '' }}" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white" placeholder="prv_test_...">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[12px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Secreto de Eventos (Webhook Secret)</label>
+                            <input type="password" name="wompi_events_secret" value="{{ $settings['wompi_events_secret'] ?? '' }}" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white" placeholder="Eventos_...">
+                            <p class="text-[11px] text-gray-500 mt-1">Tu URL de webhook: <code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">{{ route('wompi.webhook') }}</code></p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="hidden" name="wompi_sandbox_mode" value="0">
+                            <input type="checkbox" name="wompi_sandbox_mode" id="wompi_sandbox" value="1" {{ ($settings['wompi_sandbox_mode'] ?? '1') == '1' ? 'checked' : '' }} class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                            <label for="wompi_sandbox" class="text-[12px] font-medium text-gray-700 dark:text-gray-300">Modo Pruebas (Sandbox)</label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         @endif
