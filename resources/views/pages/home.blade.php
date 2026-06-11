@@ -91,7 +91,7 @@
         .brands-scroll::-webkit-scrollbar { height: 0; }
     }
 </style>
-<div class="max-w-[1440px] mx-auto px-4 relative z-30 -mt-12 md:-mt-16">
+<div class="max-w-[1440px] mx-auto px-4 relative z-30 mt-6 md:-mt-16">
     <div class="relative">
         {{-- Gradient fade on right edge (mobile only) --}}
         <div class="absolute right-0 top-0 bottom-4 w-16 bg-gradient-to-l from-white/95 to-transparent z-10 rounded-r-3xl pointer-events-none md:hidden"></div>
