@@ -4,7 +4,8 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
-use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class CurrencyService
 {
@@ -18,7 +19,6 @@ class CurrencyService
                 // Determine via IP.
                 $ip = request()->ip();
                 if ($ip == '127.0.0.1' || $ip == '::1') {
-                    // Locally, default to USD.
                     $country = 'US';
                 } else {
                     $response = Http::timeout(3)->get("https://ipapi.co/{$ip}/country/");
@@ -31,7 +31,6 @@ class CurrencyService
                     Session::put('currency', 'USD');
                 }
             } catch (\Exception $e) {
-                // Fallback to USD on error
                 Session::put('currency', 'USD');
             }
         }
@@ -52,7 +51,7 @@ class CurrencyService
      */
     public static function getCurrency()
     {
-        return Session::get('currency', 'USD'); // Default USD
+        return Session::get('currency', 'USD');
     }
 
     /**
@@ -63,11 +62,10 @@ class CurrencyService
         $currency = self::getCurrency();
         
         if ($currency === 'COP') {
-            $rate = (float) Setting::get('exchange_rate_cop', 4000);
-            return $priceInUsd * $rate;
+            return $priceInUsd * self::getExchangeRate();
         }
 
-        return $priceInUsd; // Default is USD
+        return $priceInUsd;
     }
 
     /**
@@ -79,7 +77,6 @@ class CurrencyService
         $converted = self::convert($priceInUsd);
 
         if ($currency === 'COP') {
-            // COP usually doesn't show decimals
             return '$' . number_format($converted, 0, ',', '.');
         }
 
@@ -87,10 +84,84 @@ class CurrencyService
     }
 
     /**
-     * Gets exchange rate
+     * Gets live USD→COP exchange rate.
+     * Cached for 6 hours. Tries multiple free APIs; falls back to DB value or 4200.
      */
-    public static function getExchangeRate()
+    public static function getExchangeRate(): float
     {
-        return (float) Setting::get('exchange_rate_cop', 4000);
+        return Cache::remember('usd_to_cop_rate', 21600, function () {
+            // API 1: open.er-api.com — free tier, no key required, soporta COP
+            try {
+                $response = Http::withoutVerifying()->timeout(5)->get('https://open.er-api.com/v6/latest/USD');
+                if ($response->successful()) {
+                    $rate = (float) ($response->json('rates.COP') ?? 0);
+                    if ($rate > 0) {
+                        self::persistRate($rate);
+                        Log::info("CurrencyService: Tasa USD/COP actualizada via open.er-api.com → {$rate}");
+                        return $rate;
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::warning('CurrencyService: open.er-api.com falló: ' . $e->getMessage());
+            }
+
+            // API 2: fawazahmed0 — completamente gratis, sin key
+            try {
+                $response = Http::withoutVerifying()->timeout(5)
+                    ->get('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.min.json');
+                if ($response->successful()) {
+                    $rate = (float) ($response->json('usd.cop') ?? 0);
+                    if ($rate > 0) {
+                        self::persistRate($rate);
+                        Log::info("CurrencyService: Tasa USD/COP actualizada via fawazahmed0 → {$rate}");
+                        return $rate;
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::warning('CurrencyService: fawazahmed0 API falló: ' . $e->getMessage());
+            }
+
+            // API 3: file_get_contents fallback (ignores SSL by default)
+            try {
+                $raw = @file_get_contents('https://open.er-api.com/v6/latest/USD');
+                if ($raw) {
+                    $data = json_decode($raw, true);
+                    $rate = (float) ($data['rates']['COP'] ?? 0);
+                    if ($rate > 0) {
+                        self::persistRate($rate);
+                        Log::info("CurrencyService: Tasa USD/COP actualizada via file_get_contents → {$rate}");
+                        return $rate;
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::warning('CurrencyService: file_get_contents falló: ' . $e->getMessage());
+            }
+
+            // Fallback: DB stored value or hardcoded default
+            $dbRate = (float) \App\Models\Setting::get('exchange_rate_cop', 4200);
+            Log::warning("CurrencyService: Todas las APIs fallaron. Usando valor DB: {$dbRate}");
+            return $dbRate;
+        });
+    }
+
+    /**
+     * Persists rate to the DB (so admin panel stays in sync).
+     */
+    private static function persistRate(float $rate): void
+    {
+        try {
+            \App\Models\Setting::set('exchange_rate_cop', round($rate), 'general');
+        } catch (\Exception $e) {
+            Log::error('CurrencyService: Failed to persist rate: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Force-refreshes the cached rate (useful from Artisan command / cron).
+     */
+    public static function refreshRate(): float
+    {
+        Cache::forget('usd_to_cop_rate');
+        return self::getExchangeRate();
     }
 }

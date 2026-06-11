@@ -10,3 +10,6 @@ Artisan::command('inspire', function () {
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('app:recover-carts')->hourly();
+
+// Actualiza la tasa USD/COP desde APIs gratuitas cada 6 horas
+Schedule::command('currency:update-rate')->everySixHours();

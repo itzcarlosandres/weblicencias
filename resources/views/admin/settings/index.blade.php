@@ -125,8 +125,13 @@
                         </div>
                         <div>
                             <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tasa USD → COP</label>
-                            <input type="number" step="0.01" name="exchange_rate_cop" value="{{ $settings['exchange_rate_cop'] ?? '' }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400" placeholder="Ej: 4000">
-                            <p class="text-[10px] text-gray-400 mt-1">Si seleccionas COP, se obtiene automáticamente al guardar</p>
+                            <div class="flex items-center gap-2">
+                                <input type="number" step="0.01" name="exchange_rate_cop" value="{{ $settings['exchange_rate_cop'] ?? '' }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400" placeholder="Ej: 3569">
+                            </div>
+                            <p class="text-[10px] text-emerald-600 mt-1 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Al guardar con COP, se actualiza al rate actual automáticamente
+                            </p>
                         </div>
                     </div>
                 </div>
