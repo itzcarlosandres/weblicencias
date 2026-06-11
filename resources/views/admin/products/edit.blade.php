@@ -124,12 +124,13 @@
                                 ['value' => 'Linux', 'label' => 'Linux', 'icon' => 'linux', 'color' => '#333'],
                                 ['value' => 'Multiplataforma', 'label' => 'Multi', 'icon' => 'multi', 'color' => '#7c3aed'],
                             ];
-                            $editCurrentPlatform = old('platform', $product->platform);
-                            $editPlatformValues = array_column($editPlatforms, 'value');
+                             $editCurrentPlatform = old('platform', $product->platform);
+                             $editPlatformValues = array_column($editPlatforms, 'value');
+                             $editSelectedPlatforms = array_map('trim', explode(',', strtolower($editCurrentPlatform ?? '')));
                             @endphp
                             <div class="flex flex-wrap gap-2 mb-2">
                                 @foreach($editPlatforms as $ep)
-                                @php $isSelected = strtolower($editCurrentPlatform ?? '') === strtolower($ep['value']); @endphp
+                                @php $isSelected = in_array(strtolower($ep['value']), $editSelectedPlatforms); @endphp
                                 <button type="button"
                                     data-platform="{{ $ep['value'] }}"
                                     onclick="editSelectPlatform(this)"

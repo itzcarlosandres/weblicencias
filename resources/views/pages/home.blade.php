@@ -83,28 +83,47 @@
 </section>
 
 <!-- Categories Strip (Marcas) - Floating Over Hero -->
+<style>
+    .brands-scroll::-webkit-scrollbar { height: 4px; }
+    .brands-scroll::-webkit-scrollbar-track { background: #e5e7eb; border-radius: 99px; }
+    .brands-scroll::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 99px; }
+    @media (min-width: 768px) {
+        .brands-scroll::-webkit-scrollbar { height: 0; }
+    }
+</style>
 <div class="max-w-[1440px] mx-auto px-4 relative z-30 -mt-12 md:-mt-16">
-    <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white flex items-center justify-between overflow-x-auto hide-scrollbar gap-8 px-6 py-6 sm:px-10">
-        @if(isset($brands) && $brands->count() > 0)
-            @foreach($brands as $brand)
-            <a href="{{ route('products.index', ['brand' => $brand->slug]) }}" class="flex flex-col items-center gap-3 min-w-[80px] group">
-                <div class="w-16 h-16 sm:w-16 sm:h-16 rounded-2xl border border-gray-100 bg-white shadow-sm flex items-center justify-center p-3 sm:p-4 group-hover:border-blue-400 group-hover:shadow-[0_8px_25px_rgba(37,99,235,0.15)] group-hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    @if($brand->icon)
-                        <i class="{{ $brand->icon }} text-2xl text-blue-500 relative z-10 group-hover:scale-110 transition-transform duration-300"></i>
-                    @elseif($brand->logo)
-                        <img src="{{ asset('storage/' . $brand->logo) }}" class="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300">
-                    @else
-                        <span class="text-sm font-black text-gray-500 relative z-10">{{ substr($brand->name, 0, 2) }}</span>
-                    @endif
-                </div>
-                <span class="text-[11px] sm:text-[12px] font-black text-gray-800 uppercase tracking-wider group-hover:text-blue-600 transition-colors">{{ $brand->name }}</span>
-            </a>
-            @endforeach
-        @else
-            <!-- Placeholder if no brands exist -->
-            <div class="w-full text-center text-gray-500 text-sm">No hay marcas configuradas.</div>
-        @endif
+    <div class="relative">
+        {{-- Gradient fade on right edge (mobile only) --}}
+        <div class="absolute right-0 top-0 bottom-4 w-16 bg-gradient-to-l from-white/95 to-transparent z-10 rounded-r-3xl pointer-events-none md:hidden"></div>
+        {{-- Swipe hint arrow --}}
+        <div class="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex items-center gap-1 text-blue-400 md:hidden" style="margin-top:-8px">
+            <span class="text-[10px] font-bold uppercase tracking-wider opacity-70">ver</span>
+            <svg class="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+        </div>
+        <div class="brands-scroll bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white flex items-center justify-between overflow-x-auto gap-8 px-6 py-6 sm:px-10 pb-5">
+            @if(isset($brands) && $brands->count() > 0)
+                @foreach($brands as $brand)
+                <a href="{{ route('products.index', ['brand' => $brand->slug]) }}" class="flex flex-col items-center gap-3 min-w-[80px] group">
+                    <div class="w-16 h-16 sm:w-16 sm:h-16 rounded-2xl border border-gray-100 bg-white shadow-sm flex items-center justify-center p-3 sm:p-4 group-hover:border-blue-400 group-hover:shadow-[0_8px_25px_rgba(37,99,235,0.15)] group-hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        @if($brand->icon)
+                            <i class="{{ $brand->icon }} text-2xl text-blue-500 relative z-10 group-hover:scale-110 transition-transform duration-300"></i>
+                        @elseif($brand->logo)
+                            <img src="{{ asset('storage/' . $brand->logo) }}" class="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300">
+                        @else
+                            <span class="text-sm font-black text-gray-500 relative z-10">{{ substr($brand->name, 0, 2) }}</span>
+                        @endif
+                    </div>
+                    <span class="text-[11px] sm:text-[12px] font-black text-gray-800 uppercase tracking-wider group-hover:text-blue-600 transition-colors">{{ $brand->name }}</span>
+                </a>
+                @endforeach
+            @else
+                <!-- Placeholder if no brands exist -->
+                <div class="w-full text-center text-gray-500 text-sm">No hay marcas configuradas.</div>
+            @endif
+        </div>
     </div>
 </div>
 
