@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
                         'mail.mailers.smtp.username' => \App\Models\Setting::get('mail_username'),
                         'mail.mailers.smtp.password' => \App\Models\Setting::get('mail_password'),
                         'mail.mailers.smtp.encryption' => \App\Models\Setting::get('mail_encryption', 'tls'),
+                        'mail.mailers.smtp.timeout' => 15,
                         'mail.from.address' => \App\Models\Setting::get('mail_from_address', env('MAIL_FROM_ADDRESS')),
                         'mail.from.name' => \App\Models\Setting::get('site_name', env('MAIL_FROM_NAME', 'TodoKeys')),
                     ]);
