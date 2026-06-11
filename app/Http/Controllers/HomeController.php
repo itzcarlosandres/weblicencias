@@ -98,7 +98,7 @@ class HomeController extends Controller
 
     public function changeCurrency(string $currency)
     {
-        if (in_array(strtoupper($currency), ['USD', 'COP', 'EUR'])) {
+        if (in_array(strtoupper($currency), ['USD', 'COP', 'MXN', 'EUR'])) {
             session(['currency' => strtoupper($currency)]);
         }
         return back();

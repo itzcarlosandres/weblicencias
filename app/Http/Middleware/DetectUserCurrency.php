@@ -27,7 +27,7 @@ class DetectUserCurrency
         // Check for manual override first
         if ($request->has('currency')) {
             $currency = strtoupper($request->get('currency'));
-            if (in_array($currency, ['USD', 'COP'])) {
+            if (in_array($currency, ['USD', 'COP', 'MXN', 'EUR'])) {
                 session(['currency' => $currency]);
                 
                 // Remove currency parameter from URL

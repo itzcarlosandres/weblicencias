@@ -41,7 +41,7 @@ class CurrencyService
      */
     public static function setCurrency($currency)
     {
-        if (in_array($currency, ['USD', 'COP'])) {
+        if (in_array($currency, ['USD', 'COP', 'MXN', 'EUR'])) {
             Session::put('currency', $currency);
         }
     }
@@ -60,12 +60,7 @@ class CurrencyService
     public static function convert($priceInUsd)
     {
         $currency = self::getCurrency();
-        
-        if ($currency === 'COP') {
-            return $priceInUsd * self::getExchangeRate();
-        }
-
-        return $priceInUsd;
+        return $priceInUsd * self::getExchangeRateFor($currency);
     }
 
     /**
@@ -80,29 +75,51 @@ class CurrencyService
             return new \Illuminate\Support\HtmlString('<span class="text-[10px] sm:text-xs font-bold text-gray-400 dark:text-gray-500 mr-1 select-none">COP</span>' . number_format($converted, 0, ',', '.'));
         }
 
+        if ($currency === 'MXN') {
+            return new \Illuminate\Support\HtmlString('<span class="text-[10px] sm:text-xs font-bold text-gray-400 dark:text-gray-500 mr-1 select-none">MXN</span>' . number_format($converted, 2, '.', ','));
+        }
+
+        if ($currency === 'EUR') {
+            return new \Illuminate\Support\HtmlString('<span class="text-sm font-bold text-gray-400 dark:text-gray-500 mr-1 select-none">€</span>' . number_format($converted, 2, ',', '.'));
+        }
+
         return '$' . number_format($converted, 2, '.', ',');
     }
 
     /**
-     * Gets live USD→COP exchange rate.
-     * Cached for 6 hours. Tries multiple free APIs; falls back to DB value or 4200.
+     * Backward compatibility wrapper
      */
     public static function getExchangeRate(): float
     {
-        return Cache::remember('usd_to_cop_rate', 21600, function () {
-            // API 1: open.er-api.com — free tier, no key required, soporta COP
+        return self::getExchangeRateFor('COP');
+    }
+
+    /**
+     * Gets live USD→ANY exchange rate.
+     * Cached for 6 hours. Tries multiple free APIs; falls back to DB value or default.
+     */
+    public static function getExchangeRateFor(string $currency): float
+    {
+        $currency = strtoupper($currency);
+        if ($currency === 'USD') {
+            return 1.0;
+        }
+
+        $cacheKey = strtolower($currency) . '_exchange_rate';
+        return Cache::remember($cacheKey, 21600, function () use ($currency) {
+            // API 1: open.er-api.com — free tier, no key required
             try {
                 $response = Http::withoutVerifying()->timeout(5)->get('https://open.er-api.com/v6/latest/USD');
                 if ($response->successful()) {
-                    $rate = (float) ($response->json('rates.COP') ?? 0);
+                    $rate = (float) ($response->json("rates.{$currency}") ?? 0);
                     if ($rate > 0) {
-                        self::persistRate($rate);
-                        Log::info("CurrencyService: Tasa USD/COP actualizada via open.er-api.com → {$rate}");
+                        self::persistRate($currency, $rate);
+                        Log::info("CurrencyService: Tasa USD/{$currency} actualizada via open.er-api.com → {$rate}");
                         return $rate;
                     }
                 }
             } catch (\Exception $e) {
-                Log::warning('CurrencyService: open.er-api.com falló: ' . $e->getMessage());
+                Log::warning("CurrencyService: open.er-api.com falló para {$currency}: " . $e->getMessage());
             }
 
             // API 2: fawazahmed0 — completamente gratis, sin key
@@ -110,36 +127,25 @@ class CurrencyService
                 $response = Http::withoutVerifying()->timeout(5)
                     ->get('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.min.json');
                 if ($response->successful()) {
-                    $rate = (float) ($response->json('usd.cop') ?? 0);
+                    $rate = (float) ($response->json("usd." . strtolower($currency)) ?? 0);
                     if ($rate > 0) {
-                        self::persistRate($rate);
-                        Log::info("CurrencyService: Tasa USD/COP actualizada via fawazahmed0 → {$rate}");
+                        self::persistRate($currency, $rate);
+                        Log::info("CurrencyService: Tasa USD/{$currency} actualizada via fawazahmed0 → {$rate}");
                         return $rate;
                     }
                 }
             } catch (\Exception $e) {
-                Log::warning('CurrencyService: fawazahmed0 API falló: ' . $e->getMessage());
-            }
-
-            // API 3: file_get_contents fallback (ignores SSL by default)
-            try {
-                $raw = @file_get_contents('https://open.er-api.com/v6/latest/USD');
-                if ($raw) {
-                    $data = json_decode($raw, true);
-                    $rate = (float) ($data['rates']['COP'] ?? 0);
-                    if ($rate > 0) {
-                        self::persistRate($rate);
-                        Log::info("CurrencyService: Tasa USD/COP actualizada via file_get_contents → {$rate}");
-                        return $rate;
-                    }
-                }
-            } catch (\Exception $e) {
-                Log::warning('CurrencyService: file_get_contents falló: ' . $e->getMessage());
+                Log::warning("CurrencyService: fawazahmed0 API falló para {$currency}: " . $e->getMessage());
             }
 
             // Fallback: DB stored value or hardcoded default
-            $dbRate = (float) \App\Models\Setting::get('exchange_rate_cop', 4200);
-            Log::warning("CurrencyService: Todas las APIs fallaron. Usando valor DB: {$dbRate}");
+            $defaultRates = [
+                'COP' => 4200.0,
+                'MXN' => 17.5,
+                'EUR' => 0.92
+            ];
+            $dbRate = (float) \App\Models\Setting::get('exchange_rate_' . strtolower($currency), $defaultRates[$currency] ?? 1.0);
+            Log::warning("CurrencyService: Todas las APIs fallaron para {$currency}. Usando valor DB: {$dbRate}");
             return $dbRate;
         });
     }
@@ -147,21 +153,24 @@ class CurrencyService
     /**
      * Persists rate to the DB (so admin panel stays in sync).
      */
-    private static function persistRate(float $rate): void
+    private static function persistRate(string $currency, float $rate): void
     {
         try {
-            \App\Models\Setting::set('exchange_rate_cop', round($rate), 'general');
+            \App\Models\Setting::set('exchange_rate_' . strtolower($currency), round($rate, 4), 'general');
         } catch (\Exception $e) {
-            Log::error('CurrencyService: Failed to persist rate: ' . $e->getMessage());
+            Log::error("CurrencyService: Failed to persist rate for {$currency}: " . $e->getMessage());
         }
     }
 
     /**
-     * Force-refreshes the cached rate (useful from Artisan command / cron).
+     * Force-refreshes the cached rates.
      */
     public static function refreshRate(): float
     {
         Cache::forget('usd_to_cop_rate');
+        Cache::forget('cop_exchange_rate');
+        Cache::forget('mxn_exchange_rate');
+        Cache::forget('eur_exchange_rate');
         return self::getExchangeRate();
     }
 }

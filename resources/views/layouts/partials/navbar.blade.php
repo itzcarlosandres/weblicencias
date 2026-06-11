@@ -99,23 +99,45 @@
                 </button>
 
                 <!-- Currency Switcher -->
+                @php
+                    $activeCurrency = session('currency', 'USD');
+                    $currencyFlags = [
+                        'USD' => '🇺🇸',
+                        'COP' => '🇨🇴',
+                        'MXN' => '🇲🇽',
+                        'EUR' => '🇪🇺',
+                    ];
+                    $activeFlag = $currencyFlags[$activeCurrency] ?? '🇺🇸';
+                @endphp
                 <div x-data="{ open: false }" class="relative hidden sm:block">
                     <button @click="open = !open" class="flex flex-col items-center justify-center gap-1 text-gray-300 hover:text-blue-500 transition-colors group">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="text-[10px] font-bold tracking-wider uppercase group-hover:text-blue-500 transition-colors">{{ session('currency', 'USD') }}</span>
+                        <span class="text-lg leading-none select-none">{{ $activeFlag }}</span>
+                        <span class="text-[10px] font-bold tracking-wider uppercase group-hover:text-blue-500 transition-colors">{{ $activeCurrency }}</span>
                     </button>
                     <!-- Dropdown Content -->
-                    <div x-cloak x-show="open" @click.away="open = false" style="display:none;" x-transition class="absolute right-0 mt-4 w-32 bg-white rounded-lg shadow-2xl border border-gray-100 py-2 z-50 text-gray-800">
-                        <a href="?currency=USD" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors {{ session('currency', 'USD') === 'USD' ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
-                            USD ($)
-                            @if(session('currency', 'USD') === 'USD')
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <div x-cloak x-show="open" @click.away="open = false" style="display:none;" x-transition class="absolute right-0 mt-4 w-40 bg-white rounded-lg shadow-2xl border border-gray-100 py-2 z-50 text-gray-800">
+                        <a href="?currency=USD" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors {{ $activeCurrency === 'USD' ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
+                            <span class="flex items-center gap-2"><span>🇺🇸</span> USD ($)</span>
+                            @if($activeCurrency === 'USD')
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             @endif
                         </a>
-                        <a href="?currency=COP" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors {{ session('currency', 'USD') === 'COP' ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
-                            COP ($)
-                            @if(session('currency', 'USD') === 'COP')
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <a href="?currency=COP" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors {{ $activeCurrency === 'COP' ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
+                            <span class="flex items-center gap-2"><span>🇨🇴</span> COP</span>
+                            @if($activeCurrency === 'COP')
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            @endif
+                        </a>
+                        <a href="?currency=MXN" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors {{ $activeCurrency === 'MXN' ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
+                            <span class="flex items-center gap-2"><span>🇲🇽</span> MXN ($)</span>
+                            @if($activeCurrency === 'MXN')
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            @endif
+                        </a>
+                        <a href="?currency=EUR" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors {{ $activeCurrency === 'EUR' ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
+                            <span class="flex items-center gap-2"><span>🇪🇺</span> EUR (€)</span>
+                            @if($activeCurrency === 'EUR')
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             @endif
                         </a>
                     </div>
@@ -269,9 +291,19 @@
                 <div class="my-6 border-t border-white/5 mx-3"></div>
 
                 <div class="px-3 mb-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Moneda</div>
-                <div class="flex gap-2 px-3 mb-6">
-                    <a href="?currency=USD" class="flex-1 text-center py-2 text-sm font-bold rounded-lg transition-colors {{ session('currency', 'USD') === 'USD' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">USD</a>
-                    <a href="?currency=COP" class="flex-1 text-center py-2 text-sm font-bold rounded-lg transition-colors {{ session('currency', 'USD') === 'COP' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">COP</a>
+                <div class="grid grid-cols-2 gap-2 px-3 mb-6">
+                    <a href="?currency=USD" class="flex items-center justify-center gap-1.5 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'USD' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
+                        <span>🇺🇸</span> USD
+                    </a>
+                    <a href="?currency=COP" class="flex items-center justify-center gap-1.5 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'COP' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
+                        <span>🇨🇴</span> COP
+                    </a>
+                    <a href="?currency=MXN" class="flex items-center justify-center gap-1.5 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'MXN' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
+                        <span>🇲🇽</span> MXN
+                    </a>
+                    <a href="?currency=EUR" class="flex items-center justify-center gap-1.5 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'EUR' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
+                        <span>🇪🇺</span> EUR
+                    </a>
                 </div>
 
                 <div class="px-3 mb-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Mi Cuenta</div>

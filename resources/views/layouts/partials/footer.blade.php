@@ -65,14 +65,20 @@
                 <div class="flex flex-col sm:flex-row items-center gap-6">
                     <!-- Currency Switcher -->
                     <div class="flex items-center gap-1 bg-[#1a1d29] border border-white/10 p-1 rounded-xl">
-                        <a href="{{ route('currency.change', 'USD') }}" class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all {{ session('currency', 'USD') === 'USD' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400 hover:text-white' }}">
-                            USD ($)
+                        @php
+                            $footCurr = session('currency', 'USD');
+                        @endphp
+                        <a href="{{ route('currency.change', 'USD') }}" class="px-2.5 py-1.5 text-xs font-bold rounded-lg transition-all {{ $footCurr === 'USD' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400 hover:text-white' }}">
+                            🇺🇸 USD
                         </a>
-                        <a href="{{ route('currency.change', 'EUR') }}" class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all {{ session('currency') === 'EUR' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400 hover:text-white' }}">
-                            EUR (€)
+                        <a href="{{ route('currency.change', 'COP') }}" class="px-2.5 py-1.5 text-xs font-bold rounded-lg transition-all {{ $footCurr === 'COP' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400 hover:text-white' }}">
+                            🇨🇴 COP
                         </a>
-                        <a href="{{ route('currency.change', 'COP') }}" class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all {{ session('currency') === 'COP' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400 hover:text-white' }}">
-                            COP ($)
+                        <a href="{{ route('currency.change', 'MXN') }}" class="px-2.5 py-1.5 text-xs font-bold rounded-lg transition-all {{ $footCurr === 'MXN' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400 hover:text-white' }}">
+                            🇲🇽 MXN
+                        </a>
+                        <a href="{{ route('currency.change', 'EUR') }}" class="px-2.5 py-1.5 text-xs font-bold rounded-lg transition-all {{ $footCurr === 'EUR' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400 hover:text-white' }}">
+                            🇪🇺 EUR
                         </a>
                     </div>
 
