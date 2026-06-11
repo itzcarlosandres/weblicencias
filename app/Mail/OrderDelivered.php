@@ -27,7 +27,7 @@ class OrderDelivered extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.order-delivered',
+            view: 'emails.order-delivered',
             with: [
                 'order' => $this->order,
                 'items' => $this->order->items()->with('license')->get(),
