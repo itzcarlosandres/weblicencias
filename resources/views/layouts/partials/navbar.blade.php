@@ -101,17 +101,12 @@
                 <!-- Currency Switcher -->
                 @php
                     $activeCurrency = session('currency', 'USD');
-                    $currencyCodes = [
-                        'USD' => 'us',
-                        'COP' => 'co',
-                        'MXN' => 'mx',
-                        'EUR' => 'eu',
-                    ];
-                    $activeCode = $currencyCodes[$activeCurrency] ?? 'us';
                 @endphp
                 <div x-data="{ open: false }" class="relative hidden sm:block">
-                    <button @click="open = !open" class="flex flex-col items-center justify-center gap-1.5 text-gray-300 hover:text-blue-500 transition-colors group">
-                        <img src="https://flagcdn.com/w20/{{ $activeCode }}.png" width="18" class="rounded-[2px] shadow-sm select-none" alt="{{ $activeCurrency }}">
+                    <button @click="open = !open" class="flex flex-col items-center justify-center gap-1 text-gray-300 hover:text-blue-500 transition-colors group">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h2a2.5 2.5 0 002.5-2.5V10a2 2 0 00-2-2h-1.07a2 2 0 01-1.414-.586l-1.414-1.414A2 2 0 0010.828 6H9a2 2 0 00-2 2v.935M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
                         <span class="text-[10px] font-bold tracking-wider uppercase group-hover:text-blue-500 transition-colors">{{ $activeCurrency }}</span>
                     </button>
                     <!-- Dropdown Content -->
