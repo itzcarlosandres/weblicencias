@@ -101,41 +101,53 @@
                 <!-- Currency Switcher -->
                 @php
                     $activeCurrency = session('currency', 'USD');
-                    $currencyFlags = [
-                        'USD' => '🇺🇸',
-                        'COP' => '🇨🇴',
-                        'MXN' => '🇲🇽',
-                        'EUR' => '🇪🇺',
+                    $currencyCodes = [
+                        'USD' => 'us',
+                        'COP' => 'co',
+                        'MXN' => 'mx',
+                        'EUR' => 'eu',
                     ];
-                    $activeFlag = $currencyFlags[$activeCurrency] ?? '🇺🇸';
+                    $activeCode = $currencyCodes[$activeCurrency] ?? 'us';
                 @endphp
                 <div x-data="{ open: false }" class="relative hidden sm:block">
-                    <button @click="open = !open" class="flex flex-col items-center justify-center gap-1 text-gray-300 hover:text-blue-500 transition-colors group">
-                        <span class="text-lg leading-none select-none">{{ $activeFlag }}</span>
+                    <button @click="open = !open" class="flex flex-col items-center justify-center gap-1.5 text-gray-300 hover:text-blue-500 transition-colors group">
+                        <img src="https://flagcdn.com/w20/{{ $activeCode }}.png" width="18" class="rounded-[2px] shadow-sm select-none" alt="{{ $activeCurrency }}">
                         <span class="text-[10px] font-bold tracking-wider uppercase group-hover:text-blue-500 transition-colors">{{ $activeCurrency }}</span>
                     </button>
                     <!-- Dropdown Content -->
                     <div x-cloak x-show="open" @click.away="open = false" style="display:none;" x-transition class="absolute right-0 mt-4 w-40 bg-white rounded-lg shadow-2xl border border-gray-100 py-2 z-50 text-gray-800">
                         <a href="?currency=USD" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors {{ $activeCurrency === 'USD' ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
-                            <span class="flex items-center gap-2"><span>🇺🇸</span> USD ($)</span>
+                            <span class="flex items-center gap-2.5">
+                                <img src="https://flagcdn.com/w20/us.png" width="18" class="rounded-[2px] shadow-sm" alt="USD">
+                                <span>USD ($)</span>
+                            </span>
                             @if($activeCurrency === 'USD')
                                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             @endif
                         </a>
                         <a href="?currency=COP" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors {{ $activeCurrency === 'COP' ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
-                            <span class="flex items-center gap-2"><span>🇨🇴</span> COP</span>
+                            <span class="flex items-center gap-2.5">
+                                <img src="https://flagcdn.com/w20/co.png" width="18" class="rounded-[2px] shadow-sm" alt="COP">
+                                <span>COP</span>
+                            </span>
                             @if($activeCurrency === 'COP')
                                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             @endif
                         </a>
                         <a href="?currency=MXN" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors {{ $activeCurrency === 'MXN' ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
-                            <span class="flex items-center gap-2"><span>🇲🇽</span> MXN ($)</span>
+                            <span class="flex items-center gap-2.5">
+                                <img src="https://flagcdn.com/w20/mx.png" width="18" class="rounded-[2px] shadow-sm" alt="MXN">
+                                <span>MXN ($)</span>
+                            </span>
                             @if($activeCurrency === 'MXN')
                                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             @endif
                         </a>
                         <a href="?currency=EUR" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors {{ $activeCurrency === 'EUR' ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
-                            <span class="flex items-center gap-2"><span>🇪🇺</span> EUR (€)</span>
+                            <span class="flex items-center gap-2.5">
+                                <img src="https://flagcdn.com/w20/eu.png" width="18" class="rounded-[2px] shadow-sm" alt="EUR">
+                                <span>EUR (€)</span>
+                            </span>
                             @if($activeCurrency === 'EUR')
                                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             @endif
@@ -292,17 +304,21 @@
 
                 <div class="px-3 mb-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Moneda</div>
                 <div class="grid grid-cols-2 gap-2 px-3 mb-6">
-                    <a href="?currency=USD" class="flex items-center justify-center gap-1.5 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'USD' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
-                        <span>🇺🇸</span> USD
+                    <a href="?currency=USD" class="flex items-center justify-center gap-2 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'USD' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
+                        <img src="https://flagcdn.com/w20/us.png" width="16" class="rounded-sm shadow-sm" alt="USD">
+                        USD
                     </a>
-                    <a href="?currency=COP" class="flex items-center justify-center gap-1.5 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'COP' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
-                        <span>🇨🇴</span> COP
+                    <a href="?currency=COP" class="flex items-center justify-center gap-2 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'COP' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
+                        <img src="https://flagcdn.com/w20/co.png" width="16" class="rounded-sm shadow-sm" alt="COP">
+                        COP
                     </a>
-                    <a href="?currency=MXN" class="flex items-center justify-center gap-1.5 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'MXN' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
-                        <span>🇲🇽</span> MXN
+                    <a href="?currency=MXN" class="flex items-center justify-center gap-2 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'MXN' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
+                        <img src="https://flagcdn.com/w20/mx.png" width="16" class="rounded-sm shadow-sm" alt="MXN">
+                        MXN
                     </a>
-                    <a href="?currency=EUR" class="flex items-center justify-center gap-1.5 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'EUR' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
-                        <span>🇪🇺</span> EUR
+                    <a href="?currency=EUR" class="flex items-center justify-center gap-2 py-2 text-sm font-bold rounded-lg transition-colors {{ $activeCurrency === 'EUR' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' }}">
+                        <img src="https://flagcdn.com/w20/eu.png" width="16" class="rounded-sm shadow-sm" alt="EUR">
+                        EUR
                     </a>
                 </div>
 
