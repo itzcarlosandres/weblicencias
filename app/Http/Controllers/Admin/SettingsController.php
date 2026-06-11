@@ -103,9 +103,11 @@ class SettingsController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
+            'type' => 'required|string',
         ]);
 
         $targetEmail = $request->input('email');
+        $type = $request->input('type');
 
         try {
             // Obtener o crear un usuario de prueba
@@ -137,49 +139,99 @@ class SettingsController extends Controller
                 ]);
             }
 
-            // Obtener o crear una licencia de prueba
-            $license = \App\Models\License::where('product_id', $product->id)->first();
-            if (!$license) {
-                $license = new \App\Models\License([
-                    'product_id' => $product->id,
-                    'key' => 'AAAAA-BBBBB-CCCCC-DDDDD-EEEEE',
-                    'status' => 'available',
-                ]);
-                $license->setRelation('product', $product);
+            switch ($type) {
+                case 'welcome':
+                    \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\WelcomeEmail($user));
+                    $msg = 'Correo de Bienvenida enviado con éxito.';
+                    break;
+
+                case 'order':
+                    $order = \App\Models\Order::where('user_id', $user->id)->first() ?? \App\Models\Order::first();
+                    if (!$order) {
+                        $order = new \App\Models\Order([
+                            'user_id' => $user->id,
+                            'order_number' => 'ORD-TEST1234',
+                            'total' => 19.99,
+                            'status' => 'completed',
+                        ]);
+                        $order->setRelation('user', $user);
+                    }
+                    if ($order->items()->count() === 0) {
+                        $order->setRelation('items', collect([
+                            new \App\Models\OrderItem([
+                                'product_id' => $product->id,
+                                'quantity' => 1,
+                                'price' => 19.99,
+                            ])
+                        ]));
+                    }
+                    \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\OrderDelivered($order));
+                    $msg = 'Correo de Orden Entregada enviado con éxito.';
+                    break;
+
+                case 'license':
+                    $license = \App\Models\License::where('product_id', $product->id)->first();
+                    if (!$license) {
+                        $license = new \App\Models\License([
+                            'product_id' => $product->id,
+                            'key' => 'AAAAA-BBBBB-CCCCC-DDDDD-EEEEE',
+                            'status' => 'available',
+                        ]);
+                        $license->setRelation('product', $product);
+                    }
+                    \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\LicenseManuallyAssignedMail($license));
+                    $msg = 'Correo de Licencia Asignada enviado con éxito.';
+                    break;
+
+                case 'marketing':
+                    \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\MarketingEmail(
+                        '¡Oferta Especial de Fin de Semana!',
+                        'Ahorra un 15% adicional',
+                        'Usa el cupón FINDE15 en tu próxima compra y obtén un descuento instantáneo en cualquier licencia de nuestro catálogo.',
+                        'Ir a la Tienda',
+                        url('/')
+                    ));
+                    $msg = 'Correo de Marketing enviado con éxito.';
+                    break;
+
+                case 'abandoned_cart':
+                    $abandonedCart = new \App\Models\AbandonedCart();
+                    $abandonedCart->user_id = $user->id;
+                    $abandonedCart->cart_data = [
+                        [
+                            'name' => $product->name,
+                            'quantity' => 1,
+                            'price' => $product->price
+                        ]
+                    ];
+                    $abandonedCart->setRelation('user', $user);
+                    \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\AbandonedCartMail($abandonedCart));
+                    $msg = 'Correo de Carrito Abandonado enviado con éxito.';
+                    break;
+
+                case 'stock':
+                    \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\ProductInStockMail($product));
+                    $msg = 'Correo de Notificación de Stock enviado con éxito.';
+                    break;
+
+                case 'referral':
+                    $referredDummy = new \App\Models\User(['name' => 'Amigo Referido']);
+                    \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\ReferralRewardMail($user, $referredDummy, 1000));
+                    $msg = 'Correo de Recompensa por Referido enviado con éxito.';
+                    break;
+
+                case 'price_drop':
+                    \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\WishlistPriceDropMail($product, 24.99, 19.99));
+                    $msg = 'Correo de Baja de Precio enviado con éxito.';
+                    break;
+
+                default:
+                    throw new \Exception('Tipo de correo no válido.');
             }
-
-            // Obtener o crear una orden de prueba
-            $order = \App\Models\Order::where('user_id', $user->id)->first() ?? \App\Models\Order::first();
-            if (!$order) {
-                $order = new \App\Models\Order([
-                    'user_id' => $user->id,
-                    'order_number' => 'ORD-TEST1234',
-                    'total' => 19.99,
-                    'status' => 'completed',
-                ]);
-                $order->setRelation('user', $user);
-            }
-
-            // Preparar un carrito abandonado de prueba
-            $abandonedCart = new \App\Models\AbandonedCart();
-            $abandonedCart->user_id = $user->id;
-            $abandonedCart->cart_data = [
-                [
-                    'name' => $product->name,
-                    'quantity' => 1,
-                    'price' => $product->price
-                ]
-            ];
-            $abandonedCart->setRelation('user', $user);
-
-            // Intentar enviar los principales correos
-            \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\WelcomeEmail($user));
-            \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\LicenseManuallyAssignedMail($license));
-            \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\AbandonedCartMail($abandonedCart));
 
             return response()->json([
                 'success' => true,
-                'message' => '¡Correos de prueba enviados con éxito! Se han enviado WelcomeEmail, LicenseManuallyAssignedMail y AbandonedCartMail a ' . $targetEmail
+                'message' => $msg
             ]);
         } catch (\Exception $e) {
             return response()->json([
