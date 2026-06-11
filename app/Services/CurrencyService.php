@@ -77,7 +77,7 @@ class CurrencyService
         $converted = self::convert($priceInUsd);
 
         if ($currency === 'COP') {
-            return '$' . number_format($converted, 0, ',', '.');
+            return new \Illuminate\Support\HtmlString('<span class="text-[10px] sm:text-xs font-bold text-gray-400 dark:text-gray-500 mr-1 select-none">COP</span>' . number_format($converted, 0, ',', '.'));
         }
 
         return '$' . number_format($converted, 2, '.', ',');
