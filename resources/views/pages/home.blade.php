@@ -272,8 +272,8 @@
                         <div class="text-[10px] font-bold text-purple-600 mb-1 uppercase tracking-wider bg-purple-50 inline-block px-2 py-0.5 rounded w-fit">Paquete</div>
                         <h3 class="text-sm font-bold text-gray-900 line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors">{{ $product->name }}</h3>
                         <div class="flex items-center gap-2">
-                            @if($product->has_discount)
-                            <span class="bg-[#f48024] text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">-{{ $product->discount }}%</span>
+                            @if($product->has_discount && $product->effective_discount > 0)
+                            <span class="bg-[#f48024] text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">-{{ round($product->effective_discount) }}%</span>
                             @endif
                             <div class="text-lg font-black text-gray-900">{{ currency_format($product->discounted_price) }}</div>
                         </div>

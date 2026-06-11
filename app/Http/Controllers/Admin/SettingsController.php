@@ -99,6 +99,96 @@ class SettingsController extends Controller
             ->with('_settings_saved', true);
     }
 
+    public function testSendMail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $targetEmail = $request->input('email');
+
+        try {
+            // Obtener o crear un usuario de prueba
+            $user = \App\Models\User::where('email', $targetEmail)->first();
+            if (!$user) {
+                $user = \App\Models\User::first();
+                if ($user) {
+                    $user = clone $user;
+                    $user->email = $targetEmail;
+                } else {
+                    $user = new \App\Models\User([
+                        'name' => 'Usuario de Prueba',
+                        'email' => $targetEmail,
+                    ]);
+                }
+            }
+
+            // Obtener o crear un producto de prueba
+            $product = \App\Models\Product::first();
+            if (!$product) {
+                $product = new \App\Models\Product([
+                    'name' => 'Windows 11 Professional Key',
+                    'price' => 19.99,
+                    'compare_price' => 24.99,
+                    'discount' => 20.00,
+                    'sku' => 'WIN11PRO-TEST',
+                    'is_active' => true,
+                    'slug' => 'windows-11-pro-test',
+                ]);
+            }
+
+            // Obtener o crear una licencia de prueba
+            $license = \App\Models\License::where('product_id', $product->id)->first();
+            if (!$license) {
+                $license = new \App\Models\License([
+                    'product_id' => $product->id,
+                    'key' => 'AAAAA-BBBBB-CCCCC-DDDDD-EEEEE',
+                    'status' => 'available',
+                ]);
+                $license->setRelation('product', $product);
+            }
+
+            // Obtener o crear una orden de prueba
+            $order = \App\Models\Order::where('user_id', $user->id)->first() ?? \App\Models\Order::first();
+            if (!$order) {
+                $order = new \App\Models\Order([
+                    'user_id' => $user->id,
+                    'order_number' => 'ORD-TEST1234',
+                    'total' => 19.99,
+                    'status' => 'completed',
+                ]);
+                $order->setRelation('user', $user);
+            }
+
+            // Preparar un carrito abandonado de prueba
+            $abandonedCart = new \App\Models\AbandonedCart();
+            $abandonedCart->user_id = $user->id;
+            $abandonedCart->cart_data = [
+                [
+                    'name' => $product->name,
+                    'quantity' => 1,
+                    'price' => $product->price
+                ]
+            ];
+            $abandonedCart->setRelation('user', $user);
+
+            // Intentar enviar los principales correos
+            \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\WelcomeEmail($user));
+            \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\LicenseManuallyAssignedMail($license));
+            \Illuminate\Support\Facades\Mail::to($targetEmail)->send(new \App\Mail\AbandonedCartMail($abandonedCart));
+
+            return response()->json([
+                'success' => true,
+                'message' => '¡Correos de prueba enviados con éxito! Se han enviado WelcomeEmail, LicenseManuallyAssignedMail y AbandonedCartMail a ' . $targetEmail
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al enviar el correo: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     private function groupFor(string $field): string
     {
         $map = [

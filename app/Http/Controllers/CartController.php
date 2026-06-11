@@ -49,15 +49,15 @@ class CartController extends Controller
         $product1 = Product::findOrFail($request->product_id_1);
         $product2 = Product::findOrFail($request->product_id_2);
 
-        // Calculate 10% discount for both
-        $this->cartService->addDiscountedItem($product1, 1, 10);
-        $this->cartService->addDiscountedItem($product2, 1, 10);
+        // Calculate 15% discount for both
+        $this->cartService->addDiscountedItem($product1, 1, 15);
+        $this->cartService->addDiscountedItem($product2, 1, 15);
 
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'count' => $this->cartService->getCount(),
-                'message' => 'Paquete agregado al carrito con 10% de descuento'
+                'message' => 'Paquete agregado al carrito con 15% de descuento'
             ]);
         }
 

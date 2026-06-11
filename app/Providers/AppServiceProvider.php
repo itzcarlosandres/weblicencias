@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
                 $mailHost = \App\Models\Setting::get('mail_host');
                 if ($mailHost) {
                     config([
+                        'mail.default' => 'smtp',
                         'mail.mailers.smtp.host' => $mailHost,
                         'mail.mailers.smtp.port' => \App\Models\Setting::get('mail_port', 587),
                         'mail.mailers.smtp.username' => \App\Models\Setting::get('mail_username'),

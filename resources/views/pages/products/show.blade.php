@@ -203,14 +203,14 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <div class="text-sm font-bold text-gray-900 leading-tight mb-1">{{ $product->name }} <br><span class="text-blue-600">+ {{ $bundleProduct->name }}</span></div>
-                        <div class="text-[10px] text-green-700 font-black bg-green-100 px-2 py-0.5 rounded inline-block border border-green-200 uppercase tracking-wide">Ahorras extra 10%</div>
+                        <div class="text-[10px] text-green-700 font-black bg-green-100 px-2 py-0.5 rounded inline-block border border-green-200 uppercase tracking-wide">Ahorras extra 15%</div>
                     </div>
                 </div>
                 
                 <div class="text-center sm:text-right w-full sm:w-auto relative z-10 shrink-0 border-t sm:border-t-0 sm:border-l border-gray-100 pt-4 sm:pt-0 sm:pl-6">
                     @php
                         $combinedPrice = $product->discounted_price + $bundleProduct->discounted_price;
-                        $bundlePrice = $combinedPrice * 0.90; // 10% discount for the bundle
+                        $bundlePrice = $combinedPrice * 0.85; // 15% discount for the bundle
                     @endphp
                     <div class="text-xs text-gray-400 line-through font-medium mb-0.5">{{ currency_format($combinedPrice) }}</div>
                     <div class="text-2xl font-black text-blue-600 tracking-tight">{{ currency_format($bundlePrice) }}</div>

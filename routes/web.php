@@ -170,6 +170,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Settings
     Route::get('/configuracion', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
     Route::any('/configuracion/guardar', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
+    Route::post('/configuracion/probar-correo', [\App\Http\Controllers\Admin\SettingsController::class, 'testSendMail'])->name('settings.test-email');
 
     // Blog
     Route::resource('blog', \App\Http\Controllers\Admin\AdminBlogController::class);

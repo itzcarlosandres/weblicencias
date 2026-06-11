@@ -22,9 +22,9 @@
                         <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] pointer-events-none mix-blend-overlay"></div>
                     </div>
                     <div class="p-6 relative">
-                        @if($product->has_discount)
+                        @if($product->has_discount && $product->effective_discount > 0)
                         <div class="absolute -top-4 right-4 bg-yellow-400 text-black font-black text-xs px-3 py-1 transform skew-x-12">
-                            <span class="block transform -skew-x-12">-{{ $product->discount }}%</span>
+                            <span class="block transform -skew-x-12">-{{ round($product->effective_discount) }}%</span>
                         </div>
                         @endif
                         <h3 class="font-bold text-white uppercase tracking-wider mb-2 font-mono text-lg line-clamp-1">{{ $product->name }}</h3>
@@ -50,8 +50,8 @@
             <div class="group relative bg-white border-4 border-black hover:bg-[#ff4500] transition-colors duration-0 p-8 flex flex-col justify-between aspect-[4/5]">
                 <div class="flex justify-between items-start mb-4">
                     <span class="text-black font-black text-6xl tracking-tighter block leading-none">0{{ $loop->iteration }}</span>
-                    @if($product->has_discount)
-                    <div class="border-4 border-black rounded-full px-4 py-2 text-black font-black transform -rotate-12 group-hover:bg-white text-xl">-{{ $product->discount }}%</div>
+                    @if($product->has_discount && $product->effective_discount > 0)
+                    <div class="border-4 border-black rounded-full px-4 py-2 text-black font-black transform -rotate-12 group-hover:bg-white text-xl">-{{ round($product->effective_discount) }}%</div>
                     @endif
                 </div>
                 <div class="w-full h-1/2 border-8 border-black bg-slate-100 overflow-hidden relative mb-6">
@@ -129,8 +129,8 @@
                     <div>
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-xs text-green-700 uppercase tracking-widest">[ID: {{ strtoupper(substr(md5($product->id), 0, 8)) }}]</span>
-                            @if($product->has_discount)
-                            <span class="text-xs bg-green-900/50 text-green-400 px-2 py-0.5 border border-green-700">-{{ $product->discount }}%</span>
+                            @if($product->has_discount && $product->effective_discount > 0)
+                            <span class="text-xs bg-green-900/50 text-green-400 px-2 py-0.5 border border-green-700">-{{ round($product->effective_discount) }}%</span>
                             @endif
                         </div>
                         <h3 class="text-xl font-bold text-green-200 group-hover:text-green-400 transition-colors uppercase line-clamp-1">{{ $product->name }}</h3>
@@ -241,9 +241,9 @@
                 <div class="relative bg-white border-4 border-black p-4 h-full flex flex-col">
                     <div class="relative aspect-square border-4 border-black mb-4 overflow-hidden bg-fuchsia-500">
                         @if($product->image) <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover filter contrast-125 saturate-150 mix-blend-multiply group-hover:mix-blend-normal transition-all"> @endif
-                        @if($product->has_discount)
+                        @if($product->has_discount && $product->effective_discount > 0)
                         <div class="absolute -right-6 top-6 bg-cyan-400 text-black font-black text-xl px-12 py-2 transform rotate-45 border-y-4 border-black shadow-[0_4px_0_#000]">
-                            -{{ $product->discount }}%
+                            -{{ round($product->effective_discount) }}%
                         </div>
                         @endif
                     </div>

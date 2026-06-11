@@ -296,6 +296,18 @@
                     </div>
                 </div>
             </div>
+
+            <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6 mt-6 space-y-4">
+                <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white mb-2">Enviar Correo de Prueba (SMTP)</h3>
+                <p class="text-[12px] text-gray-400 mb-4">Ingresa un correo electrónico destinatario para enviar un set de correos de prueba (Bienvenida, Licencia Asignada y Carrito Abandonado) y verificar tu configuración de conexión SMTP en producción.</p>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <input type="email" id="test_email_address" placeholder="correo@ejemplo.com" class="flex-1 px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400">
+                    <button type="button" onclick="sendTestEmail()" id="btn_send_test_email" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-semibold rounded-xl transition-all flex items-center justify-center gap-2 shrink-0">
+                        <i class="fa-solid fa-paper-plane"></i> Enviar Correos de Prueba
+                    </button>
+                </div>
+                <div id="test_email_status" class="hidden p-4 rounded-xl text-[13px] font-semibold border mt-4"></div>
+            </div>
         </div>
         @endif
 
@@ -494,4 +506,59 @@
     </form>
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+function sendTestEmail() {
+    const emailInput = document.getElementById('test_email_address');
+    const email = emailInput.value.trim();
+    const btn = document.getElementById('btn_send_test_email');
+    const statusDiv = document.getElementById('test_email_status');
+
+    if (!email) {
+        alert('Por favor, ingresa un correo electrónico válido.');
+        return;
+    }
+
+    const originalContent = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+    btn.disabled = true;
+
+    statusDiv.classList.add('hidden');
+    statusDiv.classList.remove('bg-emerald-50', 'border-emerald-200', 'text-emerald-700', 'bg-red-50', 'border-red-200', 'text-red-700');
+
+    fetch('{{ route("admin.settings.test-email") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ email: email })
+    })
+    .then(res => res.json())
+    .then(data => {
+        statusDiv.classList.remove('hidden');
+        if (data.success) {
+            statusDiv.classList.add('bg-emerald-55', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-700');
+            statusDiv.innerText = data.message;
+        } else {
+            statusDiv.classList.add('bg-red-50', 'border-red-200', 'text-red-700');
+            statusDiv.innerText = data.message || 'Error desconocido al enviar.';
+        }
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+    })
+    .catch(err => {
+        console.error(err);
+        statusDiv.classList.remove('hidden');
+        statusDiv.classList.add('bg-red-50', 'border-red-200', 'text-red-700');
+        statusDiv.innerText = 'Hubo un error de conexión al enviar el correo.';
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+    });
+}
+</script>
 @endsection
