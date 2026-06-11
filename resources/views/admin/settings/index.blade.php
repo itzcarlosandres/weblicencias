@@ -561,43 +561,47 @@ function sendTestEmail(type) {
     statusSpan.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 animate-pulse';
     statusSpan.innerText = 'Enviando...';
 
-    fetch('{{ route("admin.settings.test-email") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify({ email: email, type: type })
-    })
-    .then(async res => {
-        const isJson = res.headers.get('content-type')?.includes('application/json');
-        const data = isJson ? await res.json() : null;
-        
-        if (!res.ok) {
-            const errorMsg = data?.message || (await res.text()).substring(0, 200) || 'Error de servidor';
-            throw new Error(errorMsg);
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '{{ route("admin.settings.test-email") }}');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    xhr.onload = function() {
+        let data = null;
+        try {
+            data = JSON.parse(xhr.responseText);
+        } catch (e) {
+            // No es un JSON válido
         }
-        return data;
-    })
-    .then(data => {
-        statusSpan.classList.remove('animate-pulse');
-        if (data && data.success) {
-            statusSpan.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400';
-            statusSpan.innerText = 'Enviado';
-            setTimeout(() => {
-                statusSpan.classList.add('hidden');
-            }, 5000);
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+            statusSpan.classList.remove('animate-pulse');
+            if (data && data.success) {
+                statusSpan.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400';
+                statusSpan.innerText = 'Enviado';
+                setTimeout(() => {
+                    statusSpan.classList.add('hidden');
+                }, 5000);
+            } else {
+                statusSpan.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400';
+                statusSpan.innerText = 'Fallo';
+                alert('Error al enviar: ' + (data?.message || 'Error desconocido'));
+            }
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
         } else {
-            statusSpan.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400';
-            statusSpan.innerText = 'Fallo';
-            alert('Error al enviar: ' + (data?.message || 'Error desconocido'));
+            const errorMsg = (data && data.message) ? data.message : xhr.responseText.substring(0, 200) || 'Error de servidor';
+            handleError(new Error(errorMsg));
         }
-        btn.innerHTML = originalContent;
-        btn.disabled = false;
-    })
-    .catch(err => {
+    };
+
+    xhr.onerror = function() {
+        handleError(new Error('Error de red o conexión rechazada.'));
+    };
+
+    function handleError(err) {
         console.error(err);
         statusSpan.classList.remove('animate-pulse');
         statusSpan.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400';
@@ -605,7 +609,9 @@ function sendTestEmail(type) {
         alert('Error en la petición: ' + err.message);
         btn.innerHTML = originalContent;
         btn.disabled = false;
-    });
+    }
+
+    xhr.send(JSON.stringify({ email: email, type: type }));
 }
 </script>
 @endsection
