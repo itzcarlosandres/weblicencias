@@ -44,7 +44,7 @@ class WishlistPriceDropMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.wishlist.price-drop',
+            view: 'emails.wishlist.price-drop',
             with: [
                 'productName' => $this->product->name,
                 'oldPrice' => $this->oldPrice,

@@ -5,7 +5,7 @@
 @section('content')
 <h1>{{ $title }}</h1>
 
-<div style="white-space: pre-wrap; font-size: 15px; color: #D1D5DB; line-height: 1.6;">
+<div style="white-space: pre-wrap; font-size: 15px; line-height: 1.6;">
 {{ $content }}
 </div>
 

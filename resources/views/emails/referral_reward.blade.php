@@ -1,34 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>¡Has ganado TodoPuntos!</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f9fafb; color: #111827; line-height: 1.5; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .header { background-color: #8b5cf6; color: white; padding: 30px 20px; text-align: center; }
-        .content { padding: 30px 20px; text-align: center; }
-        .points { font-size: 36px; font-weight: bold; color: #8b5cf6; margin: 10px 0; }
-        .button { display: inline-block; padding: 12px 24px; background-color: #8b5cf6; color: white; text-decoration: none; font-weight: bold; border-radius: 8px; margin-top: 20px; }
-        .footer { text-align: center; padding: 20px; font-size: 12px; color: #6b7280; background-color: #f9fafb; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1 style="margin: 0; font-size: 24px;">¡Felicidades, {{ $referrer->name }}! 🎉</h1>
-        </div>
-        <div class="content">
-            <p>¡Tu amigo/a <strong>{{ $referredUser->name }}</strong> acaba de realizar su primera compra gracias a tu recomendación!</p>
-            <p>Como agradecimiento por ayudarnos a crecer, hemos añadido puntos a tu cuenta:</p>
-            <div class="points">+{{ number_format($points) }} TodoPuntos</div>
-            <p>Puedes usarlos como dinero en tu próxima compra.</p>
-            <a href="{{ route('customer.dashboard') }}" class="button">Ver mi balance</a>
-        </div>
-        <div class="footer">
-            Sigue compartiendo tu enlace de referidos para ganar más.<br><br>
-            © {{ date('Y') }} {{ config('app.name') }}. Todos los derechos reservados.
-        </div>
+@extends('emails.layouts.premium')
+
+@section('title', '¡Has ganado TodoPuntos! - ' . \App\Models\Setting::get('site_name', 'TodoKeys'))
+
+@section('content')
+<div style="text-align: center; margin-bottom: 30px;">
+    <div style="width: 60px; height: 60px; background-color: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.25); border-radius: 30px; display: inline-block; text-align: center; line-height: 58px; font-size: 28px; margin-bottom: 15px;">💎</div>
+    <h1 style="margin: 0;">¡Felicidades, {{ $referrer->name }}!</h1>
+</div>
+
+<p style="text-align: center;">¡Tu amigo/a <strong>{{ $referredUser->name }}</strong> acaba de realizar su primera compra en nuestra tienda gracias a tu recomendación!</p>
+
+<p style="text-align: center;">Como agradecimiento por ayudarnos a crecer, hemos añadido la siguiente recompensa a tu cuenta:</p>
+
+<div class="premium-block" style="text-align: center; background: linear-gradient(145deg, #2D1B4E 0%, #1A1235 100%); border-color: rgba(139, 92, 246, 0.45);">
+    <div class="premium-block-title" style="background-color: rgba(139, 92, 246, 0.2); color: #C084FC;">Puntos Recibidos</div>
+    <div style="font-size: 38px; font-weight: 800; color: #A855F7; margin: 15px 0; text-shadow: 0 0 20px rgba(139, 92, 246, 0.4); letter-spacing: 0.5px;">
+        +{{ number_format($points) }} TodoPuntos
     </div>
-</body>
-</html>
+    <div style="font-size: 12px; color: #94A3B8;">
+        ¡Puedes utilizar estos puntos como saldo para pagar tu próxima compra!
+    </div>
+</div>
+
+<p style="text-align: center;">Sigue compartiendo tu enlace personalizado de referidos desde tu panel para continuar ganando premios.</p>
+
+<div class="btn-container">
+    <a href="{{ route('customer.dashboard') }}" class="btn" style="background: linear-gradient(90deg, #8B5CF6 0%, #6366F1 100%); box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);">Ver mi balance</a>
+</div>
+@endsection
