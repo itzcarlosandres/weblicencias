@@ -19,7 +19,8 @@
     <!-- PWA -->
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="theme-color" content="#3b82f6">
-    <link rel="apple-touch-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ \App\Models\Setting::get('favicon') ? asset('storage/settings/' . \App\Models\Setting::get('favicon')) : asset('favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ \App\Models\Setting::get('favicon') ? asset('storage/settings/' . \App\Models\Setting::get('favicon')) : asset('favicon.ico') }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 

@@ -36,7 +36,9 @@ class SettingsController extends Controller
             $old = Setting::get('logo');
             if ($old) Storage::disk('public')->delete('settings/' . $old);
             $file = $request->file('logo');
-            Setting::set('logo', $file->getClientOriginalName(), 'appearance');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('settings', $filename, 'public');
+            Setting::set('logo', $filename, 'appearance');
         }
 
         // Favicon upload
@@ -44,7 +46,9 @@ class SettingsController extends Controller
             $old = Setting::get('favicon');
             if ($old) Storage::disk('public')->delete('settings/' . $old);
             $file = $request->file('favicon');
-            Setting::set('favicon', $file->getClientOriginalName(), 'appearance');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('settings', $filename, 'public');
+            Setting::set('favicon', $filename, 'appearance');
         }
 
         // Save all text fields

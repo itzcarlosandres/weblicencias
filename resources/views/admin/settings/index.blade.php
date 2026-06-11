@@ -37,7 +37,8 @@
         </div>
     </div>
 
-    <form action="{{ route('admin.settings.update') }}" method="GET" autocomplete="off">
+    <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+        @csrf
         <input type="hidden" name="tab" value="{{ $activeTab }}">
 
         @if($activeTab === 'general')

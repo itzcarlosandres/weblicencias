@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin') - TodoKeys</title>
+    <link rel="apple-touch-icon" href="{{ \App\Models\Setting::get('favicon') ? asset('storage/settings/' . \App\Models\Setting::get('favicon')) : asset('favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ \App\Models\Setting::get('favicon') ? asset('storage/settings/' . \App\Models\Setting::get('favicon')) : asset('favicon.ico') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome-pro/css/all.min.css') }}">
