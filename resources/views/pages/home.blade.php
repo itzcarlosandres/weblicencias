@@ -30,7 +30,7 @@
                         <i class="fa-solid fa-bolt"></i> {{ App\Models\Setting::get('hero_badge', 'Entrega Instantánea') }}
                     </span>
                 </div>
-                <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
+                <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight tracking-tight" style="font-family: 'Bricolage Grotesque', sans-serif;">
                     {{ App\Models\Setting::get('hero_title', 'Software original.') }}<br>
                     <span class="text-zinc-600">{{ App\Models\Setting::get('hero_subtitle', 'Fracción del precio.') }}</span>
                 </h2>
