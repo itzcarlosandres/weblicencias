@@ -31,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
                         'mail.mailers.smtp.password' => \App\Models\Setting::get('mail_password'),
                         'mail.mailers.smtp.encryption' => \App\Models\Setting::get('mail_encryption', 'tls'),
                         'mail.mailers.smtp.timeout' => 60,
+                        'mail.mailers.smtp.verify_peer' => false,
                         'mail.mailers.smtp.stream' => [
                             'ssl' => [
                                 'allow_self_signed' => true,
