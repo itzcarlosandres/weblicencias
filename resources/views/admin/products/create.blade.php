@@ -75,14 +75,14 @@
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Precio de venta *</label>
+                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5" title="Este es el precio que el cliente pagará.">Precio de venta final *</label>
                             <div class="relative">
                                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-[13px]">$</span>
                                 <input type="number" name="price" value="{{ old('price') }}" step="0.01" class="w-full pl-8 pr-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all" required placeholder="0.00">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Precio comparación</label>
+                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5" title="Precio antiguo más alto, aparecerá tachado para mostrar el descuento.">Precio original (tachado)</label>
                             <div class="relative">
                                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-[13px]">$</span>
                                 <input type="number" name="compare_price" value="{{ old('compare_price') }}" step="0.01" class="w-full pl-8 pr-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all" placeholder="0.00">
@@ -112,11 +112,9 @@
                             ['value' => 'Windows',        'label' => 'Windows',  'icon' => 'windows'],
                             ['value' => 'macOS',          'label' => 'macOS',    'icon' => 'apple'],
                             ['value' => 'Android',        'label' => 'Android',  'icon' => 'android'],
-                            ['value' => 'iOS',            'label' => 'iOS',      'icon' => 'apple'],
                             ['value' => 'Steam',          'label' => 'Steam',    'icon' => 'steam'],
                             ['value' => 'PlayStation',    'label' => 'PS',       'icon' => 'ps'],
                             ['value' => 'Xbox',           'label' => 'Xbox',     'icon' => 'xbox'],
-                            ['value' => 'Linux',          'label' => 'Linux',    'icon' => 'linux'],
                             ['value' => 'Multiplataforma','label' => 'Multi',    'icon' => 'multi'],
                         ];
                         @endphp
@@ -139,8 +137,6 @@
                                     <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-[#003087]"><path d="M8.984 2.596v14.477l3.921 1.237V6.237c0-.78.34-1.31.882-1.145.71.23.852 1.014.852 1.794v5.268c2.416 1.246 4.228-.155 4.228-3.498 0-3.44-1.197-4.98-4.625-6.06-1.147-.353-3.138-.82-4.258-1.001M2.187 17.037c-1.201.693-1.254 1.676-.12 2.195l3.401 1.517c1.135.505 2.986.398 4.12-.243l7.864-4.568c1.201-.694 1.253-1.677.12-2.196l-3.402-1.516c-1.134-.507-2.985-.399-4.12.242l-7.863 4.569z"/></svg>
                                 @elseif($cp['icon'] === 'xbox')
                                     <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-[#107C10]"><path d="M4.102 4.104C5.877 2.293 8.065 1.16 10.37.785c-.812 1.028-1.616 2.27-2.217 3.661-.603 1.395-.98 2.852-1.081 4.212C5.663 7.09 4.668 5.537 4.102 4.104M3.386 5.07C2.35 6.696 1.74 8.58 1.68 10.6c.15 2.078.835 3.998 1.957 5.598.068-2.074.432-3.95.97-5.463.537-1.51 1.23-2.634 1.94-3.16-.505-.87-1.485-1.773-3.16-2.505M2.24 17.49c1.386 2.134 3.492 3.73 5.95 4.448-1.035-1.31-1.97-2.943-2.636-4.74-.533-1.464-.834-2.965-.903-4.343-1.03.947-1.808 2.625-2.411 4.635m8.384 4.822c.45.034.907.053 1.368.053.461 0 .918-.019 1.368-.053-1.368-1.217-1.368-3.527 0-4.744-.45.034-.907.053-1.368.053-.461 0-.918-.019-1.368-.053 1.368 1.217 1.368 3.527 0 4.744m5.214-.374c2.458-.718 4.564-2.314 5.95-4.448-.603-2.01-1.381-3.688-2.411-4.635-.069 1.378-.37 2.879-.903 4.343-.666 1.797-1.601 3.43-2.636 4.74m2.922-7.427c-.07 2.074-.433 3.95-.971 5.463-.536 1.51-1.23 2.634-1.94 3.16.506.87 1.485 1.773 3.16 2.505 1.037-1.626 1.647-3.51 1.707-5.53-.15-2.078-.835-3.998-1.956-5.598m-1.362-9.407c-1.675.732-2.655 1.635-3.16 2.505.71.526 1.403 1.65 1.94 3.16.538 1.513.902 3.39.97 5.463 1.122-1.6 1.807-3.52 1.957-5.598-.1-1.36-.477-2.817-1.08-4.212-.602-1.391-1.405-2.633-2.217-3.661M9.63.785C7.325 1.16 5.137 2.293 3.362 4.104c-.566 1.433-1.56 2.986-2.97 4.554 1.675-.732 2.655-1.635 3.16-2.505.71.526 1.403 1.65 1.94 3.16.538 1.513.902 3.39.97 5.463-1.122-1.6-1.807-3.52-1.957-5.598.1-1.36.477-2.817 1.08-4.212.602-1.391 1.405-2.633 2.217-3.661"/></svg>
-                                @elseif($cp['icon'] === 'linux')
-                                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-gray-700"><path d="M12.504 0c-.155 0-.315.008-.48.021C7.576.336 3.76 3.55 3.02 7.85c-.01.05-.02.1-.03.15-.009.05-.02.1-.027.153a7.77 7.77 0 0 0-.09 1.173c0 3.29 1.663 6.184 4.166 7.892-.47.336-.87.8-1.065 1.43-.254.845.025 1.87.737 2.568.71.7 1.737.949 2.616.64.55-.196 1.008-.585 1.26-1.073.238-.462.28-1.006.116-1.52.17.033.336.062.508.087a7.57 7.57 0 0 0 .93.065 8.02 8.02 0 0 0 .882-.05c.14.476.402.88.752 1.163a2.33 2.33 0 0 0 1.4.484c.317 0 .636-.065.934-.196.64-.276 1.094-.813 1.27-1.5.176-.688.02-1.42-.422-1.942.98-.5 1.842-1.226 2.511-2.118.56.04 1.06-.227 1.347-.684.27-.43.31-.97.11-1.456-.13-.312-.35-.59-.64-.785-.32-.21-.7-.3-1.1-.245.11-.5.17-1.01.17-1.53 0-4.187-3.408-7.59-7.617-7.59"/></svg>
                                 @elseif($cp['icon'] === 'multi')
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-violet-500"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
                                 @endif
