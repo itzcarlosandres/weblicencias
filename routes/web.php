@@ -27,6 +27,9 @@ Route::get('/producto/{slug}', [ProductController::class, 'show'])->name('produc
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
+// Newsletter
+Route::post('/newsletter/subscribe', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+
 // Cart
 Route::get('/carrito', [CartController::class, 'index'])->name('cart.index');
 Route::post('/carrito/agregar', [CartController::class, 'add'])->name('cart.add');

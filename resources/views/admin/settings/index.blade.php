@@ -159,6 +159,13 @@
                                 @endfor
                             </select>
                         </div>
+                        <div>
+                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Vista por defecto (Lista/Cuadrícula)</label>
+                            <select name="catalog_layout" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400">
+                                <option value="grid" {{ ($settings['catalog_layout'] ?? 'grid') == 'grid' ? 'selected' : '' }}>Cuadrícula</option>
+                                <option value="list" {{ ($settings['catalog_layout'] ?? 'grid') == 'list' ? 'selected' : '' }}>Lista</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6">

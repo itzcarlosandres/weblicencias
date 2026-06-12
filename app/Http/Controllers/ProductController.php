@@ -77,8 +77,13 @@ class ProductController extends Controller
         $gridColumns = max(2, min(6, $gridColumns));
         $gridClass = $this->getGridClass($gridColumns);
 
+        if ($request->has('layout') && in_array($request->layout, ['grid', 'list'])) {
+            session(['catalog_layout' => $request->layout]);
+        }
+        $layout = session('catalog_layout', Setting::get('catalog_layout', 'grid'));
+
         return view('pages.products.index', compact(
-            'products', 'categories', 'brands', 'gridColumns', 'gridClass'
+            'products', 'categories', 'brands', 'gridColumns', 'gridClass', 'layout'
         ));
     }
 

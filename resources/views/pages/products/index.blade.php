@@ -24,12 +24,27 @@
                 <div class="mb-6">
                     <h4 class="text-sm font-medium text-gray-600 mb-3">Categorías</h4>
                     <div class="space-y-2">
-                        <a href="{{ route('products.index') }}" class="block text-sm {{ !request('category') ? 'text-primary-500 font-medium' : 'text-gray-600 hover:text-primary-500' }}">
+                        <a href="{{ route('products.index') }}" class="flex items-center gap-2 text-sm py-1 {{ !request('category') ? 'text-primary-500 font-bold' : 'text-gray-600 hover:text-primary-500' }}">
+                            <div class="w-6 h-6 rounded-md flex items-center justify-center {{ !request('category') ? 'bg-primary-50 text-primary-500' : 'bg-gray-50 text-gray-400' }}">
+                                <i class="fa-solid fa-list-ul text-xs"></i>
+                            </div>
                             Todas
                         </a>
                         @foreach($categories as $category)
-                        <a href="{{ route('products.index', ['category' => $category->slug, 'search' => request('search')]) }}" class="block text-sm {{ request('category') == $category->slug ? 'text-primary-500 font-medium' : 'text-gray-600 hover:text-primary-500' }}">
-                            {{ $category->name }} <span class="text-gray-500">({{ $category->products_count }})</span>
+                        <a href="{{ route('products.index', ['category' => $category->slug, 'search' => request('search')]) }}" class="flex items-center justify-between group py-1 {{ request('category') == $category->slug ? 'text-primary-500 font-bold' : 'text-gray-600 hover:text-primary-500' }}">
+                            <div class="flex items-center gap-2 text-sm">
+                                <div class="w-6 h-6 rounded-md flex items-center justify-center transition-colors {{ request('category') == $category->slug ? 'bg-primary-50 text-primary-500' : 'bg-gray-50 text-gray-400 group-hover:bg-primary-50/50 group-hover:text-primary-400' }}">
+                                    @if($category->icon)
+                                    <i class="{{ $category->icon }} text-xs"></i>
+                                    @else
+                                    <i class="fa-solid fa-tag text-xs"></i>
+                                    @endif
+                                </div>
+                                {{ $category->name }}
+                            </div>
+                            <span class="text-xs px-2 py-0.5 rounded-full font-medium transition-colors {{ request('category') == $category->slug ? 'bg-primary-100 text-primary-700' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}">
+                                {{ $category->products_count }}
+                            </span>
                         </a>
                         @endforeach
                     </div>
@@ -50,7 +65,14 @@
                     <h4 class="text-sm font-medium text-gray-600 mb-3">Marcas</h4>
                     <div class="space-y-2">
                         @foreach($brands as $brand)
-                        <a href="{{ route('products.index', ['brand' => $brand->slug]) }}" class="block text-sm {{ request('brand') == $brand->slug ? 'text-primary-500 font-medium' : 'text-gray-600 hover:text-primary-500' }}">
+                        <a href="{{ route('products.index', ['brand' => $brand->slug]) }}" class="flex items-center gap-2 group py-1 text-sm {{ request('brand') == $brand->slug ? 'text-primary-500 font-bold' : 'text-gray-600 hover:text-primary-500' }}">
+                            <div class="w-6 h-6 rounded-md flex items-center justify-center transition-colors {{ request('brand') == $brand->slug ? 'bg-primary-50 text-primary-500' : 'bg-gray-50 text-gray-400 group-hover:bg-primary-50/50 group-hover:text-primary-400' }}">
+                                @if($brand->icon)
+                                <i class="{{ $brand->icon }} text-xs"></i>
+                                @else
+                                <i class="fa-solid fa-star text-xs"></i>
+                                @endif
+                            </div>
                             {{ $brand->name }}
                         </a>
                         @endforeach
@@ -76,19 +98,33 @@
                     </h1>
                     <p class="text-sm text-gray-500 mt-1">{{ $products->total() }} productos encontrados</p>
                 </div>
-                <select onchange="window.location.href=this.value" class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400/50">
-                    <option value="{{ route('products.index', array_merge(request()->query(), ['sort' => 'featured'])) }}" {{ request('sort', 'featured') == 'featured' ? 'selected' : '' }}>Destacados</option>
-                    <option value="{{ route('products.index', array_merge(request()->query(), ['sort' => 'price_asc'])) }}" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Menor Precio</option>
-                    <option value="{{ route('products.index', array_merge(request()->query(), ['sort' => 'price_desc'])) }}" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Mayor Precio</option>
-                    <option value="{{ route('products.index', array_merge(request()->query(), ['sort' => 'best_selling'])) }}" {{ request('sort') == 'best_selling' ? 'selected' : '' }}>Más Vendidos</option>
-                    <option value="{{ route('products.index', array_merge(request()->query(), ['sort' => 'newest'])) }}" {{ request('sort') == 'newest' ? 'selected' : '' }}>Más Recientes</option>
-                </select>
+                <div class="flex items-center gap-3">
+                    <div class="hidden sm:flex items-center gap-1 bg-white border border-gray-200 rounded-xl p-1">
+                        <a href="{{ request()->fullUrlWithQuery(['layout' => 'list']) }}" 
+                           class="w-8 h-8 flex items-center justify-center rounded-lg transition-colors {{ $layout == 'list' ? 'bg-primary-50 text-primary-600' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50' }}"
+                           title="Vista de lista">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        </a>
+                        <a href="{{ request()->fullUrlWithQuery(['layout' => 'grid']) }}" 
+                           class="w-8 h-8 flex items-center justify-center rounded-lg transition-colors {{ $layout == 'grid' ? 'bg-primary-50 text-primary-600' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50' }}"
+                           title="Vista de cuadrícula">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                        </a>
+                    </div>
+                    <select onchange="window.location.href=this.value" class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400/50">
+                        <option value="{{ route('products.index', array_merge(request()->query(), ['sort' => 'featured'])) }}" {{ request('sort', 'featured') == 'featured' ? 'selected' : '' }}>Destacados</option>
+                        <option value="{{ route('products.index', array_merge(request()->query(), ['sort' => 'price_asc'])) }}" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Menor Precio</option>
+                        <option value="{{ route('products.index', array_merge(request()->query(), ['sort' => 'price_desc'])) }}" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Mayor Precio</option>
+                        <option value="{{ route('products.index', array_merge(request()->query(), ['sort' => 'best_selling'])) }}" {{ request('sort') == 'best_selling' ? 'selected' : '' }}>Más Vendidos</option>
+                        <option value="{{ route('products.index', array_merge(request()->query(), ['sort' => 'newest'])) }}" {{ request('sort') == 'newest' ? 'selected' : '' }}>Más Recientes</option>
+                    </select>
+                </div>
             </div>
 
             @if($products->count())
-            <div class="grid {{ $gridClass }} gap-5">
+            <div class="grid {{ $layout == 'list' ? 'grid-cols-1' : $gridClass }} gap-5">
                 @foreach($products as $product)
-                <x-product-card :product="$product" />
+                <x-product-card :product="$product" :layout="$layout" />
                 @endforeach
             </div>
 

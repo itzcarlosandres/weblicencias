@@ -22,12 +22,25 @@
         /* Fix for sharp-duotone icons side-by-side issue */
         .fa-sharp-duotone { position: relative; }
         .fa-sharp-duotone::before { position: absolute; }
+
+        /* Responsive Sidebar */
+        .admin-sidebar-layout { transform: translateX(-100%); left: 0; top: 0; }
+        .admin-main-content { margin-left: 0; }
+        @media (min-width: 1024px) {
+            .admin-sidebar-layout { transform: translateX(0); }
+            .admin-sidebar-layout.sidebar-collapsed { transform: translateX(-100%); }
+            .admin-main-content { margin-left: 260px; }
+        }
+        .admin-sidebar-layout.mobile-open { transform: translateX(0); }
     </style>
 </head>
 <body class="font-sans antialiased bg-[#F0F4F8] dark:bg-[#0B1120]">
-    <div class="min-h-screen flex">
+    <div class="min-h-screen flex relative">
+        <!-- Mobile Overlay -->
+        <div id="mobile-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-gray-900/50 z-20 hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
+
         <!-- Sidebar -->
-        <aside class="w-[260px] bg-white dark:bg-[#111827] border-r border-gray-200/80 dark:border-gray-800/60 flex flex-col shrink-0 fixed h-full z-30">
+        <aside id="admin-sidebar" class="admin-sidebar-layout w-[260px] bg-white dark:bg-[#111827] border-r border-gray-200/80 dark:border-gray-800/60 flex flex-col shrink-0 fixed h-full z-30 transition-transform duration-300">
             <!-- Logo -->
             <div class="px-5 h-16 flex items-center gap-3 border-b border-gray-200/80 dark:border-gray-800/60">
                 <div class="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20">
@@ -163,11 +176,14 @@
         </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 ml-[260px] flex flex-col min-w-0">
+        <div class="admin-main-content flex-1 flex flex-col min-w-0 transition-all duration-300">
             <!-- Top Bar -->
-            <header class="h-16 bg-white/80 dark:bg-[#111827]/80 backdrop-blur-xl border-b border-gray-200/80 dark:border-gray-800/60 flex items-center justify-between px-6 shrink-0 sticky top-0 z-20">
+            <header class="h-16 bg-white/80 dark:bg-[#111827]/80 backdrop-blur-xl border-b border-gray-200/80 dark:border-gray-800/60 flex items-center justify-between px-4 sm:px-6 shrink-0 sticky top-0 z-20">
                 <div class="flex items-center gap-4">
-                    <h1 class="text-[15px] font-semibold text-gray-900 dark:text-white">@yield('header', 'Dashboard')</h1>
+                    <button onclick="toggleSidebar()" class="p-2 -ml-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white lg:hidden">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                    <h1 class="text-[15px] font-semibold text-gray-900 dark:text-white truncate">@yield('header', 'Dashboard')</h1>
                     @hasSection('breadcrumb')
                     <div class="flex items-center gap-1.5 text-[12px] text-gray-400">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -232,6 +248,21 @@
     </div>
 
     <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('admin-sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            sidebar.classList.toggle('mobile-open');
+            
+            if (overlay.classList.contains('hidden')) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            } else {
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
         document.addEventListener('click', function(e) {
             const dropdown = document.getElementById('user-dropdown');
             if (dropdown && !dropdown.contains(e.target) && !e.target.closest('[onclick*="user-dropdown"]')) {

@@ -324,35 +324,8 @@
 
 </div>
 
-<!-- Promo Banner (App 15%) -->
-<div class="bg-black border-b-4 border-blue-500 relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
-    <div class="max-w-[1440px] mx-auto px-4 py-6 relative z-10 flex flex-col md:flex-row items-center justify-center md:justify-between gap-6 text-center md:text-left">
-        <div class="flex flex-col md:flex-row items-center gap-6">
-            <div class="text-[#f48024] font-black text-4xl md:text-5xl italic tracking-tighter transform -skew-x-12">AHORRA UN 15%</div>
-            <div class="text-white font-bold text-lg md:text-xl uppercase leading-tight">con la<br><span class="text-blue-400 font-black">APP DE TODOKEYS</span></div>
-        </div>
-        <div class="flex gap-4 items-center">
-            <a href="#" class="hover:scale-105 transition-transform"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" class="h-10"></a>
-            <a href="#" class="hover:scale-105 transition-transform"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" class="h-10"></a>
-            <div class="w-20 h-20 bg-white p-1 rounded-lg ml-6 hidden lg:block shadow-lg">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://todokeys.com" class="w-full h-full">
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Newsletter -->
-<div class="bg-[#eaf4fe] py-16">
-    <div class="max-w-2xl mx-auto px-4 text-center">
-        <h3 class="text-2xl font-bold text-gray-900 mb-3">Suscríbete a nuestra newsletter para ofertas exclusivas</h3>
-        <p class="text-gray-600 mb-8">No te pierdas los mejores descuentos en juegos y software. Cero spam, prometido.</p>
-        <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
-            <input type="email" placeholder="Ingresa tu dirección de correo electrónico" required class="flex-1 px-5 py-4 rounded-xl border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-white text-gray-900 shadow-sm text-sm">
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-xl transition-colors shadow-md text-sm whitespace-nowrap">Suscribirse</button>
-        </form>
-    </div>
-</div>
+
 
 <!-- FAQ Section -->
 <div class="bg-white py-20 border-t border-gray-200">
