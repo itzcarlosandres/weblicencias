@@ -68,6 +68,7 @@ class OrderService
 
     public function deliverOrder(Order $order): void
     {
+        $allDelivered = true;
         foreach ($order->items as $item) {
             if (!$item->license_id) {
                 $license = License::where('product_id', $item->product_id)
@@ -82,43 +83,56 @@ class OrderService
                     $product = Product::find($item->product_id);
                     $product->decrement('stock', $item->quantity);
                     $product->increment('sold_count', $item->quantity);
+                } else {
+                    $allDelivered = false;
                 }
             }
         }
 
-        $order->update(['status' => 'delivered']);
+        if ($allDelivered) {
+            $order->update(['status' => 'delivered']);
+        } else {
+            // Si faltan licencias, lo dejamos como processing
+            $order->update(['status' => 'processing']);
+        }
 
-        // Award points for the order
+        // Award points for the order only if they haven't been awarded yet
         if ($this->pointsService->isEnabled()) {
-            $points = $this->pointsService->calculatePointsForOrder($order->total);
-            if ($points > 0) {
-                $this->pointsService->awardPoints(
-                    $order->user,
-                    $points,
-                    "Puntos por pedido #{$order->order_number}",
-                    $order
-                );
-            }
+            $pointsAlreadyAwarded = \App\Models\PointTransaction::where('order_id', $order->id)
+                ->where('type', 'earned')
+                ->exists();
 
-            // Award points to referrer on first purchase
-            if ($order->user->referred_by) {
-                $isFirstOrder = Order::where('user_id', $order->user->id)
-                    ->whereIn('status', ['paid', 'delivered'])
-                    ->count() <= 1; // Since current order is just marked delivered
+            if (!$pointsAlreadyAwarded) {
+                $points = $this->pointsService->calculatePointsForOrder($order->total);
+                if ($points > 0) {
+                    $this->pointsService->awardPoints(
+                        $order->user,
+                        $points,
+                        "Puntos por pedido #{$order->order_number}",
+                        $order
+                    );
+                }
 
-                if ($isFirstOrder) {
-                    $referrer = $order->user->referrer;
-                    if ($referrer) {
-                        $rewardPoints = (int)\App\Models\Setting::get('referral_reward_points', '1000');
-                        
-                        if ($rewardPoints > 0) {
-                            $this->pointsService->awardPoints(
-                                $referrer,
-                                $rewardPoints,
-                                "Bono por primera compra de tu referido {$order->user->name}"
-                            );
+                // Award points to referrer on first purchase
+                if ($order->user->referred_by) {
+                    $isFirstOrder = Order::where('user_id', $order->user->id)
+                        ->whereIn('status', ['paid', 'delivered', 'processing'])
+                        ->count() <= 1;
+
+                    if ($isFirstOrder) {
+                        $referrer = $order->user->referrer;
+                        if ($referrer) {
+                            $rewardPoints = (int)\App\Models\Setting::get('referral_reward_points', '1000');
                             
-                            \Illuminate\Support\Facades\Mail::to($referrer->email)->queue(new \App\Mail\ReferralRewardMail($referrer, $order->user, $rewardPoints));
+                            if ($rewardPoints > 0) {
+                                $this->pointsService->awardPoints(
+                                    $referrer,
+                                    $rewardPoints,
+                                    "Bono por primera compra de tu referido {$order->user->name}"
+                                );
+                                
+                                \Illuminate\Support\Facades\Mail::to($referrer->email)->queue(new \App\Mail\ReferralRewardMail($referrer, $order->user, $rewardPoints));
+                            }
                         }
                     }
                 }

@@ -65,22 +65,48 @@ class CheckoutController extends Controller
             'status' => 'pending',
         ]);
 
-        // Handle points redemption
-        if ($this->pointsService->isEnabled() && $request->input('redeem_points')) {
-            $pointsToRedeem = min(
-                (int) $request->input('redeem_points', 0),
-                $this->pointsService->getMaxRedeemablePoints(auth()->user(), $order->total)
-            );
+        $paymentMethod = $request->input('payment_method', 'paypal');
 
-            if ($pointsToRedeem > 0) {
+        // Handle points redemption
+        $pointsToRedeemInput = (int) $request->input('redeem_points', 0);
+        
+        // Si el usuario seleccionó pagar 100% con puntos, forzamos el canje total necesario
+        if ($paymentMethod === 'points') {
+            $redemptionRate = $this->pointsService->getRedemptionRate();
+            $discountPerRedemption = $this->pointsService->getDiscountPerRedemption();
+            // Calculate how many points are needed to cover 100% of the total
+            $pointsNeeded = ceil($order->total / $discountPerRedemption) * $redemptionRate;
+            
+            if (auth()->user()->points >= $pointsNeeded) {
+                $pointsToRedeemInput = $pointsNeeded;
+            } else {
+                return back()->with('error', 'No tienes suficientes TodoPuntos para pagar esta orden.');
+            }
+        }
+
+        if ($this->pointsService->isEnabled() && $pointsToRedeemInput > 0) {
+            if ($paymentMethod === 'points') {
+                $pointsToRedeem = $pointsToRedeemInput; // Bypass limits for 100% payment
+            } else {
+                $pointsToRedeem = min(
+                    $pointsToRedeemInput,
+                    $this->pointsService->getMaxRedeemablePoints(auth()->user(), $order->total)
+                );
+            }
+
+            // Ajustar a múltiplos de la tasa de canje
+            $redemptionRate = $this->pointsService->getRedemptionRate();
+            $usablePoints = floor($pointsToRedeem / $redemptionRate) * $redemptionRate;
+
+            if ($usablePoints > 0) {
                 $this->pointsService->redeemPoints(
                     auth()->user(),
-                    $pointsToRedeem,
-                    "Canje de {$pointsToRedeem} puntos en pedido #{$order->order_number}",
+                    $usablePoints,
+                    "Canje de {$usablePoints} puntos en pedido #{$order->order_number}",
                     $order
                 );
 
-                $discountAmount = $this->pointsService->calculateDiscountForPoints($pointsToRedeem);
+                $discountAmount = $this->pointsService->calculateDiscountForPoints($usablePoints);
                 $order->update([
                     'discount' => $order->discount + $discountAmount,
                     'total' => max(0, $order->total - $discountAmount),
@@ -88,12 +114,10 @@ class CheckoutController extends Controller
             }
         }
 
-        $paymentMethod = $request->input('payment_method', 'paypal');
-
         // Si el total es 0 (por puntos o cupones), el pedido ya está pagado independientemente del método seleccionado
         if ($order->total <= 0) {
             $order->update([
-                'method' => 'points', 
+                'payment_method' => 'points', 
                 'status' => 'paid', 
                 'payment_status' => 'completed',
                 'payment_id' => 'POINTS_' . time()
@@ -107,7 +131,7 @@ class CheckoutController extends Controller
             return redirect()->route('customer.orders.show', $order->id)->with('success', 'Pedido pagado exitosamente con TodoPuntos');
         }
 
-        $order->update(['method' => $paymentMethod]);
+        $order->update(['payment_method' => $paymentMethod]);
 
         if ($paymentMethod === 'mercadopago') {
             return redirect()->route('checkout.mercadopago', ['order' => $order->id]);
@@ -135,12 +159,16 @@ class CheckoutController extends Controller
             $this->pointsService->getMaxRedeemablePoints($user, $total)
         );
 
-        $discountAmount = $this->pointsService->calculateDiscountForPoints($pointsToRedeem);
+        // Ajustar a múltiplos de la tasa de canje
+        $redemptionRate = $this->pointsService->getRedemptionRate();
+        $usablePoints = floor($pointsToRedeem / $redemptionRate) * $redemptionRate;
+
+        $discountAmount = $this->pointsService->calculateDiscountForPoints($usablePoints);
 
         return response()->json([
-            'points' => $pointsToRedeem,
-            'discount' => currency_format($discountAmount),
-            'new_total' => currency_format(max(0, $total - $discountAmount)),
+            'success' => true,
+            'discount' => number_format($discountAmount, 2),
+            'new_total' => currency_format($total - $discountAmount)
         ]);
     }
 }

@@ -69,6 +69,9 @@
                 </div>
             @endif
         </div>
+        
+
+
         @if($license->expires_at)
         <div class="mt-3 text-xs text-text-muted">
             Expira el {{ $license->expires_at->format('d/m/Y') }}
@@ -100,7 +103,7 @@ function revealLicense(licenseId, btn) {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Revelando...';
         btn.disabled = true;
 
-        fetch(`/mi-cuenta/licencias/${licenseId}/reveal`, {
+        fetch('{{ route("customer.licenses.reveal", ":id") }}'.replace(':id', licenseId), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -127,4 +127,33 @@ class HomeController extends Controller
         };
         return "{$mobile} {$tablet} {$desktop}";
     }
+
+    public function socialProof()
+    {
+        // Obtener una orden reciente real, o simular una con productos populares
+        $recentOrders = \App\Models\OrderItem::with('product')
+            ->latest()
+            ->take(20)
+            ->get();
+
+        if ($recentOrders->count() > 0) {
+            $recentOrder = $recentOrders->random();
+            if ($recentOrder && $recentOrder->product) {
+                $names = ['Carlos', 'María', 'David', 'Ana', 'Jorge', 'Laura', 'Pedro', 'Sofía'];
+                $countries = ['Colombia', 'México', 'España', 'Argentina', 'Chile', 'Perú'];
+                
+                return response()->json([
+                    'success' => true,
+                    'name' => $names[array_rand($names)],
+                    'country' => $countries[array_rand($countries)],
+                    'product_name' => $recentOrder->product->name,
+                    'product_image' => $recentOrder->product->image ? asset('storage/' . $recentOrder->product->image) : null,
+                    'product_url' => route('products.show', $recentOrder->product->slug),
+                    'time_ago' => rand(1, 45) . ' min',
+                ]);
+            }
+        }
+
+        return response()->json(['success' => false]);
+    }
 }

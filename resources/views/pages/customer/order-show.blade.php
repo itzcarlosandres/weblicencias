@@ -137,7 +137,19 @@
             <div class="space-y-2 text-sm">
                 <div class="flex justify-between">
                     <span class="text-text-secondary">Método</span>
-                    <span class="font-medium text-text-primary ">PayPal</span>
+                    <span class="font-medium text-text-primary flex items-center gap-1.5">
+                        @if($order->payment_method === 'paypal')
+                            <i class="fa-brands fa-paypal text-blue-600"></i> PayPal
+                        @elseif($order->payment_method === 'mercadopago')
+                            <i class="fa-solid fa-handshake text-[#009ee3]"></i> Mercado Pago
+                        @elseif($order->payment_method === 'wompi')
+                            <i class="fa-solid fa-building-columns text-indigo-600"></i> Wompi
+                        @elseif($order->payment_method === 'points')
+                            <i class="fa-solid fa-coins text-amber-500"></i> TodoPuntos
+                        @else
+                            {{ ucfirst($order->payment_method) }}
+                        @endif
+                    </span>
                 </div>
                 <div class="flex justify-between">
                     <span class="text-text-secondary">Estado</span>
@@ -166,7 +178,7 @@ function revealLicense(licenseId, btn) {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Revelando...';
         btn.disabled = true;
 
-        fetch(`/mi-cuenta/licencias/${licenseId}/reveal`, {
+        fetch('{{ route("customer.licenses.reveal", ":id") }}'.replace(':id', licenseId), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

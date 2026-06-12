@@ -70,12 +70,13 @@ class CustomerController extends Controller
 
         if (!$license->is_revealed) {
             $license->update(['revealed_at' => now()]);
+            $license->refresh();
         }
 
         return response()->json([
             'success' => true,
             'key' => $license->key,
-            'revealed_at' => $license->revealed_at->format('d/m/Y H:i:s')
+            'revealed_at' => $license->revealed_at ? $license->revealed_at->format('d/m/Y H:i:s') : now()->format('d/m/Y H:i:s')
         ]);
     }
 

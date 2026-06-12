@@ -197,6 +197,7 @@
                         <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Método de activación</label>
                         <input type="text" name="activation_method" value="{{ old('activation_method') }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all" placeholder="Ej: Online, por teléfono">
                     </div>
+
                 </div>
             </div>
         </div>

@@ -296,15 +296,20 @@
             </div>
             
             @if(isset($pointsEarned) && $pointsEarned > 0)
+            @php
+                $pointsService = app(\App\Services\PointsService::class);
+                $pointsValue = ($pointsEarned / $pointsService->getRedemptionRate()) * $pointsService->getDiscountPerRedemption();
+            @endphp
             <!-- Points Earned Banner -->
             <div class="mt-4 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl shadow-sm p-4 text-white flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
                     <!-- Icono de regalo animado que rebota -->
                     <svg class="w-6 h-6 text-yellow-100 animate-[bounce_2s_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
                 </div>
-                <div>
-                    <div class="font-bold text-sm">Gana {{ $pointsEarned }} puntos</div>
-                    <div class="text-xs text-white/90 font-medium">con esta compra</div>
+                <div class="flex flex-col items-start gap-1.5">
+                    <div class="inline-block bg-white/20 px-2.5 py-1 rounded-md text-[13px] font-bold shadow-sm leading-none">Gana {{ $pointsEarned }} puntos</div>
+                    <div class="inline-block bg-white/20 px-2.5 py-1 rounded-md text-[13px] font-bold shadow-sm leading-none">Te devuelve {{ currency_format($pointsValue) }}</div>
+                    <div class="text-[11px] text-white/90 font-medium mt-0.5">con esta compra</div>
                 </div>
             </div>
             @endif
@@ -479,6 +484,27 @@
                 </div>
                 @endforelse
             </div>
+        </div>
+    </div>
+
+    <!-- Mobile Floating Add to Cart Bar -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-200/80 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] p-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] z-50">
+        <div class="flex items-center justify-between gap-4 max-w-7xl mx-auto">
+            <div class="shrink-0">
+                <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">Precio</div>
+                <div class="text-xl font-black text-blue-600 leading-none">{{ currency_format($product->discounted_price) }}</div>
+            </div>
+            
+            @if($product->stock > 0)
+            <button onclick="addToCart(this, {{ $product->id }})" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[15px] py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 active:scale-[0.98]">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                Añadir al carrito
+            </button>
+            @else
+            <div class="flex-1 bg-red-50 text-red-600 py-3.5 px-4 rounded-xl text-sm font-bold text-center border border-red-100">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Agotado
+            </div>
+            @endif
         </div>
     </div>
 

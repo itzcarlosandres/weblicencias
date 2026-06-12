@@ -48,10 +48,10 @@
             <div>
                 <h3 class="text-[13px] font-bold text-white mb-4 uppercase tracking-wider">Legal</h3>
                 <ul class="space-y-3">
-                    <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Términos de Servicio</a></li>
-                    <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Política de Privacidad</a></li>
-                    <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Política de Reembolso</a></li>
-                    <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Cookie Policy</a></li>
+                    <li><a href="{{ route('legal.terms') }}" class="text-sm text-gray-400 hover:text-white transition-colors">Términos de Servicio</a></li>
+                    <li><a href="{{ route('legal.privacy') }}" class="text-sm text-gray-400 hover:text-white transition-colors">Política de Privacidad</a></li>
+                    <li><a href="{{ route('legal.refunds') }}" class="text-sm text-gray-400 hover:text-white transition-colors">Política de Reembolso</a></li>
+                    <li><a href="{{ route('legal.cookies') }}" class="text-sm text-gray-400 hover:text-white transition-colors">Cookie Policy</a></li>
                 </ul>
             </div>
         </div>

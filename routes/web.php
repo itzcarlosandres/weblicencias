@@ -22,7 +22,13 @@ Route::get('/productos', [ProductController::class, 'index'])->name('products.in
 Route::get('/ofertas-flash', [ProductController::class, 'flashSales'])->name('products.flash-sales');
 Route::get('/search/live', [ProductController::class, 'liveSearch'])->name('products.live-search');
 Route::get('/producto/{slug}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/api/social-proof', [HomeController::class, 'socialProof'])->name('api.social-proof');
 
+// Legal
+Route::view('/terminos-y-condiciones', 'pages.legal.terms')->name('legal.terms');
+Route::view('/politica-de-privacidad', 'pages.legal.privacy')->name('legal.privacy');
+Route::view('/politica-de-reembolso', 'pages.legal.refunds')->name('legal.refunds');
+Route::view('/cookie-policy', 'pages.legal.cookies')->name('legal.cookies');
 // Blog
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
