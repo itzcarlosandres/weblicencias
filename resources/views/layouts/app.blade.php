@@ -278,5 +278,21 @@
     </script>
 
     <x-social-proof />
+
+    @guest
+        @php
+            $googleClientId = config('services.google.client_id') ?: env('GOOGLE_CLIENT_ID');
+        @endphp
+        @if($googleClientId)
+            <div id="g_id_onload"
+                 data-client_id="{{ $googleClientId }}"
+                 data-login_uri="{{ route('google.one-tap') }}"
+                 data-auto_prompt="true"
+                 data-context="use"
+                 data-itp_support="true">
+            </div>
+            <script src="https://accounts.google.com/gsi/client" async defer></script>
+        @endif
+    @endguest
 </body>
 </html>

@@ -70,9 +70,11 @@ Route::middleware('auth')->group(function () {
 
 // Wompi Webhook (outside auth middleware)
 Route::post('/webhook/wompi', [\App\Http\Controllers\WompiController::class, 'webhook'])->name('wompi.webhook');
+
 // Socialite Routes
 Route::get('/auth/google', [\App\Http\Controllers\SocialAuthController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [\App\Http\Controllers\SocialAuthController::class, 'callback']);
+Route::post('/auth/google/one-tap', [\App\Http\Controllers\SocialAuthController::class, 'oneTapCallback'])->name('google.one-tap');
 
 // Blog
 Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
