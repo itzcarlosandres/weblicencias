@@ -286,7 +286,7 @@
         @if($googleClientId)
             <div id="g_id_onload"
                  data-client_id="{{ $googleClientId }}"
-                 data-login_uri="{{ route('google.one-tap') }}"
+                 data-login_uri="{{ route('google.one-tap', [], false) }}"
                  data-auto_prompt="true"
                  data-context="use"
                  data-itp_support="true">
