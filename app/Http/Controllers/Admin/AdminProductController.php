@@ -44,8 +44,11 @@ class AdminProductController extends Controller
         $categories = Category::where('is_active', true)->orderBy('name')->get();
         $brands = Brand::where('is_active', true)->orderBy('name')->get();
         $badges = \App\Models\Badge::where('is_active', true)->orderBy('name')->get();
+        $regions = \App\Models\ProductAttribute::where('type', 'region')->orderBy('value')->get();
+        $activationMethods = \App\Models\ProductAttribute::where('type', 'activation_method')->orderBy('value')->get();
+        $platforms = \App\Models\ProductAttribute::where('type', 'platform')->orderBy('value')->get();
 
-        return view('admin.products.create', compact('categories', 'brands', 'badges'));
+        return view('admin.products.create', compact('categories', 'brands', 'badges', 'regions', 'activationMethods', 'platforms'));
     }
 
     public function store(Request $request)
@@ -100,9 +103,12 @@ class AdminProductController extends Controller
         $categories = Category::where('is_active', true)->orderBy('name')->get();
         $brands = Brand::where('is_active', true)->orderBy('name')->get();
         $badges = \App\Models\Badge::where('is_active', true)->orderBy('name')->get();
+        $regions = \App\Models\ProductAttribute::where('type', 'region')->orderBy('value')->get();
+        $activationMethods = \App\Models\ProductAttribute::where('type', 'activation_method')->orderBy('value')->get();
+        $platforms = \App\Models\ProductAttribute::where('type', 'platform')->orderBy('value')->get();
         $licenseStats = $this->licenseService->getLicensesStats($product);
 
-        return view('admin.products.edit', compact('product', 'categories', 'brands', 'badges', 'licenseStats'));
+        return view('admin.products.edit', compact('product', 'categories', 'brands', 'badges', 'regions', 'activationMethods', 'platforms', 'licenseStats'));
     }
 
     public function update(Request $request, Product $product)

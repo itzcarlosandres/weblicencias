@@ -107,6 +107,7 @@ Route::prefix('mi-cuenta')->name('customer.')->middleware('auth')->group(functio
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('products', \App\Http\Controllers\Admin\AdminProductController::class)->except(['show']);
+    Route::resource('attributes', \App\Http\Controllers\Admin\AdminAttributeController::class)->only(['index', 'store', 'destroy']);
     Route::post('/products/{product}/import-licenses', [\App\Http\Controllers\Admin\AdminProductController::class, 'importLicenses'])->name('products.import-licenses');
     Route::post('/products/{product}/toggle-featured', [\App\Http\Controllers\Admin\AdminProductController::class, 'toggleFeatured'])->name('products.toggle-featured');
     Route::post('/products/{product}/toggle-bundle', [\App\Http\Controllers\Admin\AdminProductController::class, 'toggleBundle'])->name('products.toggle-bundle');

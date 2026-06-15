@@ -89,6 +89,10 @@
                         <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                         Etiquetas
                     </a>
+                    <a href="{{ route('admin.attributes.index') }}" class="sidebar-item flex items-center gap-3 px-3 py-2.5 text-[13px] font-medium rounded-lg {{ request()->routeIs('admin.attributes.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 active' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
+                        <i class="fa-solid fa-tags w-[18px] text-center text-lg"></i>
+                        Atributos
+                    </a>
                     <a href="{{ route('admin.licenses.index') }}" class="sidebar-item flex items-center gap-3 px-3 py-2.5 text-[13px] font-medium rounded-lg {{ request()->routeIs('admin.licenses.*') ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 active' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white' }}">
                         <i class="fa-solid fa-key w-5 text-center"></i>
                         <span>Licencias</span>
