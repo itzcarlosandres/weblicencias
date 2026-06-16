@@ -32,6 +32,25 @@ class DeliveryService
                 'total' => $order->total,
             ]);
 
+            // 5. Award Cashback
+            if ($order->total > 0 && $order->payment_method !== 'wallet' && $order->payment_method !== 'points') {
+                $cashbackPercentage = (float) \App\Models\Setting::get('cashback_percentage', '3');
+                
+                if ($cashbackPercentage > 0) {
+                    $cashback = $order->total * ($cashbackPercentage / 100);
+                    $order->user->wallet_balance += $cashback;
+                    $order->user->save();
+
+                    \App\Models\WalletTransaction::create([
+                        'user_id' => $order->user_id,
+                        'type' => 'cashback',
+                        'amount' => $cashback,
+                        'description' => "Cashback ({$cashbackPercentage}%) por compra #{$order->order_number}",
+                        'reference_id' => $order->id,
+                    ]);
+                }
+            }
+
             return true;
         } catch (\Exception $e) {
             \Log::error('Delivery failed for order: ' . $order->order_number, [

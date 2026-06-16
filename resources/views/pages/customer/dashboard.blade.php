@@ -38,9 +38,10 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                         Tickets de Soporte
                     </a>
-                    <a href="{{ route('customer.points') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm rounded-xl {{ request()->routeIs('customer.points') ? 'bg-primary-50 text-primary-600' : 'text-text-secondary hover:bg-gray-50 ' }}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
-                        Mis Puntos
+
+                    <a href="{{ route('customer.wallet') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm rounded-xl {{ request()->routeIs('customer.wallet') ? 'bg-primary-50 text-primary-600' : 'text-text-secondary hover:bg-gray-50 ' }}">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                        Mi Monedero
                     </a>
                     <a href="{{ route('customer.wishlist') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm rounded-xl {{ request()->routeIs('customer.wishlist') ? 'bg-primary-50 text-primary-600' : 'text-text-secondary hover:bg-gray-50 ' }}">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
@@ -82,11 +83,19 @@
                     <div class="text-[11px] font-medium text-text-muted uppercase tracking-wide">Pendientes</div>
                     <div class="text-2xl font-extrabold text-text-primary mt-1">{{ $stats['pending_orders'] }}</div>
                 </div>
-                <div class="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-5 text-white relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-6 translate-x-6"></div>
-                    <div class="text-[11px] font-medium opacity-80 uppercase tracking-wide">Mis Puntos</div>
-                    <div class="text-2xl font-extrabold mt-1">{{ number_format($stats['points']) }}</div>
-                    <div class="text-[11px] opacity-70 mt-0.5">= {{ currency_format($stats['points_value']) }} de descuento</div>
+
+                <div class="bg-gray-900 rounded-2xl p-5 text-white relative overflow-hidden mt-4 lg:mt-0 col-span-2 lg:col-span-4 border border-gray-800">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -translate-y-8 translate-x-8"></div>
+                    <div class="flex items-center justify-between relative z-10">
+                        <div>
+                            <div class="text-[11px] font-medium text-gray-300 uppercase tracking-wide flex items-center gap-1.5"><i class="fa-solid fa-wallet"></i> Mi Monedero</div>
+                            <div class="text-2xl font-extrabold mt-1 text-white">${{ number_format(auth()->user()->wallet_balance, 2) }}</div>
+                            <div class="text-[11px] text-gray-400 mt-0.5">Saldo disponible para comprar</div>
+                        </div>
+                        <a href="{{ route('customer.wallet') }}" class="px-4 py-2 bg-white/10 border border-white/10 hover:bg-white/20 rounded-xl text-[12px] font-bold backdrop-blur-sm transition-colors text-white">
+                            Ver historial
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -115,56 +124,7 @@
                     </div>
                 </div>
 
-                <!-- Points History -->
-                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-100 ">
-                        <h3 class="font-bold text-text-primary text-sm">Historial de Puntos</h3>
-                    </div>
-                    <div class="divide-y divide-gray-50 ">
-                        @forelse($recentPoints as $transaction)
-                        <div class="flex items-center justify-between px-6 py-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ $transaction->type === 'earned' ? 'bg-emerald-100 text-emerald-500' : 'bg-red-100 text-red-500' }}">
-                                    @if($transaction->type === 'earned')
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 1v8m0 0v1"/></svg>
-                                    @else
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
-                                    @endif
-                                </div>
-                                <div>
-                                    <div class="text-[13px] font-medium text-text-primary ">{{ $transaction->description ?? ucfirst($transaction->type) }}</div>
-                                    <div class="text-[11px] text-text-muted">{{ $transaction->created_at->diffForHumans() }}</div>
-                                </div>
-                            </div>
-                            <div class="text-[13px] font-bold {{ $transaction->points > 0 ? 'text-emerald-500' : 'text-red-500' }}">
-                                {{ $transaction->points > 0 ? '+' : '' }}{{ number_format($transaction->points) }}
-                            </div>
-                        </div>
-                        @empty
-                        <div class="px-6 py-8 text-center text-[13px] text-text-muted">Sin transacciones de puntos</div>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
 
-            <!-- Points Info -->
-            @if($stats['points'] > 0)
-            <div class="mt-6 bg-gradient-to-r from-primary-50 to-primary-100/50 rounded-2xl border border-primary-200/50 p-6">
-                <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center shrink-0">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 1v8m0 0v1"/></svg>
-                    </div>
-                    <div>
-                        <h4 class="text-[15px] font-bold text-primary-700 ">Tienes {{ number_format($stats['points']) }} puntos disponibles</h4>
-                        <p class="text-[13px] text-primary-600/70 mt-1">Puedes canjearlos en el checkout para obtener hasta {{ currency_format($stats['points_value']) }} de descuento en tu próxima compra.</p>
-                        <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white text-[12px] font-medium rounded-lg transition-colors">
-                            Usar mis puntos
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            @endif
             @endif
 
             <!-- Referral Link -->

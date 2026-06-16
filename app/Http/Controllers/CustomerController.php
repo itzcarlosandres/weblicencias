@@ -35,6 +35,15 @@ class CustomerController extends Controller
         return view('pages.customer.dashboard', compact('stats', 'recentOrders', 'recentPoints'));
     }
 
+    public function wallet()
+    {
+        $transactions = auth()->user()->walletTransactions()
+            ->latest()
+            ->paginate(15);
+
+        return view('pages.customer.wallet', compact('transactions'));
+    }
+
     public function orders()
     {
         $orders = auth()->user()->orders()

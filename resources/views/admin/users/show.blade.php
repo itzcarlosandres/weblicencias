@@ -35,31 +35,31 @@
             </div>
         </div>
 
-        <!-- Gestión de Puntos -->
-        <div class="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-xl shadow-sm border border-amber-200 dark:border-amber-800/50 p-6">
+        <!-- Gestión de Monedero -->
+        <div class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-xl shadow-sm border border-emerald-200 dark:border-emerald-700/50 p-6 mt-6">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold text-amber-900 dark:text-amber-400 flex items-center gap-2">
-                    <i class="fa-solid fa-coins"></i> TodoPuntos
+                <h3 class="text-lg font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
+                    <i class="fa-solid fa-wallet"></i> Monedero
                 </h3>
-                <span class="text-2xl font-black text-amber-600 dark:text-amber-500">{{ number_format($user->points) }}</span>
+                <span class="text-2xl font-black text-emerald-600 dark:text-white">${{ number_format($user->wallet_balance, 2) }}</span>
             </div>
             
-            <p class="text-xs text-amber-700 dark:text-amber-500/80 mb-4">
-                Añade o resta puntos a este usuario. Usa un valor negativo (ej: -500) para restar.
+            <p class="text-xs text-emerald-700 dark:text-emerald-200/80 mb-4">
+                Añade o resta saldo al monedero. Usa un valor negativo (ej: -5.00) para restar.
             </p>
 
-            <form action="{{ route('admin.users.points', $user) }}" method="POST" class="space-y-3">
+            <form action="{{ route('admin.users.adjust-wallet', $user) }}" method="POST" class="space-y-3">
                 @csrf
                 <div>
-                    <label class="block text-xs font-bold text-amber-900 dark:text-amber-500 mb-1">Cantidad (+ o -)</label>
-                    <input type="number" name="amount" required class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-amber-300 dark:border-amber-700/50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <label class="block text-xs font-bold text-emerald-900 dark:text-emerald-500 mb-1">Cantidad (+ o -)</label>
+                    <input type="number" step="0.01" name="amount" required class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-emerald-300 dark:border-emerald-700/50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-amber-900 dark:text-amber-500 mb-1">Motivo / Descripción</label>
-                    <input type="text" name="description" placeholder="Ej: Regalo por compra" required class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-amber-300 dark:border-amber-700/50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <label class="block text-xs font-bold text-emerald-900 dark:text-emerald-500 mb-1">Motivo / Descripción</label>
+                    <input type="text" name="description" placeholder="Ej: Reembolso" required class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-emerald-300 dark:border-emerald-700/50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
-                <button type="submit" class="w-full mt-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-4 rounded-lg transition-colors shadow-sm text-sm">
-                    Aplicar Puntos
+                <button type="submit" class="w-full mt-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 px-4 rounded-lg transition-colors shadow-sm text-sm">
+                    Aplicar Saldo
                 </button>
             </form>
         </div>

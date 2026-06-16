@@ -22,8 +22,8 @@ class MercadoPagoController extends Controller
             abort(403);
         }
 
-        // Obtener el Access Token
-        $accessToken = env('MERCADOPAGO_ACCESS_TOKEN');
+        // Obtener el Access Token (Prioridad: DB, luego .env)
+        $accessToken = \App\Models\Setting::get('mercadopago_access_token', env('MERCADOPAGO_ACCESS_TOKEN'));
         if (!$accessToken) {
             return redirect()->route('checkout.index')->with('error', 'La pasarela de Mercado Pago no está configurada.');
         }

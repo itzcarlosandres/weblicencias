@@ -64,4 +64,35 @@ class AdminUserController extends Controller
 
         return back()->with('success', $message);
     }
+
+    public function adjustWallet(Request $request, User $user)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|not_in:0',
+            'description' => 'required|string|max:255',
+        ]);
+
+        $amount = (float) $request->input('amount');
+        $description = $request->input('description');
+
+        if ($amount < 0 && $user->wallet_balance < abs($amount)) {
+            return back()->with('error', 'El usuario no tiene suficiente saldo en el monedero para deducir esa cantidad.');
+        }
+
+        $user->wallet_balance += $amount;
+        $user->save();
+
+        \App\Models\WalletTransaction::create([
+            'user_id' => $user->id,
+            'type' => 'admin_adjustment',
+            'amount' => $amount,
+            'description' => $description,
+        ]);
+
+        $message = $amount > 0 
+            ? "Se han añadido $" . number_format($amount, 2) . " al monedero del usuario."
+            : "Se han restado $" . number_format(abs($amount), 2) . " del monedero del usuario.";
+
+        return back()->with('success', $message);
+    }
 }

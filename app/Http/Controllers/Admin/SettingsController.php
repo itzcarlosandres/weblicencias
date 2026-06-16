@@ -68,13 +68,16 @@ class SettingsController extends Controller
             // Exit Intent
             'exit_intent_enabled', 'exit_intent_title', 'exit_intent_text',
             'exit_intent_coupon', 'exit_intent_timer',
-            // Points
+            // Points & Cashback
             'points_enabled', 'points_per_dollar', 'points_redemption_rate',
             'points_discount_per_redemption', 'points_min_redeem', 'points_expiry_days',
+            'cashback_percentage',
             // Referrals
             'referral_welcome_points', 'referral_reward_points',
             // Payment
-            'payment_paypal_enabled', 'payment_mercadopago_enabled', 'payment_wompi_enabled',
+            'payment_paypal_enabled', 'payment_mercadopago_enabled', 
+            'mercadopago_access_token', 'mercadopago_public_key',
+            'payment_wompi_enabled',
             'wompi_public_key', 'wompi_private_key', 'wompi_events_secret', 'wompi_sandbox_mode',
             // AI
             'gemini_api_key',
@@ -259,8 +262,10 @@ class SettingsController extends Controller
             'exit_intent_text' => 'appearance', 'exit_intent_coupon' => 'appearance', 'exit_intent_timer' => 'appearance',
             'points_enabled' => 'points', 'points_per_dollar' => 'points', 'points_redemption_rate' => 'points',
             'points_discount_per_redemption' => 'points', 'points_min_redeem' => 'points', 'points_expiry_days' => 'points',
+            'cashback_percentage' => 'points',
             'referral_welcome_points' => 'points', 'referral_reward_points' => 'points',
             'payment_paypal_enabled' => 'payment', 'payment_mercadopago_enabled' => 'payment',
+            'mercadopago_access_token' => 'payment', 'mercadopago_public_key' => 'payment',
             'payment_wompi_enabled' => 'payment', 'wompi_public_key' => 'payment',
             'wompi_private_key' => 'payment', 'wompi_events_secret' => 'payment', 'wompi_sandbox_mode' => 'payment',
             'gemini_api_key' => 'ai',

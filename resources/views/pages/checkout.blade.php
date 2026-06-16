@@ -25,42 +25,9 @@
                     Método de Pago
                 </h2>
 
-                <form action="{{ route('checkout.process') }}" method="POST" x-data="{ paymentMethod: '{{ $paypalEnabled ? 'paypal' : ($mercadopagoEnabled ? 'mercadopago' : (isset($wompiEnabled) && $wompiEnabled ? 'wompi' : 'points')) }}' }">
+                <form action="{{ route('checkout.process') }}" method="POST" x-data="{ paymentMethod: '{{ $paypalEnabled ? 'paypal' : ($mercadopagoEnabled ? 'mercadopago' : (isset($wompiEnabled) && $wompiEnabled ? 'wompi' : 'wallet')) }}' }">
                     @csrf
 
-                    <!-- Points Redemption -->
-                    @if($pointsEnabled && $userPoints >= 100)
-                    <div class="mb-6 p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-[16px] border border-amber-100" x-data="{ usePoints: false, pointsToUse: 0, discount: 0, newTotal: '{{ currency_format($total) }}' }">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
-                                    <i class="fa-solid fa-coins text-amber-500"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-[14px] font-bold text-amber-900">Usar mis TodoPuntos</h3>
-                                    <p class="text-[12px] text-amber-700/80">{{ number_format($userPoints) }} puntos disponibles (hasta {{ currency_format($maxRedeemable / 100) }})</p>
-                                </div>
-                            </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" x-model="usePoints" @change="if(usePoints){pointsToUse={{ $maxRedeemable }}}else{pointsToUse=0;discount=0;newTotal='{{ currency_format($total) }}'}" class="peer sr-only">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
-                            </label>
-                        </div>
-                        <div x-show="usePoints" x-transition class="mt-4 pt-4 border-t border-amber-200/50">
-                            <label class="block text-[13px] font-bold text-amber-900 mb-2">Puntos a canjear</label>
-                            <div class="flex items-center gap-3">
-                                <input type="number" name="redeem_points" x-model.number="pointsToUse" min="0" max="{{ $maxRedeemable }}" step="100" @input="fetch('{{ route('checkout.apply-points') }}', {method:'POST', headers:{'Content-Type':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}'},body:JSON.stringify({points:pointsToUse})}).then(r=>r.json()).then(d=>{discount=d.discount;newTotal=d.new_total})" class="flex-1 px-4 py-3 bg-white border border-amber-200 rounded-xl text-[14px] font-bold text-amber-900 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all">
-                                <div class="bg-amber-100 text-amber-800 px-4 py-3 rounded-xl text-[13px] font-bold whitespace-nowrap">
-                                    - $<span x-text="discount">0</span>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center mt-3 bg-white/60 p-3 rounded-lg">
-                                <span class="text-[13px] font-semibold text-amber-800">Nuevo total a pagar:</span>
-                                <span class="text-lg font-black text-amber-600"><span x-text="newTotal">{{ currency_format($total) }}</span></span>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
 
                     <div class="space-y-4">
                         @if($paypalEnabled)
@@ -120,25 +87,29 @@
                         </label>
                         @endif
 
-                        <!-- Puntos -->
+                        @php
+                            $userWallet = auth()->check() ? auth()->user()->wallet_balance : 0;
+                            $canPayWithWallet = $userWallet >= $total;
+                        @endphp
+                        <!-- Monedero -->
                         <label class="relative block cursor-pointer">
-                            <input type="radio" name="payment_method" value="points" x-model="paymentMethod" class="peer sr-only" {{ (!isset($pointsEnabled) || !$pointsEnabled || !isset($userPoints) || $userPoints < ($total * 100)) ? 'disabled' : '' }}>
-                            <div class="p-5 border-2 border-transparent peer-checked:border-amber-500 peer-checked:bg-amber-50 peer-disabled:opacity-60 peer-disabled:cursor-not-allowed bg-white rounded-2xl flex items-center justify-between transition-all shadow-sm">
+                            <input type="radio" name="payment_method" value="wallet" x-model="paymentMethod" class="peer sr-only" {{ !$canPayWithWallet ? 'disabled' : '' }}>
+                            <div class="p-5 border-2 border-transparent peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-disabled:opacity-60 peer-disabled:cursor-not-allowed bg-white rounded-2xl flex items-center justify-between transition-all shadow-sm">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-sm text-white text-2xl border border-amber-200">
-                                        <i class="fa-solid fa-coins"></i>
+                                    <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center shadow-sm text-white text-2xl border border-gray-800">
+                                        <i class="fa-solid fa-wallet"></i>
                                     </div>
                                     <div>
-                                        <div class="font-bold text-gray-900 text-[15px]">Pagar con TodoPuntos</div>
-                                        <div class="text-[13px] {{ (!isset($userPoints) || $userPoints < ($total * 100)) ? 'text-red-500' : 'text-amber-600 font-medium' }}">
-                                            Tienes {{ isset($userPoints) ? number_format($userPoints) : 0 }} pts (${{ isset($userPoints) ? number_format($userPoints / 100, 2) : '0.00' }})
-                                            @if(!isset($userPoints) || $userPoints < ($total * 100))
-                                                - Insuficientes
+                                        <div class="font-bold text-gray-900 text-[15px]">Pagar con mi Monedero</div>
+                                        <div class="text-[13px] {{ !$canPayWithWallet ? 'text-red-500' : 'text-emerald-600 font-medium' }}">
+                                            Saldo disponible: ${{ number_format($userWallet, 2) }}
+                                            @if(!$canPayWithWallet)
+                                                - Insuficiente
                                             @endif
                                         </div>
                                     </div>
                                 </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-200 peer-checked:border-4 peer-checked:border-amber-500 bg-white transition-all"></div>
+                                <div class="w-6 h-6 rounded-full border-2 border-gray-200 peer-checked:border-4 peer-checked:border-emerald-500 bg-white transition-all"></div>
                             </div>
                         </label>
                     </div>
@@ -169,7 +140,8 @@
                             'bg-[#0070ba] hover:bg-[#003087] shadow-[0_4px_14px_0_rgba(0,112,186,0.39)] hover:shadow-[0_6px_20px_rgba(0,112,186,0.23)]': paymentMethod === 'paypal',
                             'bg-[#009ee3] hover:bg-[#008bd1] shadow-[0_4px_14px_0_rgba(0,158,227,0.39)] hover:shadow-[0_6px_20px_rgba(0,158,227,0.23)]': paymentMethod === 'mercadopago',
                             'bg-[#1e1b4b] hover:bg-[#312e81] shadow-[0_4px_14px_0_rgba(49,46,129,0.39)] hover:shadow-[0_6px_20px_rgba(49,46,129,0.23)]': paymentMethod === 'wompi',
-                            'bg-amber-500 hover:bg-amber-600 shadow-[0_4px_14px_0_rgba(245,158,11,0.39)] hover:shadow-[0_6px_20px_rgba(245,158,11,0.23)]': paymentMethod === 'points'
+                            'bg-amber-500 hover:bg-amber-600 shadow-[0_4px_14px_0_rgba(245,158,11,0.39)] hover:shadow-[0_6px_20px_rgba(245,158,11,0.23)]': paymentMethod === 'points',
+                            'bg-emerald-500 hover:bg-emerald-600 shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] hover:shadow-[0_6px_20px_rgba(16,185,129,0.23)]': paymentMethod === 'wallet'
                         }"
                         class="w-full mt-8 text-white font-bold py-4 px-6 rounded-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 text-[16px]">
                         
@@ -177,12 +149,14 @@
                         <i x-show="paymentMethod === 'mercadopago'" class="fa-solid fa-handshake text-xl"></i>
                         <i x-show="paymentMethod === 'wompi'" class="fa-solid fa-building-columns text-xl"></i>
                         <i x-show="paymentMethod === 'points'" class="fa-solid fa-coins text-xl"></i>
+                        <i x-show="paymentMethod === 'wallet'" class="fa-solid fa-wallet text-xl"></i>
                         
                         <span x-text="
                             paymentMethod === 'paypal' ? 'Pagar con PayPal • {{ currency_format($total) }}' : 
                             (paymentMethod === 'mercadopago' ? 'Pagar con Mercado Pago • {{ currency_format($total) }}' : 
                             (paymentMethod === 'wompi' ? 'Continuar a Wompi • {{ currency_format($total) }}' : 
-                            'Canjear Puntos y Pagar'))
+                            (paymentMethod === 'wallet' ? 'Pagar con Monedero • {{ currency_format($total) }}' :
+                            'Pagar Pedido')))
                         "></span>
                     </button>
                 </form>

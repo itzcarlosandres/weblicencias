@@ -16,7 +16,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'avatar', 'phone',
         'is_active', 'email_verified_at', 'points',
-        'referral_code', 'referred_by', 'google_id'
+        'referral_code', 'referred_by', 'google_id', 'wallet_balance'
     ];
 
     protected $hidden = [
@@ -35,6 +35,11 @@ class User extends Authenticatable
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function walletTransactions(): HasMany
+    {
+        return $this->hasMany(WalletTransaction::class);
     }
 
     public function licenses(): HasMany

@@ -70,8 +70,14 @@
             <div class="divide-y divide-gray-50 dark:divide-gray-800/40">
                 @foreach($order->items as $item)
                 <div class="px-6 py-4 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-primary-50 dark:bg-primary-900/20 rounded-xl flex items-center justify-center text-xl shrink-0">
-                        {{ $item->product->category->icon ?? '📦' }}
+                    <div class="w-12 h-12 bg-primary-50 dark:bg-primary-900/20 rounded-xl flex items-center justify-center text-xl shrink-0 overflow-hidden">
+                        @if($item->product && $item->product->image)
+                            <img src="{{ asset('storage/' . $item->product->image) }}" class="w-full h-full object-cover">
+                        @elseif(isset($item->product->category->icon))
+                            <i class="{{ $item->product->category->icon }} text-primary-500"></i>
+                        @else
+                            📦
+                        @endif
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="text-[13px] font-semibold text-gray-900 dark:text-white truncate">{{ $item->product->name }}</div>
@@ -208,10 +214,10 @@
             <div class="mt-5 pt-5 border-t border-gray-100 dark:border-gray-800">
                 <form action="{{ route('admin.orders.update-status', $order) }}" method="POST">
                     @csrf
-                    <input type="hidden" name="status" value="completed">
+                    <input type="hidden" name="status" value="paid">
                     <button type="submit" class="w-full flex justify-center items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-sm shadow-emerald-500/20 hover:-translate-y-0.5 text-[14px]">
-                        <i class="fa-solid fa-circle-check text-lg"></i>
-                        Confirmar Pago
+                        <i class="fa-solid {{ $order->status === 'processing' ? 'fa-key' : 'fa-circle-check' }} text-lg"></i>
+                        {{ $order->status === 'processing' ? 'Asignar Licencias y Entregar' : 'Confirmar Pago' }}
                     </button>
                 </form>
             </div>

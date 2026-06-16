@@ -100,6 +100,7 @@ Route::prefix('mi-cuenta')->name('customer.')->middleware('auth')->group(functio
     Route::get('/tickets/{ticket}', [CustomerController::class, 'ticketsShow'])->name('tickets.show');
     Route::post('/tickets/{ticket}/responder', [CustomerController::class, 'ticketsReply'])->name('tickets.reply');
     Route::get('/mis-puntos', [CustomerController::class, 'points'])->name('points');
+    Route::get('/mi-monedero', [CustomerController::class, 'wallet'])->name('wallet');
     Route::get('/favoritos', [CustomerController::class, 'wishlist'])->name('wishlist');
 });
 
@@ -148,7 +149,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 
     // Users
     Route::resource('users', \App\Http\Controllers\Admin\AdminUserController::class)->only(['index', 'show']);
-    Route::post('/users/{user}/points', [\App\Http\Controllers\Admin\AdminUserController::class, 'addPoints'])->name('users.points');
+    Route::post('/users/{user}/points', [\App\Http\Controllers\Admin\AdminUserController::class, 'addPoints'])->name('users.add-points');
+    Route::post('/users/{user}/wallet', [\App\Http\Controllers\Admin\AdminUserController::class, 'adjustWallet'])->name('users.adjust-wallet');
 
     // Categories
     Route::resource('categories', \App\Http\Controllers\Admin\AdminCategoryController::class)->except(['show']);

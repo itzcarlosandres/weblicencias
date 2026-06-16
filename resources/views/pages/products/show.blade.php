@@ -254,6 +254,21 @@
                         @endif
                         @endif
                     </div>
+                    
+                    @php
+                        $cashbackPercentage = (float) \App\Models\Setting::get('cashback_percentage', '3');
+                        $cashbackAmount = $product->discounted_price * ($cashbackPercentage / 100);
+                    @endphp
+                    @if($cashbackAmount > 0)
+                    <div class="mt-3 flex items-center gap-2.5 text-[12px] font-medium text-emerald-700 bg-emerald-50 px-3 py-2.5 rounded-xl border border-emerald-200/60 shadow-sm">
+                        <div class="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-wallet text-emerald-500 animate-[bounce_2s_infinite]"></i>
+                        </div>
+                        <div class="leading-tight">
+                            Compra y gana <strong class="text-emerald-800 text-[13px]">${{ number_format($cashbackAmount, 2) }}</strong> de Cashback <span class="opacity-70 text-[10px]">({{ $cashbackPercentage }}%)</span>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 <div class="space-y-3 mb-6">
@@ -294,25 +309,6 @@
                     Entrega instantánea
                 </div>
             </div>
-            
-            @if(isset($pointsEarned) && $pointsEarned > 0)
-            @php
-                $pointsService = app(\App\Services\PointsService::class);
-                $pointsValue = ($pointsEarned / $pointsService->getRedemptionRate()) * $pointsService->getDiscountPerRedemption();
-            @endphp
-            <!-- Points Earned Banner -->
-            <div class="mt-4 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl shadow-sm p-4 text-white flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                    <!-- Icono de regalo animado que rebota -->
-                    <svg class="w-6 h-6 text-yellow-100 animate-[bounce_2s_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
-                </div>
-                <div class="flex flex-col items-start gap-1.5">
-                    <div class="inline-block bg-white/20 px-2.5 py-1 rounded-md text-[13px] font-bold shadow-sm leading-none">Gana {{ $pointsEarned }} puntos</div>
-                    <div class="inline-block bg-white/20 px-2.5 py-1 rounded-md text-[13px] font-bold shadow-sm leading-none">Te devuelve {{ currency_format($pointsValue) }}</div>
-                    <div class="text-[11px] text-white/90 font-medium mt-0.5">con esta compra</div>
-                </div>
-            </div>
-            @endif
         </div>
     </div>
 

@@ -131,6 +131,36 @@ class CheckoutController extends Controller
             return redirect()->route('customer.orders.show', $order->id)->with('success', 'Pedido pagado exitosamente con TodoPuntos');
         }
 
+        if ($paymentMethod === 'wallet') {
+            if (auth()->user()->wallet_balance >= $order->total) {
+                auth()->user()->wallet_balance -= $order->total;
+                auth()->user()->save();
+
+                \App\Models\WalletTransaction::create([
+                    'user_id' => auth()->id(),
+                    'type' => 'purchase',
+                    'amount' => -$order->total,
+                    'description' => "Pago de pedido #{$order->order_number}",
+                    'reference_id' => $order->id,
+                ]);
+
+                $order->update([
+                    'payment_method' => 'wallet', 
+                    'status' => 'paid', 
+                    'payment_status' => 'completed',
+                    'payment_id' => 'WALLET_' . time()
+                ]);
+                
+                $deliveryService = app(\App\Services\DeliveryService::class);
+                $deliveryService->processOrder($order);
+
+                $this->cartService->clear();
+                return redirect()->route('customer.orders.show', $order->id)->with('success', 'Pedido pagado exitosamente con Monedero');
+            } else {
+                return back()->with('error', 'No tienes suficiente saldo en tu monedero.');
+            }
+        }
+
         $order->update(['payment_method' => $paymentMethod]);
 
         if ($paymentMethod === 'mercadopago') {
