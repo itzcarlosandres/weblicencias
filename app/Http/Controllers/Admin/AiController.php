@@ -28,12 +28,13 @@ class AiController extends Controller
         
         set_time_limit(120);
 
-        // Prompt estructurado para forzar salida JSON limpia
         $prompt = "Actúa como un experto en SEO y Copywriting para una tienda online de licencias y software. Genera el contenido para un producto llamado '{$productName}'. 
 Requisitos estrictos:
 - Devuelve la respuesta en formato JSON exacto sin markdown (nada de ```json).
 - El JSON debe tener exactamente 3 claves: 'description', 'meta_title' y 'meta_description'.
-- 'description': Descripción detallada y persuasiva del producto, de al menos 200 palabras, usando etiquetas HTML. Debes estructurar el contenido utilizando encabezados SEO (<h2> y <h3>) para separar las secciones (ej. Características, Beneficios, Requisitos). Usa listas (<ul>, <li>) si es necesario, y <strong> para resaltar palabras clave. (IMPORTANTE: NO uses la etiqueta <h1>, ya que está reservada para el título principal de la página).
+- 'description': Descripción detallada y persuasiva del producto, de al menos 200 palabras, usando etiquetas HTML. Debes estructurar el contenido utilizando encabezados SEO (<h2> y <h3>) para separar las secciones. Es OBLIGATORIO que incluyas una sección dedicada a los requisitos del producto bajo un título que empiece por 'Requisitos' adaptado al tipo de producto (ej: '<h2>Requisitos del Sistema</h2>' para software/sistemas, '<h2>Requisitos de la Cuenta</h2>' para cuentas/suscripciones de streaming tipo Netflix, o simplemente '<h2>Requisitos</h2>' para gift cards o licencias generales).
+- Además, para optimizar el SEO interno de la tienda, debes insertar de forma natural entre 1 y 2 enlaces internos HTML (<a href=\"/productos\">...</a>) usando textos de anclaje (anchor text) persuasivos que inviten a explorar más productos (ej: 'catálogo de productos', 'nuestras licencias', 'otros softwares').
+- Usa listas (<ul>, <li>) si es necesario, y <strong> para resaltar palabras clave. (IMPORTANTE: NO uses la etiqueta <h1>, ya que está reservada para el título principal de la página).
 - 'meta_title': Título SEO máximo de 60 caracteres.
 - 'meta_description': Descripción SEO máximo de 160 caracteres.
 Ejemplo de salida:

@@ -52,19 +52,10 @@
                             </select>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tipo *</label>
-                            <select name="type" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all" required>
-                                @foreach(['license' => 'Licencia', 'software' => 'Software', 'giftcard' => 'Gift Card', 'subscription' => 'Suscripción'] as $value => $label)
-                                <option value="{{ $value }}" {{ old('type', $product->type) == $value ? 'selected' : '' }}>{{ $label }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">SKU</label>
-                            <input type="text" name="sku" value="{{ old('sku', $product->sku) }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all">
-                        </div>
+                    <input type="hidden" name="type" value="{{ old('type', $product->type ?? 'license') }}">
+                    <div>
+                        <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">SKU</label>
+                        <input type="text" name="sku" value="{{ old('sku', $product->sku) }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all">
                     </div>
                     <div>
                         <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción</label>

@@ -163,7 +163,7 @@
 
                 <div class="mt-6 pt-4 border-t border-gray-100 text-xs text-gray-500">
                     <p class="mb-1"><strong>Aviso:</strong> Este producto se entregará de forma digital. No recibirás ningún artículo físico en tu domicilio.</p>
-                    <a href="#" class="text-blue-600 hover:underline">Comprobar requisitos del sistema</a>
+                    <a href="javascript:void(0)" onclick="scrollToRequirements()" class="text-blue-600 hover:underline">Comprobar requisitos del sistema</a>
                 </div>
             </div>
 
@@ -590,6 +590,28 @@ function addBundleToCart(btn, prod1, prod2) {
         btn.disabled = false;
         alert('Hubo un problema al agregar el paquete al carrito.');
     });
+}
+
+function scrollToRequirements() {
+    let target = document.getElementById('requisitos-sistema') || document.getElementById('requisitos');
+    
+    if (!target) {
+        const proseElements = document.querySelectorAll('.prose h2, .prose h3, .prose h4, .prose strong, .prose p');
+        for (let el of proseElements) {
+            if (el.textContent.toLowerCase().includes('requisitos')) {
+                target = el;
+                break;
+            }
+        }
+    }
+    
+    if (!target) {
+        target = document.querySelector('.prose');
+    }
+    
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
 </script>
 @endpush
