@@ -117,31 +117,6 @@
             @endif
         </div>
 
-        <!-- Historial de Puntos -->
-        <div class="bg-white dark:bg-[#111827] rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Últimos Movimientos de Puntos</h3>
-            
-            @if($user->pointTransactions->count() > 0)
-            <div class="space-y-3">
-                @foreach($user->pointTransactions as $tx)
-                <div class="flex items-center justify-between p-3 rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/20">
-                    <div>
-                        <div class="text-sm font-medium text-gray-900 dark:text-gray-300">{{ $tx->description }}</div>
-                        <div class="text-xs text-gray-500">{{ $tx->created_at->format('d M Y, H:i') }}</div>
-                    </div>
-                    <div class="text-sm font-bold {{ $tx->type === 'earned' || $tx->points > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
-                        {{ $tx->points > 0 ? '+' : '' }}{{ number_format($tx->points) }} pts
-                    </div>
-                </div>
-                @endforeach
-            </div>
-            @else
-            <div class="text-center py-6 text-gray-500 text-sm">
-                No hay movimientos de puntos.
-            </div>
-            @endif
-        </div>
-
     </div>
 </div>
 @endsection

@@ -1,7 +1,9 @@
 @php
     $siteName = \App\Models\Setting::get('site_name', 'TodoKeys');
     $siteLogo = \App\Models\Setting::get('logo');
-    $menuCategories = \App\Models\Category::roots()->active()->orderBy('order')->get();
+    $menuCategories = \Illuminate\Support\Facades\Cache::rememberForever('menu_categories', function() {
+        return \App\Models\Category::roots()->active()->orderBy('order')->get();
+    });
 @endphp
 <nav x-data="{ mobileOpen: false, searchOpen: false }" class="bg-[#12141d] text-white z-50">
     <!-- Top Bar -->

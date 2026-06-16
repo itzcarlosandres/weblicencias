@@ -19,19 +19,18 @@
 <div>
     <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 mb-6 overflow-hidden">
         <div class="flex border-b border-gray-100 dark:border-gray-800/60 overflow-x-auto">
-            @foreach(['general','branding','seo','emails','payment','points','ai','announcements','popups','referrals'] as $t)
+            @foreach(['general','branding','seo','emails','payment','ai','announcements','popups','referrals'] as $t)
             <a href="?tab={{ $t }}" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0 {{ $activeTab === $t ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 border-transparent' }}">
                 @if($t === 'general')<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>@endif
                 @if($t === 'branding')<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>@endif
                 @if($t === 'seo')<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>@endif
                 @if($t === 'emails')<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>@endif
                 @if($t === 'payment')<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>@endif
-                @if($t === 'points')<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>@endif
                 @if($t === 'ai')<i class="fa-solid fa-wand-magic-sparkles w-4"></i>@endif
                 @if($t === 'announcements')<i class="fa-solid fa-bullhorn w-4"></i>@endif
                 @if($t === 'popups')<i class="fa-solid fa-message w-4"></i>@endif
                 @if($t === 'referrals')<i class="fa-solid fa-users w-4"></i>@endif
-                {{ ucfirst($t) }}
+                {{ $t === 'ai' ? 'IA' : ucfirst($t) }}
             </a>
             @endforeach
         </div>
@@ -428,58 +427,6 @@
         </div>
         @endif
 
-        @if($activeTab === 'points')
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2">
-                <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6 space-y-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white">Sistema de Puntos</h3>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="hidden" name="points_enabled" value="0">
-                            <input type="checkbox" name="points_enabled" value="1" {{ ($settings['points_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="peer sr-only">
-                            <div class="w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-500"></div>
-                        </label>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Puntos por dólar</label>
-                            <input type="number" name="points_per_dollar" value="{{ $settings['points_per_dollar'] ?? '1' }}" min="1" class="w-full px-3 py-2 bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white">
-                        </div>
-                        <div>
-                            <label class="block text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Días para expirar</label>
-                            <input type="number" name="points_expiry_days" value="{{ $settings['points_expiry_days'] ?? '365' }}" min="1" class="w-full px-3 py-2 bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Puntos requeridos</label>
-                            <input type="number" name="points_redemption_rate" value="{{ $settings['points_redemption_rate'] ?? '100' }}" min="1" class="w-full px-3 py-2 bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white">
-                        </div>
-                        <div>
-                            <label class="block text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Descuento ($)</label>
-                            <input type="number" name="points_discount_per_redemption" value="{{ $settings['points_discount_per_redemption'] ?? '1.00' }}" step="0.01" class="w-full px-3 py-2 bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white">
-                        </div>
-                        <div>
-                            <label class="block text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Mínimo canjear</label>
-                            <input type="number" name="points_min_redeem" value="{{ $settings['points_min_redeem'] ?? '100' }}" min="1" class="w-full px-3 py-2 bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6 space-y-4">
-                    <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white">Cashback y Monedero</h3>
-                    <div>
-                        <label class="block text-[12px] font-medium text-gray-500 dark:text-gray-400 mb-1.5">Porcentaje de Cashback (%)</label>
-                        <input type="number" name="cashback_percentage" value="{{ $settings['cashback_percentage'] ?? '3' }}" min="0" max="100" step="0.1" class="w-full sm:w-1/3 px-3 py-2 bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white" placeholder="Ej: 3">
-                        <p class="text-[11px] text-gray-400 mt-1">El porcentaje que se devolverá al monedero del cliente tras una compra pagada (0 para desactivar).</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
         @if($activeTab === 'ai')
         <div class="max-w-3xl">
             <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6">
@@ -552,6 +499,77 @@
                 </div>
             </div>
         </div>
+        @endif
+
+        @if($activeTab === 'faq')
+        <div class="max-w-4xl">
+            <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6 space-y-6">
+                <div>
+                    <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white mb-1">Preguntas Frecuentes (FAQ)</h3>
+                    <p class="text-[12px] text-gray-400">Estas preguntas se mostrarán en la sección de FAQ al final de la página de inicio.</p>
+                </div>
+
+                @php
+                    $faqsJson = $settings['faq_content'] ?? '[]';
+                    $faqs = json_decode($faqsJson, true);
+                    if (!is_array($faqs)) {
+                        $faqs = [];
+                    }
+                    if (empty($faqs)) {
+                        $faqs = [
+                            ['question' => '¿Qué es TodoKeys y por qué lo necesito?', 'answer' => 'TodoKeys es el marketplace líder en licencias de software y videojuegos digitales. Ofrecemos los mejores precios del mercado conectando vendedores verificados con compradores en todo el mundo.'],
+                            ['question' => '¿Es seguro comprar claves de software aquí?', 'answer' => 'Totalmente seguro. Todas nuestras transacciones están encriptadas y garantizamos que las claves provienen de fuentes legítimas. Además, contamos con una garantía de reembolso en caso de que la clave no funcione.'],
+                            ['question' => '¿Cómo activo mi clave de producto tras la compra?', 'answer' => 'Recibirás las instrucciones detalladas de activación junto con la clave en tu correo electrónico de confirmación, inmediatamente después de la compra. También puedes consultarlas en tu panel de usuario.'],
+                            ['question' => '¿Qué pasa si mi clave no funciona?', 'answer' => 'Nuestro soporte está disponible 24/7. Si una clave resulta ser defectuosa, te la reemplazaremos inmediatamente o procesaremos un reembolso.'],
+                            ['question' => '¿Se aplican impuestos adicionales al precio final?', 'answer' => 'No, todos los precios mostrados en el catálogo incluyen impuestos, por lo que el precio que ves es el precio final que pagarás.']
+                        ];
+                    }
+                @endphp
+
+                <div x-data="faqManager({{ json_encode($faqs) }})" class="space-y-4">
+                    <input type="hidden" name="faq_content" :value="JSON.stringify(faqs)">
+                    
+                    <div class="space-y-3">
+                        <template x-for="(faq, index) in faqs" :key="index">
+                            <div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-800 space-y-3 relative group">
+                                <button type="button" @click="removeFaq(index)" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors">
+                                    <i class="fa-solid fa-trash-can text-sm"></i>
+                                </button>
+                                
+                                <div class="grid grid-cols-1 gap-3 pr-8">
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Pregunta</label>
+                                        <input type="text" x-model="faq.question" class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500" placeholder="¿Pregunta?">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Respuesta</label>
+                                        <textarea x-model="faq.answer" rows="2" class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500 resize-none" placeholder="Escribe aquí la respuesta..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <button type="button" @click="addFaq()" class="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 hover:bg-primary-100 text-primary-600 text-[13px] font-semibold rounded-xl transition-all">
+                        <i class="fa-solid fa-plus text-[11px]"></i> Agregar Pregunta
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        function faqManager(initialFaqs) {
+            return {
+                faqs: initialFaqs,
+                addFaq() {
+                    this.faqs.push({ question: '', answer: '' });
+                },
+                removeFaq(index) {
+                    this.faqs.splice(index, 1);
+                }
+            }
+        }
+        </script>
         @endif
 
         @if($activeTab === 'referrals')

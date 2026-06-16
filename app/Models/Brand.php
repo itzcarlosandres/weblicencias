@@ -20,6 +20,14 @@ class Brand extends Model
                 $brand->slug = Str::slug($brand->name);
             }
         });
+
+        static::saved(function () {
+            \Illuminate\Support\Facades\Cache::forget('active_brands');
+        });
+
+        static::deleted(function () {
+            \Illuminate\Support\Facades\Cache::forget('active_brands');
+        });
     }
 
     public function products(): HasMany

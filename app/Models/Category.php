@@ -25,6 +25,14 @@ class Category extends Model
                 $category->slug = Str::slug($category->name);
             }
         });
+
+        static::saved(function () {
+            \Illuminate\Support\Facades\Cache::forget('menu_categories');
+        });
+
+        static::deleted(function () {
+            \Illuminate\Support\Facades\Cache::forget('menu_categories');
+        });
     }
 
     public function parent(): BelongsTo

@@ -18,32 +18,32 @@ class HomeController extends Controller
 
         $featuredProducts = Product::where('is_active', true)
             ->where('is_featured', true)
-            ->with('category')
+            ->with(['category', 'badge'])
             ->latest()
             ->limit($featuredCount)
             ->get();
 
         $latestProducts = Product::where('is_active', true)
-            ->with('category')
+            ->with(['category', 'badge'])
             ->latest()
             ->limit($featuredCount)
             ->get();
 
         $bundleProducts = Product::where('is_active', true)
             ->where('is_bundle', true)
-            ->with('category')
+            ->with(['category', 'badge'])
             ->latest()
             ->limit(3)
             ->get();
 
         $bestsellerProducts = Product::where('is_active', true)
             ->where('is_bestseller', true)
-            ->with('category')
+            ->with(['category', 'badge'])
             ->latest()
             ->limit(10)
             ->get();
 
-        $topDeals = Product::topDeals()->active()->with('category')->latest()->limit(12)->get();
+        $topDeals = Product::topDeals()->active()->with(['category', 'badge'])->latest()->limit(12)->get();
 
         $categories = Category::where('is_active', true)
             ->whereNull('parent_id')
@@ -60,13 +60,18 @@ class HomeController extends Controller
             ->limit(3)
             ->get();
 
-        $stats = [
-            'licenses_sold' => Product::sum('sold_count'),
-            'total_users' => \App\Models\User::count(),
-            'total_products' => Product::where('is_active', true)->count(),
-            'total_orders' => \App\Models\Order::where('status', 'delivered')->count(),
-        ];
-        $brands = \App\Models\Brand::active()->orderBy('name')->get();
+        $stats = \Illuminate\Support\Facades\Cache::remember('home_stats', 1800, function() {
+            return [
+                'licenses_sold' => Product::sum('sold_count'),
+                'total_users' => \App\Models\User::count(),
+                'total_products' => Product::where('is_active', true)->count(),
+                'total_orders' => \App\Models\Order::where('status', 'delivered')->count(),
+            ];
+        });
+
+        $brands = \Illuminate\Support\Facades\Cache::rememberForever('active_brands', function() {
+            return \App\Models\Brand::active()->orderBy('name')->get();
+        });
 
         $gridClass = $this->getGridClass($gridColumns);
 
@@ -89,7 +94,7 @@ class HomeController extends Controller
     {
         $featuredProducts = Product::where('is_active', true)
             ->where('is_featured', true)
-            ->with('category')
+            ->with(['category', 'badge'])
             ->limit(10)
             ->get();
 

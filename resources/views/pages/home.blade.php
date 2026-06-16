@@ -333,24 +333,43 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-8">FAQ</h2>
         <div class="space-y-4">
             @php
-                $faqs = [
-                    '¿Qué es TodoKeys y por qué lo necesito?' => 'TodoKeys es el marketplace líder en licencias de software y videojuegos digitales. Ofrecemos los mejores precios del mercado conectando vendedores verificados con compradores en todo el mundo.',
-                    '¿Es seguro comprar claves de software aquí?' => 'Totalmente seguro. Todas nuestras transacciones están encriptadas y garantizamos que las claves provienen de fuentes legítimas. Además, contamos con una garantía de reembolso en caso de que la clave no funcione.',
-                    '¿Cómo activo mi clave de producto tras la compra?' => 'Recibirás las instrucciones detalladas de activación junto con la clave en tu correo electrónico de confirmación, inmediatamente después de la compra. También puedes consultarlas en tu panel de usuario.',
-                    '¿Qué pasa si mi clave no funciona?' => 'Nuestro soporte está disponible 24/7. Si una clave resulta ser defectuosa, te la reemplazaremos inmediatamente o procesaremos un reembolso.',
-                    '¿Se aplican impuestos adicionales al precio final?' => 'No, todos los precios mostrados en el catálogo incluyen impuestos, por lo que el precio que ves es el precio final que pagarás.'
-                ];
+                $faqsJson = \App\Models\Setting::get('faq_content', '[]');
+                $faqs = json_decode($faqsJson, true);
+                if (!is_array($faqs) || empty($faqs)) {
+                    $faqs = [
+                        [
+                            'question' => '¿Qué es TodoKeys y por qué lo necesito?',
+                            'answer' => 'TodoKeys es el marketplace líder en licencias de software y videojuegos digitales. Ofrecemos los mejores precios del mercado conectando vendedores verificados con compradores en todo el mundo.'
+                        ],
+                        [
+                            'question' => '¿Es seguro comprar claves de software aquí?',
+                            'answer' => 'Totalmente seguro. Todas nuestras transacciones están encriptadas y garantizamos que las claves provienen de fuentes legítimas. Además, contamos con una garantía de reembolso en caso de que la clave no funcione.'
+                        ],
+                        [
+                            'question' => '¿Cómo activo mi clave de producto tras la compra?',
+                            'answer' => 'Recibirás las instrucciones detalladas de activación junto con la clave en tu correo electrónico de confirmación, inmediatamente después de la compra. También puedes consultarlas en tu panel de usuario.'
+                        ],
+                        [
+                            'question' => '¿Qué pasa si mi clave no funciona?',
+                            'answer' => 'Nuestro soporte está disponible 24/7. Si una clave resulta ser defectuosa, te la reemplazaremos inmediatamente o procesaremos un reembolso.'
+                        ],
+                        [
+                            'question' => '¿Se aplican impuestos adicionales al precio final?',
+                            'answer' => 'No, todos los precios mostrados en el catálogo incluyen impuestos, por lo que el precio que ves es el precio final que pagarás.'
+                        ]
+                    ];
+                }
             @endphp
-            @foreach($faqs as $question => $answer)
+            @foreach($faqs as $item)
             <details class="group bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl cursor-pointer transition-colors">
                 <summary class="flex justify-between items-center font-bold p-5 text-gray-800 list-none text-sm">
-                    <span>{{ $question }}</span>
+                    <span>{{ $item['question'] }}</span>
                     <span class="transition-transform duration-300 group-open:rotate-180 text-blue-600">
                         <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                     </span>
                 </summary>
                 <div class="p-5 pt-0 text-sm text-gray-600 leading-relaxed border-t border-gray-200 mt-2">
-                    {{ $answer }}
+                    {{ $item['answer'] }}
                 </div>
             </details>
             @endforeach

@@ -27,8 +27,8 @@
                 <div class="flex items-center gap-1">
                     <div class="flex text-yellow-400">
                         @php
-                            $avgRating = $product->average_rating ?? 0;
-                            $reviewsCount = $product->reviews()->where('is_approved', true)->count();
+                            $reviewsCount = $product->reviews->count();
+                            $avgRating = $reviewsCount > 0 ? round($product->reviews->avg('rating'), 1) : 0.0;
                             
                             if ($avgRating >= 4.5) $ratingText = 'Excelente';
                             elseif ($avgRating >= 4.0) $ratingText = 'Muy Bueno';
@@ -378,7 +378,7 @@
                         </svg>
                         @endfor
                     </div>
-                    <div class="text-sm text-gray-500 font-medium">{{ $product->reviews()->where('is_approved', true)->count() }} valoraciones en total</div>
+                    <div class="text-sm text-gray-500 font-medium">{{ $product->reviews->count() }} valoraciones en total</div>
                 </div>
 
                 @auth
@@ -437,7 +437,7 @@
             <!-- Columna Derecha: Lista de Reseñas -->
             <div class="flex-1 w-full space-y-6">
                 @php
-                    $approvedReviews = $product->reviews()->with('user')->where('is_approved', true)->latest()->get();
+                    $approvedReviews = $product->reviews;
                 @endphp
 
                 @forelse($approvedReviews as $review)

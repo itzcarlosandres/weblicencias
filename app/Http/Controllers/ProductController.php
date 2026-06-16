@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::where('is_active', true)->with(['category', 'brand']);
+        $query = Product::where('is_active', true)->with(['category', 'brand', 'badge']);
 
         // Search
         if ($search = $request->input('search')) {
@@ -67,7 +67,9 @@ class ProductController extends Controller
 
         $categories = Category::where('is_active', true)
             ->whereNull('parent_id')
-            ->withCount('products')
+            ->withCount(['products' => function ($q) {
+                $q->where('is_active', true);
+            }])
             ->orderBy('order')
             ->get();
 
@@ -91,12 +93,20 @@ class ProductController extends Controller
     {
         $product = Product::where('slug', $slug)
             ->where('is_active', true)
-            ->with(['category', 'brand', 'reviews.user'])
+            ->with([
+                'category',
+                'brand',
+                'reviews' => function($q) {
+                    $q->where('is_approved', true)->latest();
+                },
+                'reviews.user'
+            ])
             ->firstOrFail();
 
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('is_active', true)
+            ->with(['category', 'badge'])
             ->inRandomOrder()
             ->limit(6)
             ->get();
@@ -105,6 +115,7 @@ class ProductController extends Controller
             $moreProducts = Product::where('id', '!=', $product->id)
                 ->whereNotIn('id', $relatedProducts->pluck('id'))
                 ->where('is_active', true)
+                ->with(['category', 'badge'])
                 ->inRandomOrder()
                 ->limit(6 - $relatedProducts->count())
                 ->get();
@@ -152,7 +163,7 @@ class ProductController extends Controller
             ->where('is_flash_sale', true)
             ->whereNotNull('flash_sale_end')
             ->where('flash_sale_end', '>', now())
-            ->with(['category', 'brand'])
+            ->with(['category', 'brand', 'badge'])
             ->orderBy('flash_sale_end', 'asc')
             ->paginate(12);
 

@@ -10,7 +10,7 @@
 <div class="mb-6 flex justify-between items-center">
     <div>
         <h2 class="text-xl font-bold text-gray-900 dark:text-white">Usuarios Registrados</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Gestiona los clientes de la tienda y sus TodoPuntos.</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Gestiona los clientes de la tienda.</p>
     </div>
 </div>
 
@@ -28,7 +28,6 @@
                 <tr>
                     <th scope="col" class="px-6 py-4 font-semibold">Usuario</th>
                     <th scope="col" class="px-6 py-4 font-semibold">Registro</th>
-                    <th scope="col" class="px-6 py-4 font-semibold">TodoPuntos</th>
                     <th scope="col" class="px-6 py-4 text-right font-semibold">Acciones</th>
                 </tr>
             </thead>
@@ -48,11 +47,6 @@
                         <div class="text-sm text-gray-900 dark:text-gray-300">{{ $user->created_at->format('d M Y') }}</div>
                         <div class="text-xs text-gray-500">{{ $user->created_at->diffForHumans() }}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold {{ $user->points > 0 ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400' }}">
-                            <i class="fa-solid fa-coins"></i> {{ number_format($user->points) }}
-                        </div>
-                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right">
                         <a href="{{ route('admin.users.show', $user) }}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-500/10 transition-colors">
                             <i class="fa-solid fa-eye"></i>
@@ -61,7 +55,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                    <td colspan="3" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                         No se encontraron usuarios.
                     </td>
                 </tr>
