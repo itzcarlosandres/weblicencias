@@ -19,7 +19,7 @@
 <div>
     <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 mb-6 overflow-hidden">
         <div class="flex border-b border-gray-100 dark:border-gray-800/60 overflow-x-auto">
-            @foreach(['general','branding','seo','emails','payment','ai','announcements','popups','referrals'] as $t)
+            @foreach(['general','branding','seo','emails','payment','ai','announcements','popups','referrals','faq'] as $t)
             <a href="?tab={{ $t }}" class="flex items-center gap-2 px-5 py-3.5 text-[13px] font-medium border-b-2 transition-all whitespace-nowrap shrink-0 {{ $activeTab === $t ? 'text-primary-600 border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 border-transparent' }}">
                 @if($t === 'general')<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>@endif
                 @if($t === 'branding')<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>@endif
@@ -30,7 +30,8 @@
                 @if($t === 'announcements')<i class="fa-solid fa-bullhorn w-4"></i>@endif
                 @if($t === 'popups')<i class="fa-solid fa-message w-4"></i>@endif
                 @if($t === 'referrals')<i class="fa-solid fa-users w-4"></i>@endif
-                {{ $t === 'ai' ? 'IA' : ucfirst($t) }}
+                @if($t === 'faq')<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>@endif
+                {{ $t === 'ai' ? 'IA' : ($t === 'faq' ? 'FAQ' : ucfirst($t)) }}
             </a>
             @endforeach
         </div>
