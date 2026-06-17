@@ -69,9 +69,10 @@ class HomeController extends Controller
             ];
         });
 
-        $brands = \Illuminate\Support\Facades\Cache::rememberForever('active_brands', function() {
-            return \App\Models\Brand::active()->orderBy('name')->get();
+        $brandsArray = \Illuminate\Support\Facades\Cache::rememberForever('active_brands', function() {
+            return \App\Models\Brand::active()->orderBy('name')->get()->toArray();
         });
+        $brands = \App\Models\Brand::hydrate($brandsArray);
 
         $gridClass = $this->getGridClass($gridColumns);
 
