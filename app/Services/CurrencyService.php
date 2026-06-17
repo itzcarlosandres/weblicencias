@@ -21,7 +21,11 @@ class CurrencyService
                 if ($ip == '127.0.0.1' || $ip == '::1') {
                     $country = 'US';
                 } else {
-                    $response = Http::timeout(3)->get("https://ipapi.co/{$ip}/country/");
+                    $response = Http::withOptions([
+                        'curl' => [
+                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                        ]
+                    ])->timeout(3)->get("https://ipapi.co/{$ip}/country/");
                     $country = $response->successful() ? $response->body() : 'US';
                 }
 
@@ -109,7 +113,14 @@ class CurrencyService
         return Cache::remember($cacheKey, 21600, function () use ($currency) {
             // API 1: open.er-api.com — free tier, no key required
             try {
-                $response = Http::withoutVerifying()->timeout(5)->get('https://open.er-api.com/v6/latest/USD');
+                $response = Http::withoutVerifying()
+                    ->withOptions([
+                        'curl' => [
+                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                        ]
+                    ])
+                    ->timeout(5)
+                    ->get('https://open.er-api.com/v6/latest/USD');
                 if ($response->successful()) {
                     $rate = (float) ($response->json("rates.{$currency}") ?? 0);
                     if ($rate > 0) {
@@ -124,7 +135,13 @@ class CurrencyService
 
             // API 2: fawazahmed0 — completamente gratis, sin key
             try {
-                $response = Http::withoutVerifying()->timeout(5)
+                $response = Http::withoutVerifying()
+                    ->withOptions([
+                        'curl' => [
+                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                        ]
+                    ])
+                    ->timeout(5)
                     ->get('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.min.json');
                 if ($response->successful()) {
                     $rate = (float) ($response->json("usd." . strtolower($currency)) ?? 0);
