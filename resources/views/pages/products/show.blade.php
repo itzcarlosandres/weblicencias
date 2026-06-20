@@ -350,7 +350,13 @@
                 </div>
                 <div>
                     <h4 class="font-bold text-gray-900 text-sm mb-1">Importante</h4>
-                    <p class="text-sm text-gray-700">Este producto es una clave digital global. No requiere VPN para su activación. Revisa los requisitos de tu cuenta antes de comprar.</p>
+                    <div class="text-sm text-gray-700 prose prose-sm max-w-none">
+                        @if($product->important_note)
+                            {!! $product->important_note !!}
+                        @else
+                            <p>Este producto es una clave digital global. No requiere VPN para su activación. Revisa los requisitos de tu cuenta antes de comprar.</p>
+                        @endif
+                    </div>
                 </div>
             </div>
 

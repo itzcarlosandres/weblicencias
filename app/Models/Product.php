@@ -14,7 +14,7 @@ class Product extends Model
 
     protected $fillable = [
         'category_id', 'brand_id', 'name', 'slug', 'sku', 'type',
-        'description', 'content', 'image', 'gallery',
+        'description', 'important_note', 'content', 'image', 'gallery',
         'price', 'compare_price', 'discount', 'stock', 'sold_count',
         'is_featured', 'is_bundle', 'is_bestseller', 'is_top_deal', 'is_flash_sale', 'flash_sale_end', 'is_active', 'min_price', 'max_price',
         'meta_title', 'meta_description', 'platform', 'region',

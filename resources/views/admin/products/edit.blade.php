@@ -61,6 +61,10 @@
                         <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción</label>
                         <textarea name="description" id="product_description" rows="4" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all resize-none" placeholder="Describe el producto...">{{ old('description', $product->description) }}</textarea>
                     </div>
+                    <div>
+                        <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nota Importante (Recomendación)</label>
+                        <textarea name="important_note" id="important_note" rows="4" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-all resize-none" placeholder="Ej: Requisitos de activación, VPN, etc...">{{ old('important_note', $product->important_note) }}</textarea>
+                    </div>
                 </div>
             </div>
 
@@ -334,7 +338,11 @@ function generateAI() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            document.getElementById('product_description').value = data.data.description || '';
+            if (window.descriptionEditor) {
+                window.descriptionEditor.setData(data.data.description || '');
+            } else {
+                document.getElementById('product_description').value = data.data.description || '';
+            }
             document.getElementById('meta_title').value = data.data.meta_title || '';
             document.getElementById('meta_description').value = data.data.meta_description || '';
         } else {
@@ -353,4 +361,60 @@ function generateAI() {
     });
 }
 </script>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+<script>
+    window.descriptionEditor = null;
+    window.importantNoteEditor = null;
+
+    ClassicEditor
+        .create(document.querySelector('#product_description'), {
+            toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo' ]
+        })
+        .then(editor => {
+            window.descriptionEditor = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    ClassicEditor
+        .create(document.querySelector('#important_note'), {
+            toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo' ]
+        })
+        .then(editor => {
+            window.importantNoteEditor = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+<style>
+    /* Styling CKEditor 5 for dark mode */
+    .dark .ck.ck-editor__main>.ck-editor__editable {
+        background-color: #111827 !important;
+        color: #f3f4f6 !important;
+        border-color: #1f2937 !important;
+    }
+    .dark .ck.ck-toolbar {
+        background-color: #1f2937 !important;
+        border-color: #111827 !important;
+    }
+    .dark .ck.ck-button {
+        color: #d1d5db !important;
+    }
+    .dark .ck.ck-button:hover {
+        background-color: #374151 !important;
+    }
+    .dark .ck.ck-button.ck-on {
+        background-color: #4b5563 !important;
+    }
+    .dark .ck.ck-dropdown__panel {
+        background-color: #1f2937 !important;
+    }
+    /* Set min height to CKEditor */
+    .ck-editor__editable_inline {
+        min-height: 150px;
+    }
+</style>
 @endsection
