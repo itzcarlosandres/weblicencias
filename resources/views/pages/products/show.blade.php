@@ -7,7 +7,13 @@
 
 
 
-<div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+@php
+    $pageMaxWidth = \App\Models\Setting::get('product_page_max_width', 'max-w-7xl');
+    $collapseHeight = (int) \App\Models\Setting::get('product_description_collapse_height', '200');
+    $isCollapseEnabled = $collapseHeight > 0;
+@endphp
+
+<div class="{{ $pageMaxWidth }} mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <!-- Breadcrumb -->
     <nav class="flex items-center gap-2 text-[11px] text-gray-500 mb-6 font-medium uppercase tracking-wider">
         <a href="{{ route('home') }}" class="hover:text-blue-600 transition-colors">Inicio</a>
@@ -182,40 +188,47 @@
                 </span>
             </div>
             
-            <div class="bg-gradient-to-br from-white to-blue-50/50 rounded-[20px] border border-blue-100 p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between mb-8 gap-6 group hover:shadow-md transition-shadow relative overflow-hidden">
+            <div class="bg-gradient-to-br from-white to-blue-50/50 rounded-[20px] border border-blue-100 p-4 shadow-sm flex items-center justify-between mb-8 gap-3 group hover:shadow-md transition-shadow relative overflow-hidden">
                 <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
                 
-                <div class="flex items-center gap-4 relative z-10 w-full sm:w-auto">
-                    <div class="w-20 h-24 sm:w-24 sm:h-28 bg-white rounded-2xl flex items-center justify-center shrink-0 overflow-hidden relative shadow-[0_4px_15px_-3px_rgba(0,0,0,0.1)] border border-gray-100 p-1">
+                <div class="flex items-center gap-2.5 shrink-0 relative z-10">
+                    <div class="w-12 h-16 bg-white rounded-lg flex items-center justify-center shrink-0 overflow-hidden relative shadow-sm border border-gray-100 p-0.5">
                         @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover rounded-xl">
+                            <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover rounded-md">
                         @else
-                            <i class="fa-solid fa-gamepad text-gray-300 text-3xl"></i>
+                            <i class="fa-solid fa-gamepad text-gray-300 text-lg"></i>
                         @endif
                     </div>
-                    <div class="text-3xl text-blue-400 font-light">+</div>
-                    <div class="w-20 h-24 sm:w-24 sm:h-28 bg-white rounded-2xl flex items-center justify-center shrink-0 overflow-hidden relative shadow-[0_4px_15px_-3px_rgba(0,0,0,0.1)] border border-gray-100 p-1">
+                    <span class="text-base text-blue-400 font-medium shrink-0">+</span>
+                    <div class="w-12 h-16 bg-white rounded-lg flex items-center justify-center shrink-0 overflow-hidden relative shadow-sm border border-gray-100 p-0.5">
                         @if($bundleProduct->image)
-                            <img src="{{ asset('storage/' . $bundleProduct->image) }}" class="w-full h-full object-cover rounded-xl">
+                            <img src="{{ asset('storage/' . $bundleProduct->image) }}" class="w-full h-full object-cover rounded-md">
                         @else
-                            <i class="fa-solid fa-gamepad text-gray-300 text-3xl"></i>
+                            <i class="fa-solid fa-gamepad text-gray-300 text-lg"></i>
                         @endif
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <div class="text-sm font-bold text-gray-900 leading-tight mb-1">{{ $product->name }} <br><span class="text-blue-600">+ {{ $bundleProduct->name }}</span></div>
-                        <div class="text-[10px] text-green-700 font-black bg-green-100 px-2 py-0.5 rounded inline-block border border-green-200 uppercase tracking-wide">Ahorras extra 15%</div>
                     </div>
                 </div>
                 
-                <div class="text-center sm:text-right w-full sm:w-auto relative z-10 shrink-0 border-t sm:border-t-0 sm:border-l border-gray-100 pt-4 sm:pt-0 sm:pl-6">
+                <div class="min-w-0 flex-1 relative z-10 px-3">
+                    <div class="text-[12px] sm:text-[13px] font-bold text-gray-900 leading-snug mb-1 line-clamp-2" title="{{ $product->name }} + {{ $bundleProduct->name }}">
+                        {{ $product->name }} <span class="text-blue-600">+ {{ $bundleProduct->name }}</span>
+                    </div>
+                    <div class="text-[9px] text-green-700 font-black bg-green-50 px-1.5 py-0.5 rounded border border-green-150 uppercase tracking-wide inline-block">
+                        Ahorras 15%
+                    </div>
+                </div>
+                
+                <div class="flex flex-col items-end gap-2 shrink-0 relative z-10 pl-4 border-l border-blue-100/60 min-w-[100px]">
                     @php
                         $combinedPrice = $product->discounted_price + $bundleProduct->discounted_price;
                         $bundlePrice = $combinedPrice * 0.85; // 15% discount for the bundle
                     @endphp
-                    <div class="text-xs text-gray-400 line-through font-medium mb-0.5">{{ currency_format($combinedPrice) }}</div>
-                    <div class="text-2xl font-black text-blue-600 tracking-tight">{{ currency_format($bundlePrice) }}</div>
-                    <button onclick="addBundleToCart(this, {{ $product->id }}, {{ $bundleProduct->id }})" class="mt-3 w-full px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-600/30 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-cart-plus"></i> Añadir paquete
+                    <div class="text-right shrink-0">
+                        <div class="text-[10px] text-gray-400 line-through font-medium leading-none mb-0.5">{{ currency_format($combinedPrice) }}</div>
+                        <div class="text-[17px] font-black text-blue-600 tracking-tight leading-none">{{ currency_format($bundlePrice) }}</div>
+                    </div>
+                    <button onclick="addBundleToCart(this, {{ $product->id }}, {{ $bundleProduct->id }})" class="w-full px-3.5 py-1.5 bg-blue-600 text-white text-[11px] font-bold rounded-lg hover:bg-blue-700 shadow-md shadow-blue-600/10 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-1 shrink-0">
+                        <i class="fa-solid fa-cart-plus text-[10px]"></i> <span>Añadir</span>
                     </button>
                 </div>
             </div>
@@ -340,7 +353,7 @@
     </div>
 
     <!-- Sobre este producto -->
-    <div class="mt-16 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+    <div class="mt-16 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm" x-data="{ expanded: false }">
         <div class="p-6">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Sobre este producto</h2>
             
@@ -360,12 +373,36 @@
                 </div>
             </div>
 
-            <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed">
-                {!! $product->description !!}
-            </div>
-        </div>
-        
+            <!-- Contenedor colapsable -->
+            @if($isCollapseEnabled)
+                <div class="relative transition-all duration-500 overflow-hidden" 
+                     style="max-height: {{ $collapseHeight }}px;"
+                     :style="expanded ? 'max-height: 10000px' : 'max-height: {{ $collapseHeight }}px'">
+                    <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed">
+                        {!! $product->description !!}
+                    </div>
+                    
+                    <!-- Degradado de desvanecimiento (Solo visible al estar colapsado) -->
+                    <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white via-white/90 to-transparent pointer-events-none transition-opacity duration-300"
+                         style="opacity: 1;"
+                         :style="expanded ? 'opacity: 0;' : 'opacity: 1;'"></div>
+                </div>
 
+                <!-- Botón Leer más / Leer menos -->
+                <div class="mt-6 flex justify-center border-t border-gray-100 pt-4">
+                    <button @click="expanded = !expanded" class="flex items-center gap-1.5 text-blue-600 hover:text-blue-700 font-bold text-sm transition-colors focus:outline-none">
+                        <span x-text="expanded ? 'Leer menos' : 'Leer más'">Leer más</span>
+                        <svg class="w-4 h-4 transition-transform duration-300" :class="expanded ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                </div>
+            @else
+                <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed">
+                    {!! $product->description !!}
+                </div>
+            @endif
+        </div>
     </div>
 
     <!-- Reseñas -->

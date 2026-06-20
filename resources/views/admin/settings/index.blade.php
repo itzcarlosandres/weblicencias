@@ -169,6 +169,24 @@
                     </div>
                 </div>
                 <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6">
+                    <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white mb-5">Página de Producto</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Ancho de la página del producto</label>
+                            <select name="product_page_max_width" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400">
+                                <option value="max-w-7xl" {{ ($settings['product_page_max_width'] ?? 'max-w-7xl') === 'max-w-7xl' ? 'selected' : '' }}>Compacto (1280px)</option>
+                                <option value="max-w-6xl" {{ ($settings['product_page_max_width'] ?? '') === 'max-w-6xl' ? 'selected' : '' }}>Muy Compacto (1152px)</option>
+                                <option value="max-w-[1440px]" {{ ($settings['product_page_max_width'] ?? '') === 'max-w-[1440px]' ? 'selected' : '' }}>Ancho (1440px)</option>
+                                <option value="max-w-full" {{ ($settings['product_page_max_width'] ?? '') === 'max-w-full' ? 'selected' : '' }}>Ancho Completo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Altura del colapso de la descripción ("Leer más") en px</label>
+                            <input type="number" name="product_description_collapse_height" value="{{ $settings['product_description_collapse_height'] ?? 200 }}" min="0" max="1000" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400" placeholder="Ej: 200 (Pon 0 para desactivar el colapso)">
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6">
                     <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white mb-5">Pie de Página</h3>
                     <textarea name="footer_text" rows="3" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 resize-none">{{ $settings['footer_text'] ?? '' }}</textarea>
                 </div>
