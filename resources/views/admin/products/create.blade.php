@@ -386,9 +386,11 @@ function generateAI() {
     .dark .ck.ck-dropdown__panel {
         background-color: #1f2937 !important;
     }
-    /* Set min height to CKEditor */
+    /* Set min and max height to CKEditor */
     .ck-editor__editable_inline {
         min-height: 150px;
+        max-height: 400px;
+        overflow-y: auto !important;
     }
 </style>
 @endsection
