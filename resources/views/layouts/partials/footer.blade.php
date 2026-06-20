@@ -38,8 +38,8 @@
             <div>
                 <h3 class="text-[13px] font-bold text-white mb-4 uppercase tracking-wider">Soporte</h3>
                 <ul class="space-y-3">
-                    <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Centro de Ayuda</a></li>
-                    <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Contacto</a></li>
+                    <li><a href="{{ route('help-center') }}" class="text-sm text-gray-400 hover:text-white transition-colors">Centro de Ayuda</a></li>
+                    <li><a href="{{ route('contact') }}" class="text-sm text-gray-400 hover:text-white transition-colors">Contacto</a></li>
                     <li><a href="{{ route('blog.index') }}" class="text-sm text-gray-400 hover:text-white transition-colors">Blog</a></li>
                     <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Estado del Sistema</a></li>
                 </ul>

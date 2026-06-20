@@ -7,6 +7,9 @@ use App\Models\Category;
 use App\Models\BlogPost;
 use App\Models\Setting;
 use Livewire\Livewire;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactMessageMail;
 
 class HomeController extends Controller
 {
@@ -162,4 +165,48 @@ class HomeController extends Controller
 
         return response()->json(['success' => false]);
     }
+
+    public function contact()
+    {
+        return view('pages.contact');
+    }
+
+    public function contactSend(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string|min:10|max:5000',
+        ], [
+            'name.required' => 'El nombre es obligatorio.',
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email' => 'El correo electrónico debe ser una dirección válida.',
+            'subject.required' => 'El asunto es obligatorio.',
+            'message.required' => 'El mensaje es obligatorio.',
+            'message.min' => 'El mensaje debe tener al menos 10 caracteres.',
+        ]);
+
+        $contactEmail = Setting::get('contact_email', 'soporte@todokeys.co');
+
+        try {
+            Mail::to($contactEmail)->send(new ContactMessageMail(
+                $request->input('name'),
+                $request->input('email'),
+                $request->input('subject'),
+                $request->input('message')
+            ));
+        } catch (\Exception $e) {
+            \Log::error('Error al enviar correo de contacto: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Lo sentimos, hubo un problema al enviar tu mensaje. Por favor intenta de nuevo.');
+        }
+
+        return back()->with('success', '¡Gracias por contactarnos! Hemos recibido tu mensaje y te responderemos lo antes posible.');
+    }
+
+    public function helpCenter()
+    {
+        return view('pages.help-center');
+    }
 }
+

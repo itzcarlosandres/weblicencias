@@ -31,7 +31,7 @@
                 @if($t === 'popups')<i class="fa-solid fa-message w-4"></i>@endif
                 @if($t === 'referrals')<i class="fa-solid fa-users w-4"></i>@endif
                 @if($t === 'faq')<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>@endif
-                {{ $t === 'ai' ? 'IA' : ($t === 'faq' ? 'FAQ' : ucfirst($t)) }}
+                {{ $t === 'ai' ? 'IA' : ($t === 'faq' ? 'FAQ / Ayuda' : ucfirst($t)) }}
             </a>
             @endforeach
         </div>
@@ -63,14 +63,18 @@
                 </div>
                 <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6">
                     <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white mb-5">Contacto</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email de contacto</label>
                             <input type="email" name="contact_email" value="{{ $settings['contact_email'] ?? '' }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400">
                         </div>
                         <div>
-                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Teléfono</label>
+                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Teléfono visible</label>
                             <input type="text" name="contact_phone" value="{{ $settings['contact_phone'] ?? '' }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400">
+                        </div>
+                        <div>
+                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">WhatsApp (ej. 573236861025)</label>
+                            <input type="text" name="contact_whatsapp" value="{{ $settings['contact_whatsapp'] ?? '' }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400">
                         </div>
                     </div>
                 </div>
@@ -521,10 +525,11 @@
         @endif
 
         @if($activeTab === 'faq')
-        <div class="max-w-4xl">
+        <div class="max-w-4xl space-y-6">
+            <!-- Bloque 1: FAQ de Inicio -->
             <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6 space-y-6">
                 <div>
-                    <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white mb-1">Preguntas Frecuentes (FAQ)</h3>
+                    <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white mb-1">Preguntas Frecuentes (FAQ) de la Página de Inicio</h3>
                     <p class="text-[12px] text-gray-400">Estas preguntas se mostrarán en la sección de FAQ al final de la página de inicio.</p>
                 </div>
 
@@ -574,6 +579,99 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Bloque 2: Centro de Ayuda -->
+            <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6 space-y-6">
+                <div>
+                    <h3 class="text-[15px] font-semibold text-gray-900 dark:text-white mb-1">Artículos del Centro de Ayuda</h3>
+                    <p class="text-[12px] text-gray-400">Estos artículos se mostrarán clasificados por categorías en la página del Centro de Ayuda.</p>
+                </div>
+
+                @php
+                    $helpCenterJson = $settings['help_center_content'] ?? '[]';
+                    $helpCenter = json_decode($helpCenterJson, true);
+                    if (!is_array($helpCenter)) {
+                        $helpCenter = [];
+                    }
+                    if (empty($helpCenter)) {
+                        $helpCenter = [
+                            [
+                                'category' => 'activation',
+                                'question' => '¿Cómo activo mi clave de producto Windows?',
+                                'answer' => '<p>Para activar Windows, realiza los siguientes pasos:</p><ol class="list-decimal pl-5 mt-2 space-y-1"><li>Ve a <strong>Inicio > Configuración > Sistema > Activación</strong>.</li><li>Haz clic en la opción <strong>"Cambiar la clave de producto"</strong>.</li><li>Copia e ingresa la clave de 25 caracteres enviada por correo.</li><li>Haz clic en <strong>Siguiente</strong> y luego en <strong>Activar</strong>. El proceso tardará unos segundos.</li></ol>'
+                            ],
+                            [
+                                'category' => 'activation',
+                                'question' => '¿Qué hago si la clave de Office da error?',
+                                'answer' => '<p>Para garantizar una activación correcta de Office, te recomendamos:</p><ul class="list-disc pl-5 mt-2 space-y-1"><li><strong>Desinstalar versiones previas</strong>: Elimina cualquier copia anterior de Office o Microsoft 365 que esté preinstalada en tu equipo.</li><li><strong>Canjear en la web oficial</strong>: Ve a <a href="https://setup.office.com" target="_blank" class="text-blue-600 font-bold hover:underline">setup.office.com</a>, inicia sesión con tu cuenta de Microsoft, canjea el código y descarga la versión correcta.</li><li><strong>Usa el asistente</strong>: Si persiste el error, toma una captura de pantalla y ábrenos un ticket para asistirte.</li></ul>'
+                            ],
+                            [
+                                'category' => 'activation',
+                                'question' => '¿Las licencias digitales expiran?',
+                                'answer' => '<p>No. Todas nuestras claves para sistemas operativos (Windows 10/11) y suites de Office (2019/2021) son <strong>perpetuas (Lifetime)</strong>. Esto significa que no tienen cargos recurrentes ni fecha de expiración.</p>'
+                            ],
+                            [
+                                'category' => 'delivery',
+                                'question' => '¿Cuánto tiempo tarda en llegar mi pedido?',
+                                'answer' => '<p>¡La entrega es <strong>100% instantánea y digital</strong>! El sistema te mostrará tu licencia directamente en la pantalla de confirmación y se enviará una copia automática a tu correo electrónico registrado.</p>'
+                            ],
+                            [
+                                'category' => 'delivery',
+                                'question' => 'No he recibido el correo con la clave, ¿qué debo hacer?',
+                                'answer' => '<p>Si no visualizas el correo electrónico en tu bandeja principal, revisa tus carpetas de <strong>Correo No Deseado (SPAM)</strong> o inicia sesión en TodoKeys e ingresa a tu panel en la sección <strong>Mis Pedidos</strong>.</p>'
+                            ],
+                            [
+                                'category' => 'payments',
+                                'question' => '¿Qué formas de pago tienen disponibles?',
+                                'answer' => '<p>Ofrecemos diferentes pasarelas de pago de alta seguridad: <strong>PayPal</strong>, <strong>Mercado Pago</strong> (PSE, tarjetas locales) y <strong>Wompi</strong>.</p>'
+                            ],
+                            [
+                                'category' => 'refunds',
+                                'question' => '¿Cómo funciona la política de garantía de licencias?',
+                                'answer' => '<p>Nuestra prioridad es que tengas un software funcional. Si una licencia arroja un fallo que no se pueda solucionar tras la asistencia de nuestro equipo, te daremos un <strong>reemplazo inmediato</strong> de la clave o un <strong>reembolso total</strong> de tu dinero.</p>'
+                            ]
+                        ];
+                    }
+                @endphp
+
+                <div x-data="helpCenterManager({{ json_encode($helpCenter) }})" class="space-y-4">
+                    <input type="hidden" name="help_center_content" :value="JSON.stringify(articles)">
+                    
+                    <div class="space-y-3">
+                        <template x-for="(art, index) in articles" :key="index">
+                            <div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-800 space-y-3 relative group">
+                                <button type="button" @click="removeArticle(index)" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors">
+                                    <i class="fa-solid fa-trash-can text-sm"></i>
+                                </button>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pr-8">
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Categoría</label>
+                                        <select x-model="art.category" class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                            <option value="activation">Activación</option>
+                                            <option value="delivery">Entregas</option>
+                                            <option value="payments">Pagos</option>
+                                            <option value="refunds">Reembolsos</option>
+                                        </select>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Pregunta / Título</label>
+                                        <input type="text" x-model="art.question" class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500" placeholder="¿Cómo hago para...?">
+                                    </div>
+                                    <div class="md:col-span-3">
+                                        <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1">Contenido (Soporta HTML básico como &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;, &lt;li&gt;)</label>
+                                        <textarea x-model="art.answer" rows="3" class="w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500" placeholder="Escribe aquí el contenido del artículo..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <button type="button" @click="addArticle()" class="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 hover:bg-primary-100 text-primary-600 text-[13px] font-semibold rounded-xl transition-all">
+                        <i class="fa-solid fa-plus text-[11px]"></i> Agregar Artículo
+                    </button>
+                </div>
+            </div>
         </div>
 
         <script>
@@ -585,6 +683,17 @@
                 },
                 removeFaq(index) {
                     this.faqs.splice(index, 1);
+                }
+            }
+        }
+        function helpCenterManager(initialArticles) {
+            return {
+                articles: initialArticles,
+                addArticle() {
+                    this.articles.push({ category: 'activation', question: '', answer: '' });
+                },
+                removeArticle(index) {
+                    this.articles.splice(index, 1);
                 }
             }
         }

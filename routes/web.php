@@ -23,6 +23,9 @@ Route::get('/ofertas-flash', [ProductController::class, 'flashSales'])->name('pr
 Route::get('/search/live', [ProductController::class, 'liveSearch'])->name('products.live-search');
 Route::get('/producto/{slug}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/api/social-proof', [HomeController::class, 'socialProof'])->name('api.social-proof');
+Route::get('/contacto', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contacto', [HomeController::class, 'contactSend'])->name('contact.send');
+Route::get('/centro-de-ayuda', [HomeController::class, 'helpCenter'])->name('help-center');
 
 // Legal
 Route::view('/terminos-y-condiciones', 'pages.legal.terms')->name('legal.terms');

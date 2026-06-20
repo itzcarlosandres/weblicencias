@@ -231,6 +231,10 @@
                 <i class="fa-solid fa-newspaper opacity-80 text-[16px]"></i>
                 Blog
             </a>
+            <a href="{{ route('contact') }}" class="flex items-center gap-2 text-[13px] font-bold text-gray-300 hover:text-white transition-colors h-full border-b-[3px] border-transparent hover:border-blue-500 shrink-0 ml-4">
+                <i class="fa-solid fa-envelope opacity-80 text-[16px]"></i>
+                Contacto
+            </a>
         </div>
     </div>
 
@@ -296,6 +300,12 @@
                         <i class="fa-solid fa-newspaper"></i>
                     </div>
                     Blog y Tutoriales
+                </a>
+                <a href="{{ route('contact') }}" class="flex items-center gap-4 px-3 py-3.5 text-[15px] font-bold text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+                    <div class="w-9 h-9 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    Contacto
                 </a>
 
                 <div class="my-6 border-t border-white/5 mx-3"></div>
