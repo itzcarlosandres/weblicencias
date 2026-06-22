@@ -59,7 +59,7 @@ class SettingsController extends Controller
             'home_grid_columns', 'home_featured_count', 'catalog_grid_columns',
             'product_page_max_width', 'product_description_collapse_height',
             // SEO
-            'meta_title', 'meta_description', 'meta_keywords', 'footer_text', 'faq_content', 'help_center_content',
+            'meta_title', 'meta_description', 'meta_keywords', 'header_code', 'footer_text', 'faq_content', 'help_center_content',
             // Appearance
             'primary_color', 'hero_badge', 'hero_title', 'hero_subtitle',
             'hero_description', 'hero_feature_1', 'hero_feature_2', 'hero_feature_3',
@@ -253,7 +253,7 @@ class SettingsController extends Controller
             'currency_symbol' => 'general', 'exchange_rate_cop' => 'general',
             'home_grid_columns' => 'general', 'home_featured_count' => 'general', 'catalog_grid_columns' => 'general',
             'product_page_max_width' => 'general', 'product_description_collapse_height' => 'general',
-            'meta_title' => 'seo', 'meta_description' => 'seo', 'meta_keywords' => 'seo', 'footer_text' => 'seo', 'faq_content' => 'general', 'help_center_content' => 'general',
+            'meta_title' => 'seo', 'meta_description' => 'seo', 'meta_keywords' => 'seo', 'header_code' => 'seo', 'footer_text' => 'seo', 'faq_content' => 'general', 'help_center_content' => 'general',
             'primary_color' => 'appearance', 'hero_badge' => 'appearance', 'hero_title' => 'appearance',
             'hero_subtitle' => 'appearance', 'hero_description' => 'appearance',
             'hero_feature_1' => 'appearance', 'hero_feature_2' => 'appearance', 'hero_feature_3' => 'appearance',

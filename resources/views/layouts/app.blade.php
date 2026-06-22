@@ -40,6 +40,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome-pro/css/all.min.css') }}">
+    {!! \App\Models\Setting::get('header_code') !!}
 </head>
 <body class="font-sans antialiased bg-[#f5f5f5] text-gray-900 transition-colors duration-300 pb-[60px] sm:pb-0">
     <div class="min-h-screen flex flex-col">

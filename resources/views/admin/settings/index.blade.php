@@ -284,6 +284,11 @@
                     <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Meta Keywords</label>
                     <input type="text" name="meta_keywords" value="{{ $settings['meta_keywords'] ?? '' }}" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400" placeholder="licencias, software, windows">
                 </div>
+                <div>
+                    <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Código en el Header (Google Analytics, Pixels, etc.)</label>
+                    <textarea name="header_code" rows="5" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] font-mono text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400" placeholder="<!-- Código de seguimiento aquí -->">{{ $settings['header_code'] ?? '' }}</textarea>
+                    <p class="text-[11px] text-gray-500 mt-1">Este código se insertará justo antes del cierre de la etiqueta &lt;/head&gt;.</p>
+                </div>
             </div>
         </div>
         @endif
