@@ -156,6 +156,10 @@
                             <input type="number" name="home_featured_count" value="{{ $settings['home_featured_count'] ?? 8 }}" min="4" max="24" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400">
                         </div>
                         <div>
+                            <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Número de Marcas a mostrar</label>
+                            <input type="number" name="home_brands_count" value="{{ $settings['home_brands_count'] ?? 12 }}" min="2" max="30" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400">
+                        </div>
+                        <div>
                             <label class="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Columnas en Catálogo</label>
                             <select name="catalog_grid_columns" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl text-[13px] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400">
                                 @for($i = 2; $i <= 6; $i++)

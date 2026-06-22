@@ -27,10 +27,12 @@ class AdminBrandController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'is_active' => 'boolean',
+            'show_on_home' => 'boolean',
             'logo' => 'nullable|image|max:2048',
             'icon' => 'nullable|string|max:255',
         ]);
         if (!isset($validated['is_active'])) $validated['is_active'] = true;
+        if (!isset($validated['show_on_home'])) $validated['show_on_home'] = true;
         $validated['slug'] = Str::slug($validated['name']);
 
         if ($request->hasFile('logo')) {
@@ -51,10 +53,12 @@ class AdminBrandController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'is_active' => 'boolean',
+            'show_on_home' => 'boolean',
             'logo' => 'nullable|image|max:2048',
             'icon' => 'nullable|string|max:255',
         ]);
         if (!isset($validated['is_active'])) $validated['is_active'] = false;
+        if (!isset($validated['show_on_home'])) $validated['show_on_home'] = false;
         $validated['slug'] = Str::slug($validated['name']);
 
         if ($request->hasFile('logo')) {

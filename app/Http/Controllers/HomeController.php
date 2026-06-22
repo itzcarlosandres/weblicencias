@@ -72,9 +72,13 @@ class HomeController extends Controller
             ];
         });
 
-        $brandsArray = \Illuminate\Support\Facades\Cache::rememberForever('active_brands', function() {
-            return \App\Models\Brand::active()->orderBy('name')->get()->toArray();
+        $brandsArray = \Illuminate\Support\Facades\Cache::rememberForever('home_brands', function() {
+            return \App\Models\Brand::active()->where('show_on_home', true)->orderBy('name')->get()->toArray();
         });
+        
+        $brandsCount = (int) Setting::get('home_brands_count', 12);
+        $brandsArray = array_slice($brandsArray, 0, $brandsCount);
+        
         $brands = \App\Models\Brand::hydrate($brandsArray);
 
         $gridClass = $this->getGridClass($gridColumns);

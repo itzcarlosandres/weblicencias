@@ -11,7 +11,7 @@ class Brand extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'logo', 'icon', 'is_active'];
+    protected $fillable = ['name', 'slug', 'logo', 'icon', 'is_active', 'show_on_home'];
 
     protected static function booted(): void
     {
@@ -23,10 +23,12 @@ class Brand extends Model
 
         static::saved(function () {
             \Illuminate\Support\Facades\Cache::forget('active_brands');
+            \Illuminate\Support\Facades\Cache::forget('home_brands');
         });
 
         static::deleted(function () {
             \Illuminate\Support\Facades\Cache::forget('active_brands');
+            \Illuminate\Support\Facades\Cache::forget('home_brands');
         });
     }
 

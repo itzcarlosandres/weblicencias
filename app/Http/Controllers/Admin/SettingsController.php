@@ -57,7 +57,7 @@ class SettingsController extends Controller
             'site_name', 'site_tagline', 'site_description', 'contact_email', 'contact_phone', 'contact_whatsapp',
             'currency', 'currency_symbol', 'exchange_rate_cop',
             'home_grid_columns', 'home_featured_count', 'catalog_grid_columns',
-            'product_page_max_width', 'product_description_collapse_height',
+            'product_page_max_width', 'product_description_collapse_height', 'home_brands_count',
             // SEO
             'meta_title', 'meta_description', 'meta_keywords', 'header_code', 'footer_text', 'faq_content', 'help_center_content',
             // Appearance
@@ -251,7 +251,7 @@ class SettingsController extends Controller
             'site_name' => 'general', 'site_tagline' => 'general', 'site_description' => 'general',
             'contact_email' => 'general', 'contact_phone' => 'general', 'contact_whatsapp' => 'general', 'currency' => 'general',
             'currency_symbol' => 'general', 'exchange_rate_cop' => 'general',
-            'home_grid_columns' => 'general', 'home_featured_count' => 'general', 'catalog_grid_columns' => 'general',
+            'home_grid_columns' => 'general', 'home_featured_count' => 'general', 'home_brands_count' => 'general', 'catalog_grid_columns' => 'general',
             'product_page_max_width' => 'general', 'product_description_collapse_height' => 'general',
             'meta_title' => 'seo', 'meta_description' => 'seo', 'meta_keywords' => 'seo', 'header_code' => 'seo', 'footer_text' => 'seo', 'faq_content' => 'general', 'help_center_content' => 'general',
             'primary_color' => 'appearance', 'hero_badge' => 'appearance', 'hero_title' => 'appearance',

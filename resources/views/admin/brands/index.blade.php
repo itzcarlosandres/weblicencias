@@ -71,6 +71,12 @@
                             Inactivo
                         </span>
                         @endif
+                        @if($brand->show_on_home)
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded-md text-[11px] font-semibold bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                            <i class="fa-solid fa-home text-[10px]"></i>
+                            En Inicio
+                        </span>
+                        @endif
                     </td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex items-center justify-end gap-1">
