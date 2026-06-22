@@ -167,6 +167,17 @@ class CustomerController extends Controller
         return view('pages.customer.wishlist', compact('wishlists'));
     }
 
+    public function referrals()
+    {
+        $user = auth()->user();
+        
+        $referrals = \App\Models\User::where('referred_by', $user->id)
+            ->latest()
+            ->paginate(15);
+            
+        return view('pages.customer.referrals', compact('user', 'referrals'));
+    }
+
     public function profile()
     {
         $user = auth()->user();

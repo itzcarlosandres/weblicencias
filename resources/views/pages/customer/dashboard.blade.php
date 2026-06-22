@@ -47,6 +47,10 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                         Lista de Deseos
                     </a>
+                    <a href="{{ route('customer.referrals') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm rounded-xl {{ request()->routeIs('customer.referrals') ? 'bg-primary-50 text-primary-600' : 'text-text-secondary hover:bg-gray-50 ' }}">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        Mis Referidos
+                    </a>
                 </nav>
             </div>
         </aside>

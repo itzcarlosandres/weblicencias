@@ -105,6 +105,7 @@ Route::prefix('mi-cuenta')->name('customer.')->middleware('auth')->group(functio
     Route::get('/mis-puntos', [CustomerController::class, 'points'])->name('points');
     Route::get('/mi-monedero', [CustomerController::class, 'wallet'])->name('wallet');
     Route::get('/favoritos', [CustomerController::class, 'wishlist'])->name('wishlist');
+    Route::get('/referidos', [CustomerController::class, 'referrals'])->name('referrals');
 });
 
 // Admin routes
