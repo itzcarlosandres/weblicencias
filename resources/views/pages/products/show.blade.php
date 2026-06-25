@@ -2,6 +2,7 @@
 
 @section('title', $product->meta_title ?: $product->name . ' | TodoKeys')
 @section('description', $product->meta_description ?: Str::limit(strip_tags($product->description), 160))
+@section('canonical', route('products.show', $product->slug))
 
 @section('content')
 

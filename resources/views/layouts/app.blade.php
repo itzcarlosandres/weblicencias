@@ -15,7 +15,13 @@
     @if($keywords = \App\Models\Setting::get('meta_keywords'))
     <meta name="keywords" content="{{ $keywords }}">
     @endif
-    
+
+    <!-- Canonical URL (SEO: evita contenido duplicado) -->
+    @php
+        $canonicalUrl = \Illuminate\Support\Str::before(url()->current(), '?');
+    @endphp
+    <link rel="canonical" href="@yield('canonical', $canonicalUrl)">
+
     <!-- PWA -->
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="theme-color" content="#3b82f6">
