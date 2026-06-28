@@ -383,16 +383,40 @@
         @if($activeTab === 'payment')
         <div class="max-w-4xl space-y-4">
             <div class="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200/60 dark:border-gray-800/60 p-6 space-y-4">
-                @foreach(['paypal' => 'PayPal'] as $key => $label)
-                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-800">
-                    <div class="text-[13px] font-semibold text-gray-900 dark:text-white">{{ $label }}</div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="hidden" name="payment_{{ $key }}_enabled" value="0">
-                        <input type="checkbox" name="payment_{{ $key }}_enabled" value="1" {{ ($settings['payment_' . $key . '_enabled'] ?? '0') == '1' ? 'checked' : '' }} class="peer sr-only">
-                        <div class="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:ring-2 peer-focus:ring-primary-400/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-500"></div>
-                    </label>
+                <!-- PayPal -->
+                <div class="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden mt-4">
+                    <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50">
+                        <div>
+                            <div class="text-[13px] font-semibold text-gray-900 dark:text-white">PayPal</div>
+                            <div class="text-[11px] text-gray-400">Pagos con tarjeta y saldo de PayPal</div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="hidden" name="payment_paypal_enabled" value="0">
+                            <input type="checkbox" name="payment_paypal_enabled" value="1" {{ ($settings['payment_paypal_enabled'] ?? '0') == '1' ? 'checked' : '' }} class="peer sr-only" onchange="document.getElementById('paypal-creds').style.display = this.checked ? 'block' : 'none'">
+                            <div class="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:ring-2 peer-focus:ring-primary-400/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-500"></div>
+                        </label>
+                    </div>
+                    <div id="paypal-creds" class="p-4 bg-white dark:bg-[#111827] border-t border-gray-200 dark:border-gray-800 space-y-4 {{ ($settings['payment_paypal_enabled'] ?? '0') == '1' ? '' : 'hidden' }}">
+                        
+                        <div>
+                            <label class="block text-[12px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Modo de Entorno</label>
+                            <select name="paypal_mode" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white">
+                                <option value="sandbox" {{ ($settings['paypal_mode'] ?? 'sandbox') == 'sandbox' ? 'selected' : '' }}>Sandbox (Pruebas)</option>
+                                <option value="live" {{ ($settings['paypal_mode'] ?? 'sandbox') == 'live' ? 'selected' : '' }}>Live (Producción)</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[12px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Client ID</label>
+                                <input type="text" name="paypal_client_id" value="{{ $settings['paypal_client_id'] ?? '' }}" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white" placeholder="Client ID">
+                            </div>
+                            <div>
+                                <label class="block text-[12px] font-medium text-gray-700 dark:text-gray-300 mb-1.5">Client Secret</label>
+                                <input type="password" name="paypal_client_secret" value="{{ $settings['paypal_client_secret'] ?? '' }}" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg text-[13px] text-gray-900 dark:text-white" placeholder="Client Secret">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                @endforeach
 
                 <!-- Mercado Pago -->
                 <div class="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden mt-4">

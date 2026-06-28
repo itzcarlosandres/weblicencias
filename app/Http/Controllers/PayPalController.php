@@ -11,7 +11,24 @@ use Illuminate\Support\Facades\Log;
 
 class PayPalController extends Controller
 {
+    private function getPayPalConfig()
+    {
+        $config = config('paypal');
+        $mode = \App\Models\Setting::get('paypal_mode', 'sandbox');
+        $clientId = \App\Models\Setting::get('paypal_client_id', '');
+        $clientSecret = \App\Models\Setting::get('paypal_client_secret', '');
 
+        $config['mode'] = $mode;
+        if (!empty($clientId) && !empty($clientSecret)) {
+            $config[$mode]['client_id'] = $clientId;
+            $config[$mode]['client_secret'] = $clientSecret;
+            if ($mode === 'sandbox') {
+                $config['sandbox']['app_id'] = 'APP-80W284485P519543T';
+            }
+        }
+
+        return $config;
+    }
 
     public function createOrder(Request $request)
     {
@@ -26,7 +43,7 @@ class PayPalController extends Controller
 
         try {
             $provider = new PayPalClient;
-            $provider->setApiCredentials(config('paypal'));
+            $provider->setApiCredentials($this->getPayPalConfig());
             $token = $provider->getAccessToken();
             $provider->setAccessToken($token);
 
@@ -71,7 +88,7 @@ class PayPalController extends Controller
     public function captureOrder(Request $request, Order $order, CartService $cartService)
     {
         $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
+        $provider->setApiCredentials($this->getPayPalConfig());
         $provider->getAccessToken();
         
         $response = $provider->capturePaymentOrder($request['token']);
