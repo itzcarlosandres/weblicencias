@@ -76,10 +76,9 @@ class SettingsController extends Controller
             // Referrals
             'referral_welcome_points', 'referral_reward_points',
             // Payment
-            'payment_paypal_enabled', 'payment_mercadopago_enabled', 
-            'mercadopago_access_token', 'mercadopago_public_key',
-            'payment_wompi_enabled',
-            'wompi_public_key', 'wompi_private_key', 'wompi_events_secret', 'wompi_sandbox_mode',
+            'payment_paypal_enabled', 'paypal_mode', 'paypal_client_id', 'paypal_client_secret',
+            'payment_mercadopago_enabled', 'mercadopago_access_token', 'mercadopago_public_key',
+            'payment_wompi_enabled', 'wompi_public_key', 'wompi_private_key', 'wompi_events_secret', 'wompi_sandbox_mode',
             // AI
             'gemini_api_key',
             // Mail
@@ -266,8 +265,8 @@ class SettingsController extends Controller
             'points_discount_per_redemption' => 'points', 'points_min_redeem' => 'points', 'points_expiry_days' => 'points',
             'cashback_percentage' => 'points',
             'referral_welcome_points' => 'points', 'referral_reward_points' => 'points',
-            'payment_paypal_enabled' => 'payment', 'payment_mercadopago_enabled' => 'payment',
-            'mercadopago_access_token' => 'payment', 'mercadopago_public_key' => 'payment',
+            'payment_paypal_enabled' => 'payment', 'paypal_mode' => 'payment', 'paypal_client_id' => 'payment', 'paypal_client_secret' => 'payment',
+            'payment_mercadopago_enabled' => 'payment', 'mercadopago_access_token' => 'payment', 'mercadopago_public_key' => 'payment',
             'payment_wompi_enabled' => 'payment', 'wompi_public_key' => 'payment',
             'wompi_private_key' => 'payment', 'wompi_events_secret' => 'payment', 'wompi_sandbox_mode' => 'payment',
             'gemini_api_key' => 'ai',
