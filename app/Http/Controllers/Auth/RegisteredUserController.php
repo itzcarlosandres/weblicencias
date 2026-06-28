@@ -67,8 +67,10 @@ class RegisteredUserController extends Controller
         }
 
         try {
-            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\WelcomeEmail($user));
-        } catch (\Exception $e) {
+            if (\App\Models\Setting::get('mail_host')) {
+                \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\WelcomeEmail($user));
+            }
+        } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error('No se pudo enviar el correo de bienvenida: ' . $e->getMessage());
         }
 
