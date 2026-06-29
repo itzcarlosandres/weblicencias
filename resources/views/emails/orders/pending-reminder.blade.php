@@ -10,7 +10,7 @@ Notamos que tienes un pedido pendiente por pagar en **{{ config('app.name') }}**
 
 No te quedes sin tus productos. Si tuviste algún problema al realizar el pago, no dudes en contactarnos y te ayudaremos con gusto.
 
-<x-mail::button :url="route('orders.show', $order)">
+<x-mail::button :url="route('customer.orders.show', $order)">
 Ver mi pedido
 </x-mail::button>
 
