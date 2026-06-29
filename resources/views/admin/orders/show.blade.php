@@ -211,7 +211,16 @@
             </div>
 
             @if($order->status === 'pending' || $order->status === 'processing')
-            <div class="mt-5 pt-5 border-t border-gray-100 dark:border-gray-800">
+            <div class="mt-5 pt-5 border-t border-gray-100 dark:border-gray-800 space-y-3">
+                @if($order->status === 'pending')
+                <form action="{{ route('admin.orders.send-reminder', $order) }}" method="POST" onsubmit="return confirm('¿Deseas enviar un recordatorio de pago a este cliente?');">
+                    @csrf
+                    <button type="submit" class="w-full flex justify-center items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:hover:bg-amber-900/40 dark:text-amber-400 font-bold py-3 px-4 rounded-xl transition-all text-[14px]">
+                        <i class="fa-regular fa-envelope"></i>
+                        Enviar Recordatorio de Pago
+                    </button>
+                </form>
+                @endif
                 <form action="{{ route('admin.orders.update-status', $order) }}" method="POST">
                     @csrf
                     <input type="hidden" name="status" value="paid">

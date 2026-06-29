@@ -121,6 +121,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::resource('orders', \App\Http\Controllers\Admin\AdminOrderController::class)->only(['index', 'show', 'destroy']);
     Route::post('/orders/{order}/status', [\App\Http\Controllers\Admin\AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
     Route::delete('/orders/{order}/items/{item}', [\App\Http\Controllers\Admin\AdminOrderController::class, 'removeItem'])->name('orders.remove-item');
+    Route::post('/orders/{order}/send-reminder', [\App\Http\Controllers\Admin\AdminOrderController::class, 'sendReminder'])->name('orders.send-reminder');
 
     // Reviews
     Route::resource('reviews', \App\Http\Controllers\Admin\AdminReviewController::class)->only(['index', 'destroy']);

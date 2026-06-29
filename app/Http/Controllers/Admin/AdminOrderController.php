@@ -106,4 +106,15 @@ class AdminOrderController extends Controller
 
         return redirect()->route('admin.orders.index')->with('success', 'Orden eliminada correctamente.');
     }
+
+    public function sendReminder(Order $order)
+    {
+        if ($order->status !== 'pending') {
+            return back()->with('error', 'Solo se pueden enviar recordatorios a órdenes pendientes.');
+        }
+
+        \Illuminate\Support\Facades\Mail::to($order->user->email)->send(new \App\Mail\PendingOrderReminder($order));
+
+        return back()->with('success', 'Recordatorio enviado correctamente al cliente.');
+    }
 }
