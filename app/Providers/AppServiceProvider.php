@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->environment('production')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         try {
             if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
                 $mailHost = \App\Models\Setting::get('mail_host');

@@ -83,6 +83,18 @@
                         </label>
                     </div>
 
+                    <!-- reCAPTCHA -->
+                    @if(env('RECAPTCHA_SITE_KEY'))
+                        <div class="pt-2">
+                            <div class="g-recaptcha flex justify-center" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+                            @error('g-recaptcha-response')
+                            <p class="text-red-500 text-xs mt-1.5 font-medium flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                            </p>
+                            @enderror
+                        </div>
+                    @endif
+
                     <!-- Submit Button -->
                     <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-4 px-4 rounded-xl transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-2">
                         Iniciar Sesión <i class="fa-solid fa-arrow-right"></i>
@@ -130,3 +142,9 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+@if(env('RECAPTCHA_SITE_KEY'))
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+@endif
+@endpush

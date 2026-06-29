@@ -24,7 +24,7 @@ Route::get('/search/live', [ProductController::class, 'liveSearch'])->name('prod
 Route::get('/producto/{slug}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/api/social-proof', [HomeController::class, 'socialProof'])->name('api.social-proof');
 Route::get('/contacto', [HomeController::class, 'contact'])->name('contact');
-Route::post('/contacto', [HomeController::class, 'contactSend'])->name('contact.send');
+Route::post('/contacto', [HomeController::class, 'contactSend'])->name('contact.send')->middleware('throttle:5,1');
 Route::get('/centro-de-ayuda', [HomeController::class, 'helpCenter'])->name('help-center');
 
 // Legal
@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Wompi Webhook (outside auth middleware)
-Route::post('/webhook/wompi', [\App\Http\Controllers\WompiController::class, 'webhook'])->name('wompi.webhook');
+Route::post('/webhook/wompi', [\App\Http\Controllers\WompiController::class, 'webhook'])->name('wompi.webhook')->middleware('throttle:30,1');
 
 // Socialite Routes
 Route::get('/auth/google', [\App\Http\Controllers\SocialAuthController::class, 'redirect'])->name('auth.google');
@@ -86,7 +86,7 @@ Route::get('/blog/{slug}', [\App\Http\Controllers\BlogController::class, 'show']
 require __DIR__ . '/auth.php';
 
 // Waitlist
-Route::post('/waitlist', [WaitlistController::class, 'store'])->name('waitlist.store');
+Route::post('/waitlist', [WaitlistController::class, 'store'])->name('waitlist.store')->middleware('throttle:5,1');
 
 // Customer routes
 Route::prefix('mi-cuenta')->name('customer.')->middleware('auth')->group(function () {

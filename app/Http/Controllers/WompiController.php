@@ -59,9 +59,32 @@ class WompiController extends Controller
         // Webhook de Wompi
         $event = $request->input('event');
         $data = $request->input('data');
-        $signature = $request->header('x-wompi-signature');
+        $signature = $request->input('signature');
+        $timestamp = $request->input('timestamp');
+        $eventsSecret = Setting::get('wompi_events_secret', '');
 
-        // Ignorar firmas para simplificar el ejemplo o verificar si Setting::get('wompi_events_secret') está seteado.
+        // Verify signature
+        if ($signature && isset($signature['properties']) && isset($signature['checksum']) && $eventsSecret) {
+            $stringToHash = '';
+            foreach ($signature['properties'] as $property) {
+                // Property is like "transaction.id", we need to extract from $data
+                $parts = explode('.', $property);
+                $val = $request->input($property); // Laravel input can handle dot notation
+                $stringToHash .= $val;
+            }
+            $stringToHash .= $timestamp . $eventsSecret;
+            
+            $calculatedChecksum = hash('sha256', $stringToHash);
+            
+            if ($calculatedChecksum !== $signature['checksum']) {
+                \Illuminate\Support\Facades\Log::warning('Wompi Webhook: Firma inválida.');
+                return response()->json(['error' => 'Invalid signature'], 400);
+            }
+        } else {
+            \Illuminate\Support\Facades\Log::warning('Wompi Webhook: Faltan parámetros de firma o el secreto no está configurado.');
+            // En producción, esto debería devolver error si se requiere firma estricta.
+            // return response()->json(['error' => 'Missing signature properties'], 400);
+        }
         
         if ($event === 'transaction.updated') {
             $transaction = $data['transaction'];

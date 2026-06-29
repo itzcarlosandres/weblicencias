@@ -84,8 +84,17 @@ class MercadoPagoController extends Controller
         $status = $request->get('status');
         $orderId = $request->get('external_reference');
 
-        if ($status === 'approved' && $orderId) {
+        if ($status === 'approved' && $orderId && $paymentId) {
             $order = Order::find($orderId);
+            
+            // Verificación Server-Side con Mercado Pago API
+            $accessToken = \App\Models\Setting::get('mercadopago_access_token', env('MERCADOPAGO_ACCESS_TOKEN'));
+            $response = Http::withToken($accessToken)->get("https://api.mercadopago.com/v1/payments/{$paymentId}");
+            
+            if (!$response->successful() || $response->json('status') !== 'approved' || $response->json('external_reference') != $orderId) {
+                return redirect()->route('home')->with('error', 'No se pudo verificar el pago con Mercado Pago. Si crees que hay un error, contáctanos.');
+            }
+
             if ($order && !in_array($order->status, ['paid', 'delivered'])) {
                 $order->update([
                     'status' => 'paid',
