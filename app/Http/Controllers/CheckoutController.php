@@ -63,6 +63,8 @@ class CheckoutController extends Controller
         $order = $this->orderService->createOrder(auth()->user(), [
             'method' => 'paypal',
             'status' => 'pending',
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
         ]);
 
         $paymentMethod = $request->input('payment_method', 'paypal');

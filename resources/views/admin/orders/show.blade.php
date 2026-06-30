@@ -142,6 +142,20 @@
                 <div class="min-w-0">
                     <div class="text-[13px] font-semibold text-gray-900 dark:text-white truncate">{{ $order->user->name }}</div>
                     <div class="text-[11px] text-gray-400 truncate">{{ $order->user->email }}</div>
+                    @if($order->ip_address)
+                    <div class="text-[11px] text-gray-400 mt-2 flex flex-col gap-1">
+                        <div class="flex items-center gap-1">
+                            <i class="fa-solid fa-globe text-primary-400 w-3 text-center"></i> 
+                            <span>IP: {{ $order->ip_address }} {{ $order->country ? '(' . $order->country . ')' : '' }}</span>
+                        </div>
+                        @if($order->user_agent)
+                        <div class="flex items-start gap-1">
+                            <i class="fa-solid fa-desktop text-gray-400 w-3 text-center mt-0.5"></i> 
+                            <span class="break-words line-clamp-2" title="{{ $order->user_agent }}">{{ \Illuminate\Support\Str::limit($order->user_agent, 60) }}</span>
+                        </div>
+                        @endif
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

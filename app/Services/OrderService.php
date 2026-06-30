@@ -30,6 +30,17 @@ class OrderService
             $tax = $this->cartService->getTax();
             $total = $this->cartService->getTotal();
 
+            $ip = $paymentData['ip_address'] ?? request()->ip();
+            $country = null;
+            if ($ip && !in_array($ip, ['127.0.0.1', '::1', 'localhost'])) {
+                try {
+                    $response = \Illuminate\Support\Facades\Http::timeout(3)->get("http://ip-api.com/json/{$ip}?fields=country");
+                    if ($response->successful()) {
+                        $country = $response->json('country');
+                    }
+                } catch (\Exception $e) {}
+            }
+
             $order = Order::create([
                 'user_id' => $user->id,
                 'coupon_id' => Session::get('coupon_id'),
@@ -41,6 +52,9 @@ class OrderService
                 'payment_id' => $paymentData['id'] ?? null,
                 'payment_status' => $paymentData['status'] ?? 'pending',
                 'status' => 'pending',
+                'ip_address' => $ip,
+                'country' => $country,
+                'user_agent' => $paymentData['user_agent'] ?? request()->userAgent(),
             ]);
 
             foreach ($cart as $item) {
