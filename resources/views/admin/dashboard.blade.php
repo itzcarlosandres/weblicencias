@@ -228,8 +228,12 @@
                 @forelse($topProducts as $index => $product)
                 <div class="px-6 py-3.5 flex items-center gap-3 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors">
                     <span class="w-6 h-6 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center text-[11px] font-bold text-gray-400">{{ $index + 1 }}</span>
-                    <div class="w-9 h-9 bg-primary-50 dark:bg-primary-900/20 rounded-lg flex items-center justify-center text-lg shrink-0">
-                        {{ $product->category->icon ?? '📦' }}
+                    <div class="w-9 h-9 bg-primary-50 dark:bg-primary-900/20 rounded-lg flex items-center justify-center text-lg shrink-0 text-primary-500">
+                        @if($product->category && $product->category->icon)
+                            <i class="{{ $product->category->icon }}"></i>
+                        @else
+                            <i class="fa-solid fa-box"></i>
+                        @endif
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="text-[13px] font-medium text-gray-900 dark:text-white truncate">{{ $product->name }}</div>
