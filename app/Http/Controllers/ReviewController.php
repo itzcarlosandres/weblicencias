@@ -36,10 +36,14 @@ class ReviewController extends Controller
 
         // Check if user actually purchased this product
         $hasPurchased = \App\Models\Order::where('user_id', Auth::id())
-            ->whereIn('status', ['paid', 'delivered'])
+            ->whereIn('status', ['paid', 'delivered', 'completed'])
             ->whereHas('items', function ($query) use ($product) {
                 $query->where('product_id', $product->id);
             })->exists();
+
+        if (!$hasPurchased) {
+            return back()->with('error', 'Solo los clientes que han comprado este producto pueden dejar una reseña.');
+        }
 
         Review::create([
             'user_id' => Auth::id(),

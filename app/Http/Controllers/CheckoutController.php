@@ -45,10 +45,26 @@ class CheckoutController extends Controller
         $mercadopagoEnabled = \App\Models\Setting::get('payment_mercadopago_enabled', '0') == '1';
         $wompiEnabled = \App\Models\Setting::get('payment_wompi_enabled', '0') == '1';
 
+        $cartProductIds = collect($cart)->pluck('product_id')->toArray();
+        $upsellProducts = \App\Models\Product::whereNotIn('id', $cartProductIds)
+            ->where('stock', '>', 0)
+            ->where('price', '<=', 50) // Suggest low-cost items if possible, or just random
+            ->inRandomOrder()
+            ->take(3)
+            ->get();
+            
+        if ($upsellProducts->isEmpty()) {
+            $upsellProducts = \App\Models\Product::whereNotIn('id', $cartProductIds)
+                ->where('stock', '>', 0)
+                ->inRandomOrder()
+                ->take(3)
+                ->get();
+        }
+
         return view('pages.checkout', compact(
             'cart', 'subtotal', 'discount', 'tax', 'total', 'couponCode',
             'userPoints', 'pointsEnabled', 'maxRedeemable', 'pointsDiscount',
-            'paypalEnabled', 'mercadopagoEnabled', 'wompiEnabled'
+            'paypalEnabled', 'mercadopagoEnabled', 'wompiEnabled', 'upsellProducts'
         ));
     }
 

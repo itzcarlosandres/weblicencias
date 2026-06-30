@@ -157,6 +157,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('/users/{user}/points', [\App\Http\Controllers\Admin\AdminUserController::class, 'addPoints'])->name('users.add-points');
     Route::post('/users/{user}/wallet', [\App\Http\Controllers\Admin\AdminUserController::class, 'adjustWallet'])->name('users.adjust-wallet');
 
+    // Blacklist
+    Route::resource('blacklist', \App\Http\Controllers\Admin\AdminBlacklistController::class)->only(['index', 'store', 'destroy']);
+
     // Categories
     Route::resource('categories', \App\Http\Controllers\Admin\AdminCategoryController::class)->except(['show']);
 

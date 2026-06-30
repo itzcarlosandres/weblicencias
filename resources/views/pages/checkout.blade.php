@@ -241,6 +241,35 @@
                     </div>
                 </div>
                 @endif
+
+                <!-- Upsell Section -->
+                @if(isset($upsellProducts) && $upsellProducts->count() > 0)
+                <div class="mt-6 border-t border-dashed border-gray-200 pt-6">
+                    <h3 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-sparkles text-amber-500"></i> Podría interesarte...
+                    </h3>
+                    <div class="space-y-3">
+                        @foreach($upsellProducts as $upsell)
+                        <div class="flex gap-3 items-center bg-gray-50 p-3 rounded-xl border border-gray-100 group">
+                            <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shrink-0 overflow-hidden relative shadow-sm border border-gray-100">
+                                @if($upsell->image)
+                                    <img src="{{ asset('storage/' . $upsell->image) }}" class="w-full h-full object-cover rounded-md">
+                                @else
+                                    <i class="fa-solid fa-gamepad text-gray-300"></i>
+                                @endif
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <a href="{{ route('products.show', $upsell->slug) }}" target="_blank" class="text-[13px] font-bold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors">{{ $upsell->name }}</a>
+                                <div class="text-[12px] font-black text-blue-600">{{ currency_format($upsell->discounted_price) }}</div>
+                            </div>
+                            <button type="button" onclick="window.open('{{ route('products.show', $upsell->slug) }}', '_blank')" class="w-8 h-8 rounded-full bg-white border border-gray-200 text-gray-400 hover:text-blue-600 hover:border-blue-200 flex items-center justify-center transition-colors shadow-sm shrink-0" title="Ver producto">
+                                <i class="fa-solid fa-arrow-right -rotate-45"></i>
+                            </button>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>

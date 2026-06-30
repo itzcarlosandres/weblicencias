@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\DetectUserCurrency::class,
             \App\Http\Middleware\TrackReferralClicks::class,
             \App\Http\Middleware\SecurityHeadersMiddleware::class,
+            \App\Http\Middleware\CheckBlacklist::class,
         ]);
         
         $middleware->alias([

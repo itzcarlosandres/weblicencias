@@ -428,8 +428,22 @@
                 @auth
                     @php
                         $userHasReviewed = \App\Models\Review::where('user_id', auth()->id())->where('product_id', $product->id)->exists();
+                        $hasPurchased = \App\Models\Order::where('user_id', auth()->id())
+                            ->whereIn('status', ['paid', 'delivered', 'completed'])
+                            ->whereHas('items', function ($q) use ($product) {
+                                $q->where('product_id', $product->id);
+                            })->exists();
                     @endphp
-                    @if(!$userHasReviewed)
+                    @if($userHasReviewed)
+                        <div class="bg-green-50 text-green-700 p-4 rounded-xl text-sm font-medium border border-green-100 text-center">
+                            ¡Ya has publicado una reseña para este producto!
+                        </div>
+                    @elseif(!$hasPurchased)
+                        <div class="bg-yellow-50 text-yellow-700 p-4 rounded-xl text-sm font-medium border border-yellow-200 text-center">
+                            <i class="fa-solid fa-lock mb-2 text-xl block"></i>
+                            Solo los clientes que han comprado este producto pueden dejar una reseña.
+                        </div>
+                    @else
                         <div class="bg-gray-50 p-5 rounded-xl border border-gray-100">
                             <h3 class="font-bold text-gray-900 mb-4">Escribe tu opinión</h3>
                             <form action="{{ route('customer.reviews.store', $product) }}" method="POST" enctype="multipart/form-data">
@@ -463,10 +477,6 @@
                                 </div>
                                 <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg transition-colors text-sm">Publicar Reseña</button>
                             </form>
-                        </div>
-                    @else
-                        <div class="bg-green-50 text-green-700 p-4 rounded-xl text-sm font-medium border border-green-100 text-center">
-                            ¡Ya has publicado una reseña para este producto!
                         </div>
                     @endif
                 @else
