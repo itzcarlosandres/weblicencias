@@ -17,20 +17,20 @@
             @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo de Bloqueo</label>
-                <select name="type" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-primary-500 focus:border-primary-500 text-sm">
-                    <option value="ip">Dirección IP</option>
-                    <option value="country">País</option>
+                <select name="type" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-primary-500 focus:border-primary-500 text-sm">
+                    <option value="ip" class="dark:bg-gray-800 dark:text-white">Dirección IP</option>
+                    <option value="country" class="dark:bg-gray-800 dark:text-white">País</option>
                 </select>
             </div>
             
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Valor a Bloquear</label>
-                <input type="text" name="value" placeholder="Ej: 192.168.1.1 o Colombia" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-primary-500 focus:border-primary-500 text-sm">
+                <input type="text" name="value" placeholder="Ej: 192.168.1.1 o Colombia" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-primary-500 focus:border-primary-500 text-sm">
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Motivo (Opcional)</label>
-                <input type="text" name="reason" placeholder="Ej: Intentos de fraude" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-primary-500 focus:border-primary-500 text-sm">
+                <input type="text" name="reason" placeholder="Ej: Intentos de fraude" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-primary-500 focus:border-primary-500 text-sm">
             </div>
 
             <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-lg transition-colors text-sm">
