@@ -16,7 +16,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'avatar', 'phone',
         'is_active', 'email_verified_at', 'points',
-        'referral_code', 'referred_by', 'google_id', 'wallet_balance'
+        'referral_code', 'referred_by', 'google_id', 'wallet_balance',
+        'ip_address', 'country'
     ];
 
     protected $hidden = [

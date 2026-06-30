@@ -34,6 +34,17 @@ class RegisteredUserController extends Controller
             }
         }
 
+        $ip = $request->ip();
+        $country = null;
+        if ($ip && !in_array($ip, ['127.0.0.1', '::1', 'localhost'])) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::timeout(3)->get("http://ip-api.com/json/{$ip}?fields=country");
+                if ($response->successful()) {
+                    $country = $response->json('country');
+                }
+            } catch (\Exception $e) {}
+        }
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -41,6 +52,8 @@ class RegisteredUserController extends Controller
             'email_verified_at' => now(),
             'referral_code' => \Illuminate\Support\Str::random(10),
             'referred_by' => $referrerId,
+            'ip_address' => $ip,
+            'country' => $country,
         ]);
 
         $user->assignRole('user');

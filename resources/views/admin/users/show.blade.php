@@ -28,6 +28,17 @@
                     <span class="text-gray-500">Registro:</span>
                     <span class="font-medium text-gray-900 dark:text-gray-300">{{ $user->created_at->format('d M Y, H:i') }}</span>
                 </div>
+                @if($user->ip_address)
+                <div class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2">
+                    <span class="text-gray-500">IP (País):</span>
+                    <span class="font-medium text-gray-900 dark:text-gray-300 flex items-center gap-1">
+                        {{ $user->ip_address }} 
+                        @if($user->country)
+                            <span class="text-xs text-gray-400">({{ $user->country }})</span>
+                        @endif
+                    </span>
+                </div>
+                @endif
                 <div class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2">
                     <span class="text-gray-500">Pedidos:</span>
                     <span class="font-medium text-gray-900 dark:text-gray-300">{{ $user->orders->count() }}</span>
