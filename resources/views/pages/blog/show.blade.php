@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', $post->meta_title ?? $post->title . ' | TodoKeys')
-@section('meta_description', $post->meta_description ?? Str::limit(strip_tags($post->content), 160))
+@section('description', $post->meta_description ?? Str::limit(strip_tags($post->content), 160))
 
 @section('content')
 <div class="bg-white">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Ofertas Flash')
-@section('meta_description', 'Aprovecha nuestras Ofertas Flash con descuentos increíbles. ¡Tiempo limitado!')
+@section('description', 'Aprovecha nuestras Ofertas Flash con descuentos increíbles. ¡Tiempo limitado!')
 
 @section('content')
 <!-- Hero Section (Neon & Urgency) -->

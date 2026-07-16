@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Blog y Tutoriales | TodoKeys')
-@section('meta_description', 'Descubre las mejores guías, tutoriales y noticias sobre software y licencias digitales.')
+@section('description', 'Descubre las mejores guías, tutoriales y noticias sobre software y licencias digitales.')
 
 @section('content')
 <div class="bg-gray-50 py-12">
