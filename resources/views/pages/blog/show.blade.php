@@ -2,7 +2,6 @@
 
 @section('title', $post->meta_title ?? $post->title . ' | TodoKeys')
 @section('meta_description', $post->meta_description ?? Str::limit(strip_tags($post->content), 160))
-@section('canonical', route('blog.show', $post->slug))
 
 @section('content')
 <div class="bg-white">

@@ -18,7 +18,21 @@
 
     <!-- Canonical URL (SEO: evita contenido duplicado) -->
     @php
-        $canonicalUrl = \Illuminate\Support\Str::before(url()->current(), '?');
+        $path = request()->getPathInfo();
+        $baseUrl = rtrim(config('app.url'), '/');
+        $canonicalUrl = $baseUrl . '/' . ltrim($path, '/');
+        $canonicalUrl = rtrim($canonicalUrl, '/');
+        if (empty(parse_url($canonicalUrl, PHP_URL_PATH))) {
+            $canonicalUrl = $baseUrl . '/';
+        }
+        
+        $whitelist = ['category', 'brand', 'page'];
+        $queryParams = array_intersect_key(request()->query(), array_flip($whitelist));
+        $queryParams = array_filter($queryParams, fn($value) => !is_null($value) && $value !== '');
+        
+        if (!empty($queryParams)) {
+            $canonicalUrl .= '?' . http_build_query($queryParams);
+        }
     @endphp
     <link rel="canonical" href="@yield('canonical', $canonicalUrl)">
 
